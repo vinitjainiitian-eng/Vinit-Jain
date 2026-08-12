@@ -2,66 +2,71 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>JEE AI CBT | PDF to NTA Test</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>JEE AI CBT</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
-
 <script>
 window.MathJax={
-  tex:{inlineMath:[['$','$'],['\','\']]},
-  svg:{fontCache:'global'}
+  tex:{inlineMath:[["$","$"],["\\(","\\)"]]},
+  svg:{fontCache:"global"}
 };
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 <style>
-body{font-family:Inter,system-ui,sans-serif;background:#f5f7fb}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:#f5f7fb;color:#172033}
+button,input{font:inherit}
 ::-webkit-scrollbar{width:7px;height:7px}
-::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:8px}
-.option{transition:.12s}
-.option:hover{border-color:#2563eb;background:#eff6ff}
-.palette button{min-height:38px}
-.status-answered{background:#16a34a!important;color:#fff}
-.status-review{background:#7c3aed!important;color:#fff}
-.status-both{background:#7c3aed!important;color:#fff;border-bottom:4px solid #16a34a}
-.status-not{background:#ef4444!important;color:#fff}
-.status-visited{background:#e5e7eb;color:#374151}
+::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:10px}
+.opt{transition:.12s}
+.opt:hover{border-color:#2563eb;background:#eff6ff}
+.palette-btn{height:40px;border-radius:8px;font-weight:800}
+.nv{background:#e5e7eb;color:#374151}
+.na{background:#ef4444;color:white}
+.ans{background:#16a34a;color:white}
+.rev{background:#7c3aed;color:white}
+.both{background:#7c3aed;color:white;border-bottom:5px solid #16a34a}
+.hiddenx{display:none!important}
 </style>
 </head>
 
-<body class="overflow-hidden text-slate-800">
+<body>
 
-<div id="app" class="h-screen">
+<div id="app" class="h-screen overflow-hidden">
 
-<!-- ================= START SCREEN ================= -->
+<!-- =====================================================
+START SCREEN
+===================================================== -->
 
-<section id="start" class="h-full overflow-y-auto flex items-center justify-center p-4">
+<div id="start" class="h-full overflow-y-auto flex items-center justify-center p-4">
 
-<div class="w-full max-w-2xl bg-white rounded-2xl shadow-xl border overflow-hidden">
+<div class="w-full max-w-3xl bg-white rounded-2xl shadow-2xl border overflow-hidden">
 
 <div class="bg-blue-700 text-white p-6">
-<h1 class="text-2xl md:text-3xl font-black">JEE AI CBT</h1>
-<p class="mt-1 text-blue-100">
-PDF → NTA-style test → instant AI analysis
-</p>
+<div class="text-3xl font-black">JEE AI CBT</div>
+<div class="text-blue-100 mt-1">
+PDF → NTA CBT → AI Analysis
+</div>
 </div>
 
 <div class="p-5 md:p-7">
 
-<div class="grid gap-4">
+<!-- QUESTIONS PDF -->
 
-<label class="border-2 border-dashed border-blue-300 rounded-xl p-5 bg-blue-50 cursor-pointer">
+<label class="block cursor-pointer border-2 border-dashed border-blue-300 bg-blue-50 rounded-xl p-5 mb-4">
 
-<div class="font-bold">Questions PDF</div>
-
-<div id="qname"
-class="text-sm text-slate-500 mt-1">
-Choose original JEE question paper
+<div class="font-black text-blue-900">
+Questions PDF
 </div>
 
-<input id="qpdf"
+<div id="questionFileName" class="text-sm text-slate-500 mt-1">
+Select original JEE question paper
+</div>
+
+<input
+id="questionPdf"
 type="file"
 accept="application/pdf"
 class="hidden">
@@ -69,30 +74,66 @@ class="hidden">
 </label>
 
 
-<label class="border-2 border-dashed border-emerald-300 rounded-xl p-5 bg-emerald-50 cursor-pointer">
+<!-- ANSWER KEY -->
 
-<div class="font-bold">Answer Key PDF</div>
+<label class="block cursor-pointer border-2 border-dashed border-emerald-300 bg-emerald-50 rounded-xl p-5 mb-4">
 
-<div id="aname"
-class="text-sm text-slate-500 mt-1">
-Choose official answer key
+<div class="font-black text-emerald-900">
+Answer Key PDF
 </div>
 
-<input id="apdf"
+<div id="answerFileName" class="text-sm text-slate-500 mt-1">
+Select official answer key
+</div>
+
+<input
+id="answerPdf"
 type="file"
 accept="application/pdf"
 class="hidden">
 
 </label>
 
+
+<!-- API KEY -->
+
+<div class="border-2 border-amber-300 bg-amber-50 rounded-xl p-5 mb-4">
+
+<label class="font-black">
+Gemini API Key
+</label>
+
+<input
+id="apiKey"
+type="password"
+placeholder="Paste Gemini API key here"
+autocomplete="off"
+class="mt-2 w-full border-2 border-amber-300 rounded-xl px-4 py-3 bg-white outline-none focus:border-blue-600">
+
+<div class="text-xs text-slate-500 mt-2">
+For personal use. Do not expose this key on a public website.
+</div>
+
+<button
+id="testGemini"
+class="mt-3 px-4 py-2 rounded-lg bg-slate-800 text-white font-bold text-sm">
+
+TEST GEMINI CONNECTION
+
+</button>
+
+<div id="connectionStatus" class="text-sm font-bold mt-2"></div>
+
 </div>
 
 
-<div id="config" class="grid grid-cols-2 gap-3 mt-5">
+<!-- CONFIG -->
+
+<div class="grid grid-cols-2 gap-3 mb-5">
 
 <label class="text-sm font-bold">
 
-Duration (min)
+Duration
 
 <input
 id="duration"
@@ -102,7 +143,6 @@ min="1"
 class="mt-1 w-full border rounded-lg px-3 py-2">
 
 </label>
-
 
 <label class="text-sm font-bold">
 
@@ -118,129 +158,93 @@ class="mt-1 w-full border rounded-lg px-3 py-2 bg-slate-100">
 </div>
 
 
-<!-- GEMINI KEY BOX -->
+<!-- PROGRESS -->
 
-<div class="mt-5 p-4 rounded-xl border-2 border-amber-300 bg-amber-50">
-
-<label class="block text-sm font-black text-slate-800 mb-2">
-Gemini API Key
-</label>
-
-<input
-id="gemini-key"
-type="password"
-autocomplete="off"
-placeholder="Paste your Gemini API key here"
-class="w-full px-4 py-3 border-2 border-amber-300 rounded-lg bg-white outline-none focus:border-blue-600">
-
-<p class="text-xs text-slate-500 mt-2">
-Used for one-time PDF extraction and post-test AI analysis.
-</p>
-
-</div>
-
-
-<div id="progress" class="hidden mt-5">
+<div id="progressBox" class="hidden mb-5">
 
 <div class="flex justify-between text-sm font-bold">
-
-<span id="ptext">
-Preparing...
-</span>
-
-<span id="pct">
-0%
-</span>
-
+<span id="progressText">Preparing...</span>
+<span id="progressPercent">0%</span>
 </div>
 
-<div class="h-2 bg-slate-200 rounded-full mt-2 overflow-hidden">
+<div class="h-3 bg-slate-200 rounded-full overflow-hidden mt-2">
 
 <div
-id="bar"
-class="h-full bg-blue-600 w-0">
+id="progressBar"
+class="h-full bg-blue-600 transition-all"
+style="width:0%">
 </div>
 
 </div>
 
+</div>
+
+
+<!-- VALIDATION -->
+
+<div
+id="validation"
+class="hidden mb-5 bg-slate-50 border rounded-xl p-4">
 </div>
 
 
 <div
-id="error"
-class="hidden mt-4 p-3 rounded-lg bg-red-50 text-red-700 text-sm">
+id="errorBox"
+class="hidden mb-4 bg-red-50 border border-red-200 text-red-700 rounded-xl p-4 text-sm whitespace-pre-wrap">
 </div>
 
 
 <button
-id="generate"
+id="generateBtn"
 disabled
-class="mt-6 w-full py-4 rounded-xl bg-blue-600 text-white font-black text-lg disabled:opacity-40 disabled:cursor-not-allowed">
+class="w-full py-4 rounded-xl bg-blue-600 text-white font-black text-lg disabled:opacity-40">
 
 GENERATE CBT
 
 </button>
 
-
-<p class="text-xs text-slate-500 mt-4">
-AI extraction happens once. The actual CBT runs locally for speed.
-</p>
-
+</div>
+</div>
 </div>
 
-</div>
 
-</section>
+<!-- =====================================================
+TEST
+===================================================== -->
 
+<div id="test" class="hidden h-full flex flex-col">
 
-<!-- ================= TEST SCREEN ================= -->
-
-<section id="test" class="hidden h-full flex flex-col">
-
-<header
-class="bg-white border-b px-3 md:px-5 py-2 flex items-center justify-between shrink-0">
+<header class="bg-white border-b px-3 md:px-5 py-2 flex justify-between items-center shrink-0">
 
 <div>
-
-<div class="font-black text-blue-800">
+<div class="font-black text-xl text-blue-800">
 JEE MOCK TEST
 </div>
 
-<div
-id="testMeta"
-class="text-xs text-slate-500">
+<div id="testInfo" class="text-xs text-slate-500"></div>
 </div>
-
-</div>
-
 
 <div class="flex items-center gap-3">
 
 <div class="text-right">
-
-<div class="text-[10px] uppercase font-bold text-slate-400">
+<div class="text-[10px] font-bold text-slate-400 uppercase">
 Time Left
 </div>
 
 <div
 id="timer"
-class="font-mono text-lg font-black">
+class="font-mono text-lg md:text-xl font-black">
 03:00:00
 </div>
-
 </div>
 
-
 <button
-id="paletteBtn"
-class="md:hidden px-3 py-2 rounded-lg bg-blue-50 text-blue-700 font-bold">
-
+id="mobilePalette"
+class="md:hidden bg-blue-50 text-blue-700 px-3 py-2 rounded-lg font-bold">
 ☰
-
 </button>
 
 </div>
-
 </header>
 
 
@@ -252,27 +256,25 @@ class="bg-white border-b flex overflow-x-auto shrink-0">
 
 <div class="flex-1 flex overflow-hidden relative">
 
-
 <main class="flex-1 min-w-0 flex flex-col">
 
+<div class="bg-slate-50 border-b px-4 py-2 flex justify-between shrink-0">
 
-<div
-class="px-4 py-2 bg-slate-50 border-b flex justify-between shrink-0">
-
-<b id="qnum">
+<b id="questionNumber">
 Question 1
 </b>
 
 <span
-id="qtype"
-class="text-xs font-bold bg-slate-200 px-2 py-1 rounded">
+id="questionType"
+class="text-xs bg-slate-200 rounded px-2 py-1 font-bold">
+MCQ
 </span>
 
 </div>
 
 
 <div
-id="question"
+id="questionArea"
 class="flex-1 overflow-y-auto p-4 md:p-8">
 </div>
 
@@ -283,17 +285,16 @@ class="bg-white border-t p-3 flex justify-between gap-2 shrink-0">
 <div class="flex gap-2">
 
 <button
-id="mark"
-class="px-3 py-2 rounded-lg bg-purple-50 text-purple-700 font-bold text-xs">
+id="markNext"
+class="px-3 py-2 rounded-lg bg-purple-50 text-purple-700 border border-purple-200 font-bold text-xs">
 
 MARK & NEXT
 
 </button>
 
-
 <button
-id="clear"
-class="px-3 py-2 rounded-lg bg-slate-100 font-bold text-xs">
+id="clearAnswer"
+class="px-3 py-2 rounded-lg bg-slate-100 border font-bold text-xs">
 
 CLEAR
 
@@ -301,9 +302,8 @@ CLEAR
 
 </div>
 
-
 <button
-id="save"
+id="saveNext"
 class="px-6 py-2 rounded-lg bg-blue-600 text-white font-bold text-xs">
 
 SAVE & NEXT
@@ -319,7 +319,7 @@ SAVE & NEXT
 
 <aside
 id="palette"
-class="w-80 bg-white border-l flex flex-col fixed md:relative right-0 top-0 bottom-0 z-30 translate-x-full md:translate-x-0 transition-transform">
+class="fixed md:relative right-0 top-0 bottom-0 z-40 w-80 bg-white border-l flex flex-col translate-x-full md:translate-x-0 transition-transform">
 
 <div class="p-4 border-b flex justify-between">
 
@@ -336,38 +336,23 @@ class="md:hidden">
 
 <div class="p-3 grid grid-cols-2 gap-2 text-xs font-bold">
 
-<span>
-🟢 Answered
-<b id="ca">0</b>
-</span>
-
-<span>
-🔴 Not Answered
-<b id="cn">0</b>
-</span>
-
-<span>
-⚪ Not Visited
-<b id="cv">0</b>
-</span>
-
-<span>
-🟣 Review
-<b id="cr">0</b>
-</span>
+<div>🟢 Answered <b id="answeredCount">0</b></div>
+<div>🔴 Not Answered <b id="notAnsweredCount">0</b></div>
+<div>⚪ Not Visited <b id="notVisitedCount">0</b></div>
+<div>🟣 Review <b id="reviewCount">0</b></div>
 
 </div>
 
 
 <div
-id="grid"
-class="palette flex-1 overflow-y-auto p-4 grid grid-cols-5 gap-2 bg-slate-50">
+id="paletteGrid"
+class="flex-1 overflow-y-auto p-4 bg-slate-50 grid grid-cols-5 gap-2">
 </div>
 
 
 <button
-id="submit"
-class="m-4 py-3 bg-emerald-600 text-white font-black rounded-xl">
+id="submitTest"
+class="m-4 py-3 bg-emerald-600 text-white rounded-xl font-black">
 
 SUBMIT TEST
 
@@ -376,66 +361,64 @@ SUBMIT TEST
 </aside>
 
 </div>
+</div>
 
-</section>
 
+<!-- =====================================================
+RESULT
+===================================================== -->
 
-<!-- ================= RESULT ================= -->
-
-<section id="result" class="hidden h-full overflow-y-auto">
+<div id="result" class="hidden h-full overflow-y-auto">
 
 <header
 class="sticky top-0 z-20 bg-white border-b p-4 flex justify-between">
 
-<h1 class="text-xl font-black">
-AI Test Analysis
+<h1 class="text-xl md:text-2xl font-black">
+JEE Test Analysis
 </h1>
 
 <button
 onclick="location.reload()"
-class="px-4 py-2 bg-slate-800 text-white rounded-lg font-bold">
-
+class="bg-slate-800 text-white px-4 py-2 rounded-lg font-bold">
 New Test
-
 </button>
 
 </header>
 
 
-<div class="max-w-6xl mx-auto p-4 md:p-7 space-y-5">
+<div class="max-w-7xl mx-auto p-4 md:p-7 space-y-5">
 
 
 <div
-id="cards"
+id="resultCards"
 class="grid grid-cols-2 md:grid-cols-5 gap-3">
 </div>
 
 
-<div
-class="bg-white rounded-xl border p-5">
+<!-- AI ANALYSIS -->
 
-<h2 class="font-black text-lg">
-Gemini Analysis
+<div class="bg-white border rounded-xl p-5">
+
+<h2 class="text-xl font-black">
+Gemini Deep Analysis
 </h2>
 
 <div
-id="analysis"
-class="mt-3 text-sm leading-6 text-slate-700">
-
-Preparing analysis...
-
+id="aiAnalysis"
+class="mt-4 leading-7 text-sm">
+Generating analysis...
 </div>
 
 </div>
 
 
-<div
-class="bg-white rounded-xl border overflow-hidden">
+<!-- SUBJECT -->
+
+<div class="bg-white border rounded-xl overflow-hidden">
 
 <div class="p-4 border-b font-black">
-Question Review
+Subject Analysis
 </div>
-
 
 <div class="overflow-x-auto">
 
@@ -444,22 +427,55 @@ Question Review
 <thead class="bg-slate-50">
 
 <tr>
+<th class="p-3 text-left">Subject</th>
+<th>Score</th>
+<th>Correct</th>
+<th>Wrong</th>
+<th>Attempted</th>
+<th>Accuracy</th>
+<th>Time</th>
+</tr>
 
-<th class="p-3 text-left">Q</th>
+</thead>
+
+<tbody id="subjectAnalysis"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- QUESTION REVIEW -->
+
+<div class="bg-white border rounded-xl overflow-hidden">
+
+<div class="p-4 border-b font-black">
+Question Journey / Review
+</div>
+
+<div class="overflow-x-auto">
+
+<table class="w-full text-sm">
+
+<thead class="bg-slate-50">
+
+<tr>
+<th class="p-3">Q</th>
 <th>Subject</th>
 <th>Your Answer</th>
 <th>Correct</th>
 <th>Status</th>
 <th>Time</th>
+<th>Visits</th>
+<th>Changes</th>
 <th>Marks</th>
-
 </tr>
 
 </thead>
 
-
-<tbody id="review">
-</tbody>
+<tbody id="questionReview"></tbody>
 
 </table>
 
@@ -469,66 +485,2731 @@ Question Review
 
 </div>
 
-</section>
+</div>
 
 </div>
 
 
 <script>
 
-/* =========================================================
-   GEMINI CONFIG
-========================================================= */
+/* =====================================================
+CONFIG
+===================================================== */
 
-let GEMINI_API_KEY = "";
+let GEMINI_API_KEY="";
 
-const GEMINI_MODEL = "gemini-2.5-flash";
+const GEMINI_MODEL="gemini-2.5-flash";
 
-
-/* =========================================================
-   PDF.JS
-========================================================= */
-
-const PDFJS_URL =
+const PDFJS_URL=
 "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
 
-let pdfjsReady = null;
+let pdfjsPromise=null;
 
 
-async function getPdfJs(){
+/* =====================================================
+STATE
+===================================================== */
 
-if(!pdfjsReady){
+let QUESTIONS=[];
 
-pdfjsReady =
-import(PDFJS_URL)
-.then(m=>{
+let SUBJECTS=[];
 
-m.GlobalWorkerOptions.workerSrc =
-"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
+let CURRENT_SUBJECT="";
 
-return m;
+let CURRENT_INDEX=0;
+
+let TIME_LEFT=0;
+
+let TIMER=null;
+
+let TEST_STARTED=false;
+
+
+/* =====================================================
+DOM
+===================================================== */
+
+const $=id=>document.getElementById(id);
+
+
+/* =====================================================
+FILES
+===================================================== */
+
+$("questionPdf").addEventListener(
+"change",
+()=>{
+
+const f=$("questionPdf").files[0];
+
+if(f){
+
+$("questionFileName").innerHTML=
+"✓ "+escapeHTML(f.name);
+
+}
+
+checkReady();
+
+});
+
+
+$("answerPdf").addEventListener(
+"change",
+()=>{
+
+const f=$("answerPdf").files[0];
+
+if(f){
+
+$("answerFileName").innerHTML=
+"✓ "+escapeHTML(f.name);
+
+}
+
+checkReady();
+
+});
+
+
+$("apiKey").addEventListener(
+"input",
+checkReady
+);
+
+
+function checkReady(){
+
+$("generateBtn").disabled=
+!(
+$("questionPdf").files[0] &&
+$("answerPdf").files[0] &&
+$("apiKey").value.trim()
+);
+
+}
+
+
+/* =====================================================
+PROGRESS
+===================================================== */
+
+function progress(text,percent){
+
+$("progressBox").classList.remove("hidden");
+
+$("progressText").textContent=text;
+
+$("progressPercent").textContent=
+percent+"%";
+
+$("progressBar").style.width=
+percent+"%";
+
+}
+
+
+function showError(message){
+
+$("errorBox").classList.remove("hidden");
+
+$("errorBox").textContent=
+message;
+
+}
+
+
+/* =====================================================
+BASE64
+===================================================== */
+
+function fileBase64(file){
+
+return new Promise(
+(resolve,reject)=>{
+
+const reader=new FileReader();
+
+reader.onload=()=>
+resolve(
+reader.result.split(",")[1]
+);
+
+reader.onerror=reject;
+
+reader.readAsDataURL(file);
 
 });
 
 }
 
-return pdfjsReady;
+
+/* =====================================================
+PDF.JS
+===================================================== */
+
+async function pdfJS(){
+
+if(!pdfjsPromise){
+
+pdfjsPromise=
+import(PDFJS_URL)
+.then(mod=>{
+
+mod.GlobalWorkerOptions.workerSrc=
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
+
+return mod;
+
+});
+
+}
+
+return pdfjsPromise;
 
 }
 
 
-/* =========================================================
-   PDF PAGE RENDER
-========================================================= */
+/* =====================================================
+RENDER PDF
+===================================================== */
 
-async function renderPdfPage(
-pdfBytes,
-pageNo,
-scale=1.7
+async function renderPage(
+bytes,
+pageNumber,
+scale=2
 ){
 
-const pdfjs=await getPdfJs();
+const pdfjs=
+await pdfJS();
 
 const pdf=
 await pdfjs.getDocument({
+data:bytes.slice(0)
+}).promise;
+
+const page=
+await pdf.getPage(pageNumber);
+
+const viewport=
+page.getViewport({scale});
+
+const canvas=
+document.createElement("canvas");
+
+canvas.width=
+Math.ceil(viewport.width);
+
+canvas.height=
+Math.ceil(viewport.height);
+
+await page.render({
+canvasContext:
+canvas.getContext("2d"),
+viewport
+}).promise;
+
+return canvas;
+
+}
+
+
+/* =====================================================
+CROP ORIGINAL PDF VISUAL
+===================================================== */
+
+async function cropOriginalVisual(
+bytes,
+pageNumber,
+bbox
+){
+
+try{
+
+const canvas=
+await renderPage(
+bytes,
+pageNumber,
+2
+);
+
+const [
+ymin,
+xmin,
+ymax,
+xmax
+]=bbox.map(Number);
+
+
+/*
+Gemini bounding boxes:
+0–1000
+[ymin,xmin,ymax,xmax]
+*/
+
+let x=
+canvas.width*xmin/1000;
+
+let y=
+canvas.height*ymin/1000;
+
+let w=
+canvas.width*(xmax-xmin)/1000;
+
+let h=
+canvas.height*(ymax-ymin)/1000;
+
+
+/* safety margin */
+
+const margin=12;
+
+x=Math.max(
+0,
+x-margin
+);
+
+y=Math.max(
+0,
+y-margin
+);
+
+w=Math.min(
+canvas.width-x,
+w+margin*2
+);
+
+h=Math.min(
+canvas.height-y,
+h+margin*2
+);
+
+
+const out=
+document.createElement("canvas");
+
+out.width=
+Math.round(w);
+
+out.height=
+Math.round(h);
+
+
+const ctx=
+out.getContext("2d");
+
+ctx.drawImage(
+canvas,
+x,
+y,
+w,
+h,
+0,
+0,
+w,
+h
+);
+
+
+/* background trim */
+
+return trimImage(
+out
+);
+
+}catch(e){
+
+console.warn(
+"Crop failed",
+e
+);
+
+return null;
+
+}
+
+}
+
+
+/* =====================================================
+WHITE BACKGROUND TRIM
+===================================================== */
+
+function trimImage(canvas){
+
+try{
+
+const ctx=
+canvas.getContext("2d");
+
+const data=
+ctx.getImageData(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+const d=data.data;
+
+let minX=canvas.width;
+let minY=canvas.height;
+let maxX=0;
+let maxY=0;
+
+const threshold=248;
+
+
+for(
+let y=0;
+y<canvas.height;
+y++
+){
+
+for(
+let x=0;
+x<canvas.width;
+x++
+){
+
+const i=
+(y*canvas.width+x)*4;
+
+const r=d[i];
+const g=d[i+1];
+const b=d[i+2];
+const a=d[i+3];
+
+const nonWhite=
+a>20 &&
+(
+r<threshold ||
+g<threshold ||
+b<threshold
+);
+
+if(nonWhite){
+
+if(x<minX)minX=x;
+if(y<minY)minY=y;
+if(x>maxX)maxX=x;
+if(y>maxY)maxY=y;
+
+}
+
+}
+
+}
+
+
+/*
+If almost completely blank,
+keep original.
+*/
+
+if(
+minX>=maxX ||
+minY>=maxY
+){
+
+return canvas.toDataURL(
+"image/png"
+);
+
+}
+
+
+const pad=10;
+
+minX=Math.max(
+0,
+minX-pad
+);
+
+minY=Math.max(
+0,
+minY-pad
+);
+
+maxX=Math.min(
+canvas.width-1,
+maxX+pad
+);
+
+maxY=Math.min(
+canvas.height-1,
+maxY+pad
+);
+
+
+const out=
+document.createElement("canvas");
+
+out.width=
+maxX-minX+1;
+
+out.height=
+maxY-minY+1;
+
+
+out.getContext("2d")
+.drawImage(
+canvas,
+minX,
+minY,
+out.width,
+out.height,
+0,
+0,
+out.width,
+out.height
+);
+
+
+return out.toDataURL(
+"image/png"
+);
+
+}catch{
+
+return canvas.toDataURL(
+"image/png"
+);
+
+}
+
+}
+
+
+/* =====================================================
+GEMINI API
+===================================================== */
+
+async function gemini(parts){
+
+const url=
+`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
+
+
+const response=
+await fetch(
+url,
+{
+method:"POST",
+headers:{
+"Content-Type":
+"application/json"
+},
+
+body:
+JSON.stringify({
+
+contents:[
+{
+role:"user",
+parts:parts
+}
+],
+
+generationConfig:{
+temperature:0,
+responseMimeType:
+"application/json"
+}
+
+})
+}
+);
+
+
+if(!response.ok){
+
+const text=
+await response.text();
+
+throw new Error(
+"Gemini API error:\n"+
+text.slice(0,1000)
+);
+
+}
+
+
+const data=
+await response.json();
+
+
+const text=
+data.candidates?.[0]
+?.content?.parts
+?.map(p=>p.text||"")
+.join("")
+.trim();
+
+
+if(!text)
+throw new Error(
+"Gemini returned an empty response."
+);
+
+
+return text;
+
+}
+
+
+/* =====================================================
+TEST GEMINI CONNECTION
+===================================================== */
+
+$("testGemini").onclick=
+async function(){
+
+const key=
+$("apiKey")
+.value
+.trim();
+
+
+if(!key){
+
+$("connectionStatus").textContent=
+"❌ Enter API key first.";
+
+return;
+
+}
+
+
+GEMINI_API_KEY=key;
+
+$("testGemini").disabled=true;
+
+$("connectionStatus")
+.textContent=
+"Connecting to Gemini...";
+
+
+try{
+
+const text=
+await gemini([
+{
+text:
+`Return exactly this JSON:
+{"connected":true}`
+}
+]);
+
+
+const parsed=
+JSON.parse(text);
+
+
+if(parsed.connected){
+
+$("connectionStatus")
+.innerHTML=
+'<span class="text-green-600">✓ Gemini Connected</span>';
+
+}else{
+
+throw new Error(
+"Unexpected Gemini response."
+);
+
+}
+
+}catch(e){
+
+$("connectionStatus")
+.innerHTML=
+'<span class="text-red-600">❌ '+escapeHTML(e.message)+'</span>';
+
+}finally{
+
+$("testGemini").disabled=false;
+
+}
+
+};
+
+
+/* =====================================================
+GENERATE CBT
+===================================================== */
+
+$("generateBtn").onclick=
+generateCBT;
+
+
+async function generateCBT(){
+
+GEMINI_API_KEY=
+$("apiKey")
+.value
+.trim();
+
+
+$("generateBtn").disabled=true;
+
+$("errorBox")
+.classList
+.add("hidden");
+
+try{
+
+const questionFile=
+$("questionPdf").files[0];
+
+const answerFile=
+$("answerPdf").files[0];
+
+
+progress(
+"Reading question PDF...",
+5
+);
+
+
+const questionBase64=
+await fileBase64(
+questionFile
+);
+
+
+progress(
+"Reading answer key PDF...",
+10
+);
+
+
+const answerBase64=
+await fileBase64(
+answerFile
+);
+
+
+const questionBytes=
+await questionFile.arrayBuffer();
+
+
+progress(
+"Sending PDFs to Gemini...",
+20
+);
+
+
+/* =====================================================
+EXTRACTION PROMPT
+===================================================== */
+
+const prompt=`
+
+You are an expert JEE PDF-to-CBT extraction engine.
+
+Two files are supplied:
+
+1. QUESTIONS PDF
+2. OFFICIAL ANSWER KEY PDF
+
+The Questions PDF is the ONLY source for question content.
+
+The Answer Key PDF is the ONLY source for official answers.
+
+DO NOT GENERATE QUESTIONS.
+
+DO NOT PARAPHRASE QUESTIONS.
+
+DO NOT MODIFY NUMBERS.
+
+DO NOT MODIFY OPTIONS.
+
+DO NOT INVENT MISSING CONTENT.
+
+Return ONLY valid JSON.
+
+Schema:
+
+{
+ "questions":[
+  {
+   "id":1,
+   "subject":"Physics",
+   "type":"MCQ",
+   "text":"EXACT question text",
+   "options":["...","...","...","..."],
+   "officialAnswer":"...",
+   "topic":"",
+   "page":1,
+   "diagramBBoxes":[
+     [ymin,xmin,ymax,xmax]
+   ]
+  }
+ ]
+}
+
+QUESTION TYPES:
+
+MCQ
+MULTIPLE
+NUMERICAL
+
+RULES:
+
+1. Extract EVERY question.
+
+2. Preserve exact wording.
+
+3. Preserve all mathematical expressions.
+
+4. Preserve numerical values and units.
+
+5. Preserve every option.
+
+6. Determine subject correctly.
+
+7. Determine question type from the actual paper.
+
+8. Map official answers strictly by question number.
+
+9. NEVER guess an answer.
+
+10. If answer mapping is genuinely impossible,
+use "UNRESOLVED".
+
+11. For every diagram, graph, circuit,
+geometry figure, chemical structure,
+table or visual belonging to a question,
+return:
+
+page = PDF page number
+
+diagramBBoxes = [
+[ymin,xmin,ymax,xmax]
+]
+
+Coordinates are 0 to 1000.
+
+12. The bounding box must cover the ORIGINAL visual.
+
+13. Do NOT redraw the diagram.
+
+14. Do NOT replace the diagram with AI-generated art.
+
+15. Include every question even if a diagram is difficult.
+
+16. If no visual exists:
+diagramBBoxes = []
+
+17. If a question continues on another page,
+include all its text.
+
+18. Keep original question numbering.
+
+19. Do not create explanations.
+
+20. Return JSON only.
+
+`;
+
+
+progress(
+"Gemini extracting questions and answer key...",
+30
+);
+
+
+let raw=
+await gemini([
+
+{
+text:prompt
+},
+
+{
+text:
+"QUESTIONS PDF:"
+},
+
+{
+inlineData:{
+mimeType:
+"application/pdf",
 data:
+questionBase64
+}
+},
+
+{
+text:
+"OFFICIAL ANSWER KEY PDF:"
+},
+
+{
+inlineData:{
+mimeType:
+"application/pdf",
+data:
+answerBase64
+}
+}
+
+]);
+
+
+progress(
+"Parsing Gemini response...",
+55
+);
+
+
+raw=
+raw
+.replace(/^```json/i,"")
+.replace(/```$/,"")
+.trim();
+
+
+let data;
+
+
+try{
+
+data=
+JSON.parse(raw);
+
+}catch{
+
+progress(
+"Repairing malformed AI response...",
+60
+);
+
+
+const repaired=
+await gemini([
+
+{
+text:
+
+`Convert the following response into ONLY valid JSON using the previously specified schema.
+
+DO NOT alter question wording or answers.
+
+RESPONSE:
+
+${raw}`
+
+}
+
+]);
+
+
+data=
+JSON.parse(
+repaired
+.replace(/^```json/i,"")
+.replace(/```$/,"")
+.trim()
+);
+
+}
+
+
+if(
+!data.questions ||
+!Array.isArray(data.questions) ||
+!data.questions.length
+){
+
+throw new Error(
+"Gemini extracted zero questions."
+);
+
+}
+
+
+/* =====================================================
+BUILD LOCAL DATA
+===================================================== */
+
+QUESTIONS=
+data.questions.map(
+(q,i)=>({
+
+id:q.id??i+1,
+
+subject:
+q.subject||
+"Other",
+
+type:
+q.type||
+"MCQ",
+
+text:
+q.text||
+"",
+
+options:
+Array.isArray(q.options)
+?
+q.options
+:
+[],
+
+officialAnswer:
+q.officialAnswer||
+"UNRESOLVED",
+
+topic:
+q.topic||
+"",
+
+page:
+q.page||
+null,
+
+diagramBBoxes:
+Array.isArray(q.diagramBBoxes)
+?
+q.diagramBBoxes
+:
+[],
+
+imageData:null,
+
+answer:"",
+
+status:
+"not_visited",
+
+time:0,
+
+visits:0,
+
+changes:0
+
+})
+);
+
+
+/* =====================================================
+VALIDATION
+===================================================== */
+
+progress(
+"Validating answer-key mapping...",
+65
+);
+
+
+const unresolved=
+QUESTIONS.filter(
+q=>
+!q.officialAnswer ||
+q.officialAnswer==="UNRESOLVED"
+);
+
+
+const subjects=
+[...new Set(
+QUESTIONS.map(q=>q.subject)
+)];
+
+
+$("validation")
+.classList
+.remove("hidden");
+
+
+$("validation").innerHTML=`
+
+<div class="font-black text-lg mb-3">
+Extraction Validation
+</div>
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+
+<div>
+<b>${QUESTIONS.length}</b>
+<br>Questions
+</div>
+
+<div>
+<b>${subjects.length}</b>
+<br>Subjects
+</div>
+
+<div>
+<b>${QUESTIONS.filter(q=>q.diagramBBoxes.length).length}</b>
+<br>Diagram Questions
+</div>
+
+<div>
+<b>${unresolved.length}</b>
+<br>Unresolved Answers
+</div>
+
+</div>
+
+${
+unresolved.length
+?
+`<div class="mt-4 p-3 bg-red-50 text-red-700 rounded-lg">
+⚠ Answer mapping unresolved for:
+${unresolved.map(q=>"Q"+q.id).join(", ")}
+</div>`
+:
+`<div class="mt-4 p-3 bg-green-50 text-green-700 rounded-lg">
+✓ Answer key successfully mapped.
+</div>`
+}
+
+`;
+
+
+if(unresolved.length){
+
+throw new Error(
+"Answer-key validation failed. Unresolved questions: "+
+unresolved.map(q=>"Q"+q.id).join(", ")
+);
+
+}
+
+
+/* =====================================================
+RESTORE ORIGINAL DIAGRAMS
+===================================================== */
+
+const diagramQuestions=
+QUESTIONS.filter(
+q=>
+q.page &&
+q.diagramBBoxes.length
+);
+
+
+progress(
+`Cropping ${diagramQuestions.length} original diagrams...`,
+70
+);
+
+
+for(
+let i=0;
+i<diagramQuestions.length;
+i++
+){
+
+const q=
+diagramQuestions[i];
+
+
+try{
+
+/*
+Use first detected visual.
+If a question has multiple visuals,
+combine the largest useful one.
+*/
+
+const images=[];
+
+
+for(
+const box
+of q.diagramBBoxes.slice(0,3)
+){
+
+const img=
+await cropOriginalVisual(
+questionBytes,
+q.page,
+box
+);
+
+if(img)
+images.push(img);
+
+}
+
+
+if(images.length===1){
+
+q.imageData=
+images[0];
+
+}else if(images.length>1){
+
+/*
+Stack multiple visuals into one image.
+*/
+
+const loaded=[];
+
+for(
+const src
+of images
+){
+
+const im=
+new Image();
+
+im.src=src;
+
+await new Promise(
+resolve=>{
+im.onload=resolve;
+im.onerror=resolve;
+}
+);
+
+loaded.push(im);
+
+}
+
+
+const width=
+Math.max(
+...loaded.map(x=>x.width)
+);
+
+const height=
+loaded.reduce(
+(a,x)=>a+x.height+10,
+0
+);
+
+
+const canvas=
+document.createElement(
+"canvas"
+);
+
+canvas.width=width;
+
+canvas.height=height;
+
+const ctx=
+canvas.getContext("2d");
+
+let y=0;
+
+for(
+const im
+of loaded
+){
+
+ctx.drawImage(
+im,
+0,
+y
+);
+
+y+=im.height+10;
+
+}
+
+
+q.imageData=
+canvas.toDataURL(
+"image/png"
+);
+
+}
+
+}catch(e){
+
+console.warn(
+"Visual failed:",
+q.id,
+e
+);
+
+}
+
+
+progress(
+`Cropping original diagrams ${i+1}/${diagramQuestions.length}...`,
+70+
+Math.round(
+(i+1)/
+Math.max(1,diagramQuestions.length)
+*15
+)
+);
+
+}
+
+
+/* =====================================================
+FINALIZE
+===================================================== */
+
+SUBJECTS=
+[...new Set(
+QUESTIONS.map(q=>q.subject)
+)];
+
+
+CURRENT_SUBJECT=
+SUBJECTS[0];
+
+CURRENT_INDEX=0;
+
+
+TIME_LEFT=
+(Number(
+$("duration").value
+)||180)
+*60;
+
+
+saveState();
+
+
+progress(
+"CBT ready. Starting test...",
+100
+);
+
+
+setTimeout(
+startTest,
+400
+);
+
+
+}catch(e){
+
+console.error(e);
+
+showError(
+e.message||
+"Unknown generation error."
+);
+
+$("generateBtn")
+.disabled=false;
+
+}
+
+}
+
+
+/* =====================================================
+START TEST
+===================================================== */
+
+function startTest(){
+
+TEST_STARTED=true;
+
+$("start")
+.classList
+.add("hidden");
+
+$("test")
+.classList
+.remove("hidden");
+
+
+$("testInfo")
+.textContent=
+`${QUESTIONS.length} Questions • ${SUBJECTS.join(" • ")}`;
+
+
+renderSubjects();
+
+renderQuestion();
+
+clearInterval(TIMER);
+
+TIMER=
+setInterval(
+tick,
+1000
+);
+
+}
+
+
+/* =====================================================
+TIMER
+===================================================== */
+
+function tick(){
+
+if(
+TIME_LEFT<=0
+){
+
+clearInterval(TIMER);
+
+finishTest();
+
+return;
+
+}
+
+
+TIME_LEFT--;
+
+
+const h=
+Math.floor(
+TIME_LEFT/3600
+);
+
+const m=
+Math.floor(
+(TIME_LEFT%3600)/60
+);
+
+const s=
+TIME_LEFT%60;
+
+
+$("timer")
+.textContent=
+[h,m,s]
+.map(
+x=>
+String(x)
+.padStart(2,"0")
+)
+.join(":");
+
+
+const q=
+currentQuestion();
+
+if(q){
+
+q.time++;
+
+}
+
+
+saveState();
+
+}
+
+
+/* =====================================================
+SUBJECT
+===================================================== */
+
+function subjectQuestions(){
+
+return QUESTIONS.filter(
+q=>
+q.subject===
+CURRENT_SUBJECT
+);
+
+}
+
+
+function currentQuestion(){
+
+return subjectQuestions()
+[CURRENT_INDEX];
+
+}
+
+
+/* =====================================================
+SUBJECT TABS
+===================================================== */
+
+function renderSubjects(){
+
+$("subjects").innerHTML=
+SUBJECTS
+.map(
+s=>
+
+`
+
+<button
+data-subject="${escapeAttr(s)}"
+class="px-6 py-3 whitespace-nowrap font-bold border-b-2 ${
+s===CURRENT_SUBJECT
+?
+"border-blue-600 text-blue-700 bg-blue-50"
+:
+"border-transparent text-slate-500"
+}">
+
+${escapeHTML(s)}
+
+</button>
+
+`
+)
+.join("");
+
+
+$("subjects")
+.querySelectorAll("button")
+.forEach(
+button=>{
+
+button.onclick=()=>{
+
+CURRENT_SUBJECT=
+button.dataset.subject;
+
+CURRENT_INDEX=0;
+
+renderSubjects();
+
+renderQuestion();
+
+};
+
+}
+);
+
+}
+
+
+/* =====================================================
+RENDER QUESTION
+===================================================== */
+
+function renderQuestion(){
+
+const q=
+currentQuestion();
+
+
+if(!q)return;
+
+
+if(
+q.status===
+"not_visited"
+){
+
+q.status=
+"not_answered";
+
+}
+
+
+q.visits++;
+
+
+$("questionNumber")
+.textContent=
+"Question "+q.id;
+
+
+$("questionType")
+.textContent=
+q.type;
+
+
+let html=
+
+`
+
+<div class="max-w-5xl mx-auto">
+
+<div class="text-base md:text-lg leading-8 font-medium whitespace-pre-wrap">
+
+${renderText(q.text)}
+
+</div>
+
+`;
+
+
+if(q.imageData){
+
+html+=`
+
+<div class="my-6 flex justify-center">
+
+<img
+src="${q.imageData}"
+class="max-w-full max-h-[600px] object-contain rounded border shadow-sm">
+
+</div>
+
+`;
+
+}
+
+
+if(
+q.type==="NUMERICAL"
+){
+
+html+=`
+
+<div class="mt-8">
+
+<div class="font-bold mb-2">
+Enter Numerical Answer
+</div>
+
+<input
+id="numericalInput"
+value="${escapeAttr(q.answer)}"
+inputmode="decimal"
+class="w-full max-w-sm border-2 rounded-xl px-4 py-4 text-xl outline-none focus:border-blue-600"
+placeholder="Enter answer">
+
+</div>
+
+`;
+
+}else{
+
+html+=`
+
+<div class="mt-8 space-y-4">
+
+${
+q.options
+.map(
+(option,i)=>{
+
+const value=
+String(i+1);
+
+const selected=
+q.answer===value;
+
+
+return `
+
+<button
+data-value="${value}"
+class="opt w-full text-left p-4 border-2 rounded-xl ${
+selected
+?
+"border-blue-600 bg-blue-50"
+:
+"border-slate-200 bg-white"
+}">
+
+<span class="font-black mr-3">
+(${value})
+</span>
+
+${renderText(option)}
+
+</button>
+
+`;
+
+}
+)
+.join("")
+}
+
+</div>
+
+`;
+
+}
+
+
+html+=`
+
+<div class="mt-8 text-xs text-slate-400">
+
+Visits: ${q.visits}
+
+&nbsp; • &nbsp;
+
+Time: ${formatTime(q.time)}
+
+&nbsp; • &nbsp;
+
+Answer changes: ${q.changes}
+
+</div>
+
+</div>
+
+`;
+
+
+$("questionArea")
+.innerHTML=
+html;
+
+
+$("questionArea")
+.querySelectorAll(".opt")
+.forEach(
+button=>{
+
+button.onclick=
+()=>{
+
+const q=
+currentQuestion();
+
+const value=
+button.dataset.value;
+
+if(
+q.answer &&
+q.answer!==value
+){
+
+q.changes++;
+
+}
+
+q.answer=value;
+
+q.status=
+q.status==="marked" ||
+q.status==="both"
+?
+"both"
+:
+"answered";
+
+saveState();
+
+renderQuestion();
+
+};
+
+}
+);
+
+
+const numerical=
+$("numericalInput");
+
+
+if(numerical){
+
+numerical.addEventListener(
+"input",
+()=>{
+
+q.answer=
+numerical.value;
+
+q.status=
+q.answer
+?
+"answered"
+:
+"not_answered";
+
+saveState();
+
+renderPalette();
+
+}
+);
+
+}
+
+
+if(
+window.MathJax
+){
+
+MathJax.typesetPromise(
+[$("questionArea")]
+).catch(
+()=>{}
+);
+
+}
+
+
+renderPalette();
+
+}
+
+
+/* =====================================================
+TEXT
+===================================================== */
+
+function renderText(text){
+
+return escapeHTML(
+String(text||"")
+)
+.replace(
+/\\\((.*?)\\\)/gs,
+"\\\\($1\\\\)"
+)
+.replace(
+/\n/g,
+"<br>"
+);
+
+}
+
+
+/* =====================================================
+PALETTE
+===================================================== */
+
+function renderPalette(){
+
+let answered=0;
+
+let notAnswered=0;
+
+let notVisited=0;
+
+let review=0;
+
+
+QUESTIONS.forEach(
+q=>{
+
+if(
+q.status==="answered"
+)
+answered++;
+
+if(
+q.status==="not_answered"
+)
+notAnswered++;
+
+if(
+q.status==="not_visited"
+)
+notVisited++;
+
+if(
+q.status==="marked" ||
+q.status==="both"
+)
+review++;
+
+}
+);
+
+
+$("answeredCount").textContent=
+answered;
+
+$("notAnsweredCount").textContent=
+notAnswered;
+
+$("notVisitedCount").textContent=
+notVisited;
+
+$("reviewCount").textContent=
+review;
+
+
+$("paletteGrid").innerHTML=
+subjectQuestions()
+.map(
+(q,i)=>
+
+`
+
+<button
+data-index="${i}"
+class="palette-btn ${paletteClass(q.status)}">
+
+${q.id}
+
+</button>
+
+`
+)
+.join("");
+
+
+$("paletteGrid")
+.querySelectorAll("button")
+.forEach(
+b=>{
+
+b.onclick=()=>{
+
+CURRENT_INDEX=
+Number(
+b.dataset.index
+);
+
+closePalette();
+
+renderQuestion();
+
+};
+
+}
+);
+
+}
+
+
+function paletteClass(status){
+
+if(status==="answered")
+return"ans";
+
+if(status==="not_answered")
+return"na";
+
+if(status==="marked")
+return"rev";
+
+if(status==="both")
+return"both";
+
+return"nv";
+
+}
+
+
+/* =====================================================
+BUTTONS
+===================================================== */
+
+$("saveNext").onclick=
+()=>{
+
+CURRENT_INDEX=
+Math.min(
+CURRENT_INDEX+1,
+subjectQuestions().length-1
+);
+
+renderQuestion();
+
+};
+
+
+$("clearAnswer").onclick=
+()=>{
+
+const q=
+currentQuestion();
+
+q.answer="";
+
+q.status=
+"not_answered";
+
+saveState();
+
+renderQuestion();
+
+};
+
+
+$("markNext").onclick=
+()=>{
+
+const q=
+currentQuestion();
+
+
+if(
+q.status==="answered"
+)
+q.status="both";
+
+else if(
+q.status==="both"
+)
+q.status="answered";
+
+else
+q.status="marked";
+
+
+saveState();
+
+
+CURRENT_INDEX=
+Math.min(
+CURRENT_INDEX+1,
+subjectQuestions().length-1
+);
+
+
+renderQuestion();
+
+};
+
+
+/* =====================================================
+PALETTE MOBILE
+===================================================== */
+
+$("mobilePalette").onclick=
+()=>{
+
+$("palette")
+.classList
+.remove("translate-x-full");
+
+};
+
+
+$("closePalette").onclick=
+closePalette;
+
+
+function closePalette(){
+
+$("palette")
+.classList
+.add("translate-x-full");
+
+}
+
+
+/* =====================================================
+SUBMIT
+===================================================== */
+
+$("submitTest").onclick=
+()=>{
+
+const attempted=
+QUESTIONS.filter(
+q=>q.answer
+).length;
+
+
+const unanswered=
+QUESTIONS.length-
+attempted;
+
+
+if(
+confirm(
+`Submit test?
+
+Attempted: ${attempted}
+
+Unattempted: ${unanswered}
+
+Continue?`
+)
+){
+
+finishTest();
+
+}
+
+};
+
+
+/* =====================================================
+ANSWER COMPARISON
+===================================================== */
+
+function cleanAnswer(x){
+
+return String(
+x??""
+)
+.toLowerCase()
+.trim()
+.replace(/\s+/g,"")
+.replace(/[()\[\]]/g,"");
+
+}
+
+
+function isCorrect(q){
+
+const user=
+cleanAnswer(
+q.answer
+);
+
+const correct=
+cleanAnswer(
+q.officialAnswer
+);
+
+
+if(!user)
+return false;
+
+
+if(
+q.type==="MULTIPLE"
+){
+
+const a=
+user
+.split(/[,;]+/)
+.filter(Boolean)
+.sort()
+.join(",");
+
+const b=
+correct
+.split(/[,;]+/)
+.filter(Boolean)
+.sort()
+.join(",");
+
+return a===b;
+
+}
+
+
+return user===correct;
+
+}
+
+
+/* =====================================================
+SCORE
+===================================================== */
+
+function calculateResult(){
+
+let score=0;
+
+let correct=0;
+
+let wrong=0;
+
+let unattempted=0;
+
+
+QUESTIONS.forEach(
+q=>{
+
+if(!q.answer){
+
+unattempted++;
+
+return;
+
+}
+
+
+if(
+isCorrect(q)
+){
+
+correct++;
+
+score+=
+Number(
+q.marksCorrect??
+4
+);
+
+}else{
+
+wrong++;
+
+score+=
+Number(
+q.marksWrong??
+(
+q.type==="NUMERICAL"
+?
+0
+:
+-1
+)
+);
+
+}
+
+}
+);
+
+
+return{
+
+score,
+
+correct,
+
+wrong,
+
+unattempted,
+
+attempted:
+correct+wrong
+
+};
+
+}
+
+
+/* =====================================================
+FINISH
+===================================================== */
+
+function finishTest(){
+
+clearInterval(TIMER);
+
+const result=
+calculateResult();
+
+
+$("test")
+.classList
+.add("hidden");
+
+$("result")
+.classList
+.remove("hidden");
+
+
+renderResult(
+result
+);
+
+
+runAIAnalysis(
+result
+);
+
+}
+
+
+/* =====================================================
+RESULT
+===================================================== */
+
+function renderResult(r){
+
+const accuracy=
+r.attempted
+?
+Math.round(
+r.correct/r.attempted*100
+)
+:
+0;
+
+
+$("resultCards")
+.innerHTML=
+
+[
+
+["Score",r.score],
+
+["Accuracy",accuracy+"%"],
+
+["Attempted",r.attempted],
+
+["Correct",r.correct],
+
+["Wrong",r.wrong]
+
+]
+
+.map(
+x=>
+
+`
+
+<div
+class="bg-white border rounded-xl p-4 text-center">
+
+<div class="text-xs font-bold text-slate-400 uppercase">
+${x[0]}
+</div>
+
+<div class="text-3xl font-black mt-2">
+${x[1]}
+</div>
+
+</div>
+
+`
+)
+.join("");
+
+
+/* SUBJECT */
+
+$("subjectAnalysis")
+.innerHTML=
+SUBJECTS
+.map(
+subject=>{
+
+const list=
+QUESTIONS.filter(
+q=>q.subject===subject
+);
+
+
+let score=0;
+
+let correct=0;
+
+let wrong=0;
+
+let attempted=0;
+
+let time=0;
+
+
+list.forEach(
+q=>{
+
+time+=q.time;
+
+if(q.answer){
+
+attempted++;
+
+if(isCorrect(q)){
+
+correct++;
+
+score+=
+Number(
+q.marksCorrect??
+4
+);
+
+}else{
+
+wrong++;
+
+score+=
+Number(
+q.marksWrong??
+(
+q.type==="NUMERICAL"
+?
+0
+:
+-1
+)
+);
+
+}
+
+}
+
+}
+);
+
+
+const accuracy=
+attempted
+?
+Math.round(
+correct/attempted*100
+)
+:
+0;
+
+
+return `
+
+<tr class="border-t">
+
+<td class="p-3 font-bold">
+${escapeHTML(subject)}
+</td>
+
+<td class="text-center">
+${score}
+</td>
+
+<td class="text-center text-green-600">
+${correct}
+</td>
+
+<td class="text-center text-red-600">
+${wrong}
+</td>
+
+<td class="text-center">
+${attempted}
+</td>
+
+<td class="text-center">
+${accuracy}%
+</td>
+
+<td class="text-center">
+${formatTime(time)}
+</td>
+
+</tr>
+
+`;
+
+}
+)
+.join("");
+
+
+/* QUESTION REVIEW */
+
+$("questionReview")
+.innerHTML=
+QUESTIONS
+.map(
+q=>{
+
+const attempted=
+!!q.answer;
+
+const correct=
+attempted &&
+isCorrect(q);
+
+
+let marks=0;
+
+if(attempted){
+
+marks=
+correct
+?
+(q.marksCorrect??4)
+:
+(q.marksWrong??
+(
+q.type==="NUMERICAL"
+?
+0
+:
+-1
+));
+
+}
+
+
+return `
+
+<tr class="border-t">
+
+<td class="p-3 font-bold">
+${q.id}
+</td>
+
+<td class="text-center">
+${escapeHTML(q.subject)}
+</td>
+
+<td class="text-center">
+${escapeHTML(q.answer||"—")}
+</td>
+
+<td class="text-center">
+${escapeHTML(q.officialAnswer)}
+</td>
+
+<td class="text-center font-bold">
+
+${
+!attempted
+?
+"Unattempted"
+:
+correct
+?
+"Correct"
+:
+"Incorrect"
+}
+
+</td>
+
+<td class="text-center">
+${formatTime(q.time)}
+</td>
+
+<td class="text-center">
+${q.visits}
+</td>
+
+<td class="text-center">
+${q.changes}
+</td>
+
+<td class="text-center font-bold">
+${marks}
+</td>
+
+</tr>
+
+`;
+
+}
+)
+.join("");
+
+}
+
+
+/* =====================================================
+AI ANALYSIS
+===================================================== */
+
+async function runAIAnalysis(result){
+
+if(!GEMINI_API_KEY){
+
+$("aiAnalysis").innerHTML=
+"Gemini analysis unavailable.";
+
+return;
+
+}
+
+
+const data=
+QUESTIONS.map(
+q=>({
+
+id:q.id,
+
+subject:q.subject,
+
+topic:q.topic,
+
+type:q.type,
+
+userAnswer:q.answer||null,
+
+officialAnswer:q.officialAnswer,
+
+correct:
+q.answer?
+isCorrect(q):
+false,
+
+timeSeconds:q.time,
+
+visits:q.visits,
+
+answerChanges:q.changes
+
+})
+);
+
+
+$("aiAnalysis").innerHTML=
+"⏳ Gemini is analysing your attempt...";
+
+
+try{
+
+const response=
+await gemini([
+
+{
+
+text:
+
+`
+
+You are a JEE performance analyst.
+
+Analyse ONLY the supplied test-attempt JSON.
+
+Do not invent chapters or weaknesses.
+
+Give concise but useful HTML.
+
+Include:
+
+<h3>Overall Performance</h3>
+
+<h3>Strong Areas</h3>
+
+<h3>Weak Areas</h3>
+
+<h3>Time Management</h3>
+
+<h3>Subject-wise Strategy</h3>
+
+<h3>Question Selection</h3>
+
+<h3>Next Test Strategy</h3>
+
+Important:
+
+- Identify actual patterns only.
+- Mention specific questions when useful.
+- Detect unusually slow questions.
+- Detect fast incorrect attempts.
+- Detect excessive answer changes.
+- Do not claim a chapter is weak unless the supplied topic data supports it.
+- Do not generate new questions.
+
+TEST RESULT:
+
+${JSON.stringify(result)}
+
+ATTEMPT DATA:
+
+${JSON.stringify(data)}
+
+Return HTML only.
+
+`
+
+}
+
+]);
+
+
+$("aiAnalysis")
+.innerHTML=
+response;
+
+}catch(e){
+
+$("aiAnalysis").innerHTML=
+
+`
+
+<div class="text-red-600 font-bold">
+Gemini analysis failed.
+</div>
+
+<div class="text-sm mt-2">
+${escapeHTML(e.message)}
+</div>
+
+`;
+
+}
+
+}
+
+
+/* =====================================================
+LOCAL STORAGE
+===================================================== */
+
+function saveState(){
+
+try{
+
+localStorage.setItem(
+"JEE_AI_CBT_STATE",
+JSON.stringify({
+
+QUESTIONS,
+
+SUBJECTS,
+
+CURRENT_SUBJECT,
+
+CURRENT_INDEX,
+
+TIME_LEFT
+
+})
+);
+
+}catch(e){
+
+console.warn(
+"Local save failed",
+e
+);
+
+}
+
+}
+
+
+/* =====================================================
+RESTORE
+===================================================== */
+
+window.addEventListener(
+"beforeunload",
+()=>{
+
+if(TEST_STARTED)
+saveState();
+
+}
+);
+
+
+/* =====================================================
+ESCAPE
+===================================================== */
+
+function escapeHTML(value){
+
+return String(
+value??""
+)
+.replace(
+/[&<>"']/g,
+char=>
+({
+
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#39;"
+
+}[char])
+);
+
+}
+
+
+function escapeAttr(value){
+
+return escapeHTML(value);
+
+}
+
+
+function formatTime(seconds){
+
+seconds=
+Math.max(
+0,
+Math.round(
+Number(seconds)||0
+)
+);
+
+const minutes=
+Math.floor(
+seconds/60
+);
+
+const sec=
+seconds%60;
+
+return `${minutes}m ${sec}s`;
+
+}
+
+</script>
+
+</body>
+</html>
