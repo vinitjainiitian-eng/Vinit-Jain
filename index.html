@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>JEE Main CBT Exam</title>
+    <title>JEE Main CBT Engine - Fast AI Parser</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         window.MathJax = {
@@ -26,25 +26,35 @@
 
     <div id="app" class="w-full h-screen flex flex-col relative">
         
-        <!-- START SCREEN -->
+        <!-- START SCREEN & PDF UPLOAD -->
         <div id="screen-start" class="absolute inset-0 bg-gray-100 flex flex-col items-center justify-center p-4 z-50 overflow-y-auto">
             <div class="bg-white p-6 md:p-8 rounded-xl shadow-2xl w-full max-w-2xl border-t-4 border-blue-600">
-                <div class="flex flex-col items-center mb-8 text-center">
-                    <div class="text-3xl font-extrabold text-blue-900 tracking-tight">JEE MAIN 2026</div>
+                <div class="flex flex-col items-center mb-6 text-center">
+                    <div class="text-3xl font-extrabold text-blue-900 tracking-tight">JEE MAIN CBT PORTAL</div>
                     <div class="text-sm font-bold text-green-600 mt-2 bg-green-50 px-4 py-1 rounded-full uppercase border border-green-200">
-                        CBT ENGINE
+                        Instant PDF to CBT Converter
                     </div>
                 </div>
                 
                 <h2 class="text-lg font-bold mb-3 border-b pb-2 text-gray-700">Instructions</h2>
-                <div class="space-y-3 text-sm text-gray-600 mb-8 max-h-48 overflow-y-auto pr-2 font-medium">
+                <div class="space-y-2 text-sm text-gray-600 mb-6 max-h-36 overflow-y-auto pr-2 font-medium">
                     <p>1. Total duration of the examination is <strong>180 minutes</strong>.</p>
                     <p>2. Marking Scheme: MCQs (+4, -1), NATs (+4, 0).</p>
-                    <p>3. Do not refresh the page during the test, or your progress will be lost.</p>
-                    <p>4. You can freely navigate between Physics, Chemistry, and Mathematics.</p>
+                    <p>3. Upload any coaching or PYQ PDF to instantly generate your test.</p>
                 </div>
-                <button onclick="startTest()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 px-8 rounded-lg shadow-lg text-lg uppercase tracking-wide">
-                    Start Assessment
+
+                <!-- PDF UPLOAD SECTION -->
+                <div class="mb-6 p-4 border-2 border-dashed border-blue-300 rounded-xl bg-blue-50/50 text-center">
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Upload Question Paper PDF:</label>
+                    <input type="file" id="pdf-file" accept="application/pdf" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer">
+                </div>
+
+                <div id="loading-text" class="hidden text-center text-blue-600 font-bold mb-4 animate-pulse">
+                    ⚡ AI is parsing your PDF and extracting questions... Please wait!
+                </div>
+
+                <button onclick="uploadAndStart()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 px-8 rounded-lg shadow-lg text-lg uppercase tracking-wide">
+                    Upload & Start Assessment
                 </button>
             </div>
         </div>
@@ -53,7 +63,7 @@
         <div id="screen-test" class="absolute inset-0 flex flex-col hidden z-40">
             <!-- Header -->
             <header class="bg-white shadow-sm px-3 md:px-6 py-2 md:py-3 flex justify-between items-center border-b shrink-0 z-20">
-                <div class="font-extrabold text-xl text-blue-900 tracking-tight">JEE MOCK</div>
+                <div class="font-extrabold text-xl text-blue-900 tracking-tight">JEE MOCK TEST</div>
                 <div class="flex items-center space-x-4">
                     <div class="flex flex-col items-end">
                         <span class="text-[10px] md:text-xs text-gray-500 font-bold uppercase">Time Left</span>
@@ -83,17 +93,19 @@
                     </div>
                 </div>
 
-                <!-- Mobile Footer -->
-                <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t p-2 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-30 flex justify-between gap-2">
-                    <button onclick="handleMark()" class="flex-1 py-3 bg-purple-50 text-purple-700 border border-purple-200 rounded-lg font-bold text-[11px] uppercase leading-tight">Mark &<br/>Next</button>
-                    <button onclick="handleClear()" class="flex-1 py-3 bg-gray-50 text-gray-700 border border-gray-200 rounded-lg font-bold text-[11px] uppercase">Clear</button>
-                    <button onclick="handleSave()" class="flex-1 py-3 bg-blue-600 text-white rounded-lg font-bold text-[11px] uppercase shadow-md">Save &<br/>Next</button>
+                <!-- Action Footer -->
+                <div class="absolute bottom-0 left-0 right-0 md:relative bg-white border-t p-3 shadow-md z-30 flex flex-wrap justify-between items-center gap-2">
+                    <div class="flex gap-2">
+                        <button onclick="handleMark()" class="px-3 py-2 bg-purple-50 text-purple-700 border border-purple-200 rounded-lg font-bold text-xs uppercase">Mark & Next</button>
+                        <button onclick="handleClear()" class="px-3 py-2 bg-gray-100 text-gray-700 border border-gray-200 rounded-lg font-bold text-xs uppercase">Clear</button>
+                    </div>
+                    <button onclick="handleSave()" class="px-6 py-2 bg-blue-600 text-white rounded-lg font-bold text-xs uppercase shadow">Save & Next</button>
                 </div>
 
                 <!-- Palette Drawer -->
                 <div id="palette-drawer" class="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl z-40 drawer-closed transition-transform duration-300 flex flex-col md:relative md:transform-none md:shadow-none md:border-l md:z-10">
                     <div class="p-4 border-b bg-gray-50 flex justify-between items-center shrink-0">
-                        <div class="font-extrabold text-gray-700 text-sm tracking-wide">PALETTE</div>
+                        <div class="font-extrabold text-gray-700 text-sm tracking-wide">QUESTION PALETTE</div>
                         <button onclick="togglePalette()" class="md:hidden text-gray-500 bg-white p-1 rounded border shadow-sm"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
                     </div>
                     <div class="p-3 border-b bg-white grid grid-cols-2 gap-y-2 gap-x-1 text-[10px] font-bold text-gray-600 uppercase shrink-0">
@@ -105,7 +117,7 @@
                     <div class="flex-1 overflow-y-auto p-4 bg-gray-50">
                         <div id="palette-grid" class="grid grid-cols-5 md:grid-cols-4 gap-2"></div>
                     </div>
-                    <div class="p-4 border-t bg-white shrink-0 pb-20 md:pb-4">
+                    <div class="p-4 border-t bg-white shrink-0 pb-16 md:pb-4">
                         <button onclick="showSubmitConfirm()" class="w-full py-3.5 bg-green-500 text-white font-extrabold rounded-lg shadow-lg uppercase">Submit Test</button>
                     </div>
                 </div>
@@ -117,23 +129,21 @@
 
         <!-- RESULT SCREEN -->
         <div id="screen-result" class="absolute inset-0 bg-gray-50 flex flex-col hidden z-50 overflow-y-auto">
-            <div class="bg-white border-b px-4 py-4 md:px-8 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4 sticky top-0 z-20">
-                <h1 class="text-2xl font-bold text-gray-800">Test Analysis</h1>
-                <button onclick="location.reload()" class="w-full md:w-auto bg-gray-800 text-white px-6 py-2.5 rounded font-bold">Restart</button>
+            <div class="bg-white border-b px-4 py-4 md:px-8 shadow-sm flex justify-between items-center sticky top-0 z-20">
+                <h1 class="text-2xl font-bold text-gray-800">Test Analysis Report</h1>
+                <button onclick="location.reload()" class="bg-gray-800 text-white px-6 py-2.5 rounded font-bold">Retest</button>
             </div>
             
             <div class="max-w-5xl mx-auto w-full p-4 md:p-8 space-y-6">
-                <!-- Score Cards -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div class="bg-white rounded-xl shadow-sm p-5 text-center border"><div class="text-xs font-bold text-gray-500 uppercase">Score</div><div id="res-score" class="text-4xl font-black text-blue-600 mt-2">0</div></div>
                     <div class="bg-white rounded-xl shadow-sm p-5 text-center border"><div class="text-xs font-bold text-gray-500 uppercase">Accuracy</div><div id="res-acc" class="text-4xl font-black text-green-500 mt-2">0%</div></div>
                     <div class="bg-white rounded-xl shadow-sm p-5 text-center border"><div class="text-xs font-bold text-gray-500 uppercase">Attempted</div><div id="res-att" class="text-4xl font-black text-purple-600 mt-2">0</div></div>
-                    <div class="bg-white rounded-xl shadow-sm p-5 text-center border"><div class="text-xs font-bold text-gray-500 uppercase">Time Used</div><div id="res-time" class="text-2xl md:text-3xl font-black text-orange-500 mt-3">0m 0s</div></div>
+                    <div class="bg-white rounded-xl shadow-sm p-5 text-center border"><div class="text-xs font-bold text-gray-500 uppercase">Time Used</div><div id="res-time" class="text-2xl font-black text-orange-500 mt-3">0m 0s</div></div>
                 </div>
 
-                <!-- Detailed Table -->
                 <div class="bg-white rounded-xl shadow-sm overflow-hidden border">
-                    <div class="bg-gray-50 px-6 py-4 border-b"><h2 class="text-lg font-bold text-gray-800">Subject Analysis</h2></div>
+                    <div class="bg-gray-50 px-6 py-4 border-b"><h2 class="text-lg font-bold text-gray-800">Subject Breakdown</h2></div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
                             <thead><tr class="bg-white text-gray-500 text-xs uppercase"><th class="p-4 border-b">Subject</th><th class="p-4 border-b">Score</th><th class="p-4 border-b">Right / Wrong</th><th class="p-4 border-b">Time</th></tr></thead>
@@ -144,14 +154,14 @@
             </div>
         </div>
 
-        <!-- MODAL -->
+        <!-- SUBMIT MODAL -->
         <div id="submit-modal" class="fixed inset-0 bg-black bg-opacity-60 z-[60] flex items-center justify-center p-4 hidden">
-            <div class="bg-white rounded-2xl p-6 w-full max-w-sm">
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Submit Assessment?</h3>
-                <p class="text-sm text-gray-500 mb-6">Are you sure you want to submit?</p>
+            <div class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-xl">
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Want to submit test?</h3>
+                <p class="text-sm text-gray-500 mb-6">Check your summary before final submission.</p>
                 <div class="flex space-x-3">
                     <button onclick="document.getElementById('submit-modal').classList.add('hidden')" class="flex-1 py-3 bg-gray-100 text-gray-800 font-bold rounded-xl">Cancel</button>
-                    <button onclick="finalizeSubmit()" class="flex-1 py-3 bg-blue-600 text-white font-bold rounded-xl shadow-lg">Yes, Submit</button>
+                    <button onclick="finalizeSubmit()" class="flex-1 py-3 bg-blue-600 text-white font-bold rounded-xl shadow-lg">Submit</button>
                 </div>
             </div>
         </div>
@@ -160,32 +170,59 @@
     <script>
         const API_URL = 'https://vinit-jain-2.onrender.com';
 
-        const QUESTION_DATA = [
-            { id: 1, subject: 'Physics', type: 'MCQ', text: 'Given that $y=A~sin[(\\frac{2\\pi}{\\lambda}(ct-x))]$\n\nwhere y and x are measured in metres. Which of the following statements is true?', options: ['The unit of $(ct-x)$ is same as that of $\\frac{2\\pi}{\\lambda}$', 'The unit of c is same as that of $\\frac{2\\pi}{\\lambda}$', 'The unit of A is same as that of x but not of A', 'The unit of A is same as that of y'], answer: '4' },
-            { id: 2, subject: 'Chemistry', type: 'MCQ', text: 'Percent by mass of solute (molar mass $=25~g/mol$) in its aqueous solution is 30. The mole fraction and molality of the solute in solution are', options: ['Mole fraction $=0.18$; Molality $=17.9$', 'Mole fraction $=0.23$; Molality $=17.1$', 'Mole fraction $=0.30$; Molality $=20.0$', 'Mole fraction $=0.15$; Molality $=15.0$'], answer: '2' },
-            { id: 3, subject: 'Mathematics', type: 'NAT', text: 'Let the sets $A=\\{2,4,6,8,...\\}$ and $B=\\{3,6,9,12,...\\}$ such that $n(A)=200$ and $n(B)=250$. If $n(A\\cup B)=k$ then k is equal to', answer: '384' }
-        ];
-
-        let subjects = [...new Set(QUESTION_DATA.map(q => q.subject))];
-        let currSubject = subjects[0];
+        let QUESTION_DATA = [];
+        let subjects = [];
+        let currSubject = '';
         let currIndex = 0; 
         let responses = {}; 
         let tempAns = '';
         let timerInterval;
         let timeLeft = 10800;
 
-        QUESTION_DATA.forEach(q => { responses[q.id] = { status: 'not_visited', ans: '', time: 0 }; });
+        async function uploadAndStart() {
+            const fileInput = document.getElementById('pdf-file');
+            if(fileInput.files.length === 0) {
+                alert('Please upload a PDF file first!');
+                return;
+            }
 
-        function startTest() {
-            document.getElementById('screen-start').classList.add('hidden');
-            document.getElementById('screen-test').classList.remove('hidden');
-            
-            document.getElementById('subject-tabs').innerHTML = subjects.map(s => 
-                `<button id="tab-${s}" onclick="changeSubject('${s}')" class="flex-1 min-w-[120px] py-3 font-bold text-sm border-b-2 ${s === currSubject ? 'border-blue-600 text-blue-700 bg-blue-50/50' : 'border-transparent text-gray-500'}">${s}</button>`
-            ).join('');
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
 
-            timerInterval = setInterval(tick, 1000);
-            renderQuestion();
+            document.getElementById('loading-text').classList.remove('hidden');
+
+            try {
+                const response = await fetch(`${API_URL}/upload-pdf/`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                if(data.questions && data.questions.length > 0) {
+                    QUESTION_DATA = data.questions;
+                    subjects = [...new Set(QUESTION_DATA.map(q => q.subject))];
+                    currSubject = subjects[0];
+                    
+                    QUESTION_DATA.forEach(q => { responses[q.id] = { status: 'not_visited', ans: '', time: 0 }; });
+
+                    document.getElementById('screen-start').classList.add('hidden');
+                    document.getElementById('screen-test').classList.remove('hidden');
+                    
+                    document.getElementById('subject-tabs').innerHTML = subjects.map(s => 
+                        `<button id="tab-${s}" onclick="changeSubject('${s}')" class="flex-1 min-w-[120px] py-3 font-bold text-sm border-b-2 ${s === currSubject ? 'border-blue-600 text-blue-700 bg-blue-50/50' : 'border-transparent text-gray-500'}">${s}</button>`
+                    ).join('');
+
+                    timerInterval = setInterval(tick, 1000);
+                    renderQuestion();
+                } else {
+                    alert('Could not parse questions from PDF. Please check backend.');
+                    document.getElementById('loading-text').classList.add('hidden');
+                }
+            } catch(err) {
+                console.error(err);
+                alert('Connection error with Render backend. Please ensure server is running.');
+                document.getElementById('loading-text').classList.add('hidden');
+            }
         }
 
         function tick() {
@@ -249,8 +286,8 @@
             } else {
                 optsHtml = `
                 <div class="mt-4 p-4 bg-gray-50 border rounded-xl">
-                    <label class="block text-sm font-bold text-gray-700 mb-3">Numerical Value:</label>
-                    <input type="text" value="${tempAns}" oninput="tempAns=this.value" placeholder="E.g., 25" class="w-full max-w-xs px-4 py-3 border-2 rounded-lg text-xl font-mono focus:border-blue-500 outline-none">
+                    <label class="block text-sm font-bold text-gray-700 mb-3">Numerical Answer:</label>
+                    <input type="text" value="${tempAns}" oninput="tempAns=this.value" placeholder="Enter value" class="w-full max-w-xs px-4 py-3 border-2 rounded-lg text-xl font-mono focus:border-blue-500 outline-none">
                 </div>`;
             }
             document.getElementById('q-options').innerHTML = optsHtml;
@@ -279,20 +316,4 @@
             document.getElementById('cnt-mark').innerText = counts.mark;
 
             document.getElementById('palette-grid').innerHTML = qList.map((q, i) => {
-                const stat = responses[q.id].status;
-                let bg = 'bg-gray-200 text-gray-700';
-                if(stat==='answered') bg='bg-green-500 text-white';
-                if(stat==='not_answered') bg='bg-red-500 text-white';
-                if(stat==='marked') bg='bg-purple-600 text-white';
-                if(stat==='answered_marked') bg='bg-purple-600 text-white border-2 border-green-400';
-                
-                const isCurr = i === currIndex ? 'ring-2 ring-blue-600 scale-110 z-10' : '';
-                return `<button onclick="jumpToQ(${i}); if(window.innerWidth<768) togglePalette()" class="relative w-full pt-[100%] rounded-full font-bold text-sm ${bg} ${isCurr}"><span class="absolute inset-0 flex items-center justify-center">${q.id}</span></button>`;
-            }).join('');
-        }
-
-        function nextQ() {
-            const qList = QUESTION_DATA.filter(q => q.subject === currSubject);
-            if(currIndex < qList.length - 1) currIndex++;
-            else {
-                const sIdx = subjects.i
+                const sta
