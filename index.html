@@ -25,6 +25,21 @@
 <body class="bg-[#f5f6f8] text-gray-800 overflow-hidden select-none">
 
     <div id="app" class="w-full h-screen flex flex-col relative">
+<script>
+    // Force enable generate button instantly on mobile
+    setInterval(() => {
+        const apiKey = document.getElementById('gemini-api-key');
+        const btn = document.getElementById('btn-generate');
+        const status = document.getElementById('upload-status');
+        if (apiKey && apiKey.value.trim().length > 5 && btn) {
+            btn.disabled = false;
+            btn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+            btn.classList.add('bg-blue-600', 'hover:bg-blue-700', 'text-white');
+            if(status) status.innerText = "✓ Ready! Click Generate & Start Assessment";
+        }
+    }, 1000);
+</script>
+
         
         <!-- START SCREEN & UPGRADED TWO-PDF UPLOAD -->
         <div id="screen-start" class="absolute inset-0 bg-gray-100 flex flex-col items-center justify-center p-4 z-50 overflow-y-auto">
