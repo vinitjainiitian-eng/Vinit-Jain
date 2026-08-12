@@ -1,319 +1,534 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>JEE Main CBT Exam Engine - NewtCBT Upgraded</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        window.MathJax = {
-            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
-            svg: { fontCache: 'global' },
-            startup: { typeset: false }
-        };
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .drawer-open { transform: translateX(0%); }
-        .drawer-closed { transform: translateX(100%); }
-        @media (min-width: 768px) { .drawer-closed { transform: translateX(0%); } }
-    </style>
-</head>
-<body class="bg-[#f5f6f8] text-gray-800 overflow-hidden select-none">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>JEE AI CBT | PDF to NTA Test</title>
 
-    <div id="app" class="w-full h-screen flex flex-col relative">
+<script src="https://cdn.tailwindcss.com"></script>
+
 <script>
-    // Force enable generate button instantly on mobile
-    setInterval(() => {
-        const apiKey = document.getElementById('gemini-api-key');
-        const btn = document.getElementById('btn-generate');
-        const status = document.getElementById('upload-status');
-        if (apiKey && apiKey.value.trim().length > 5 && btn) {
-            btn.disabled = false;
-            btn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
-            btn.classList.add('bg-blue-600', 'hover:bg-blue-700', 'text-white');
-            if(status) status.innerText = "✓ Ready! Click Generate & Start Assessment";
-        }
-    }, 1000);
+window.MathJax={
+  tex:{inlineMath:[['$','$'],['\','\']]},
+  svg:{fontCache:'global'}
+};
 </script>
 
-        
-        <!-- START SCREEN & UPGRADED TWO-PDF UPLOAD -->
-        <div id="screen-start" class="absolute inset-0 bg-gray-100 flex flex-col items-center justify-center p-4 z-50 overflow-y-auto">
-            <div class="bg-white p-6 md:p-8 rounded-xl shadow-2xl w-full max-w-2xl border-t-4 border-blue-600">
-                <div class="flex flex-col items-center mb-6 text-center">
-                    <div class="text-3xl font-extrabold text-blue-900 tracking-tight">JEE MAIN 2026</div>
-                    <div class="text-sm font-bold text-green-600 mt-2 bg-green-50 px-4 py-1 rounded-full uppercase border border-green-200">
-                        CBT ENGINE + NEWTCBT AI PIPELINE
-                    </div>
-                </div>
-                
-                <h2 class="text-lg font-bold mb-3 border-b pb-2 text-gray-700">Instructions</h2>
-                <div class="space-y-3 text-sm text-gray-600 mb-6 max-h-36 overflow-y-auto pr-2 font-medium">
-                    <p>1. Total duration of the examination is <strong>180 minutes</strong>.</p>
-                    <p>2. Marking Scheme: MCQs (+4, -1), NATs (+4, 0).</p>
-                    <p>3. Do not refresh the page during the test, or your progress will be saved locally.</p>
-                    <p>4. Upload both Questions PDF and Answer Key PDF to generate the instant CBT.</p>
-                </div>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 
-                <!-- GEMINI API CONFIG -->
-                <div class="mb-4">
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Gemini API Key:</label>
-                    <input type="password" id="gemini-api-key" placeholder="Paste your Gemini API Key here" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:border-blue-500">
-                </div>
+<style>
+body{font-family:Inter,system-ui,sans-serif;background:#f5f7fb}
+::-webkit-scrollbar{width:7px;height:7px}
+::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:8px}
+.option{transition:.12s}
+.option:hover{border-color:#2563eb;background:#eff6ff}
+.palette button{min-height:38px}
+.status-answered{background:#16a34a!important;color:#fff}
+.status-review{background:#7c3aed!important;color:#fff}
+.status-both{background:#7c3aed!important;color:#fff;border-bottom:4px solid #16a34a}
+.status-not{background:#ef4444!important;color:#fff}
+.status-visited{background:#e5e7eb;color:#374151}
+</style>
+</head>
 
-                <!-- TWO PDF UPLOADS -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div class="p-3 border-2 border-dashed border-blue-300 rounded-xl bg-blue-50/50 text-center">
-                        <label class="block text-xs font-bold text-gray-700 mb-1">1. Questions PDF:</label>
-                        <input type="file" id="pdf-questions" accept="application/pdf" class="w-full text-xs text-gray-500 file:py-1 file:px-2 file:rounded file:border-0 file:bg-blue-600 file:text-white cursor-pointer" onchange="checkUploads()">
-                    </div>
-                    <div class="p-3 border-2 border-dashed border-purple-300 rounded-xl bg-purple-50/50 text-center">
-                        <label class="block text-xs font-bold text-gray-700 mb-1">2. Answer Key PDF:</label>
-                        <input type="file" id="pdf-answerkey" accept="application/pdf" class="w-full text-xs text-gray-500 file:py-1 file:px-2 file:rounded file:border-0 file:bg-purple-600 file:text-white cursor-pointer" onchange="checkUploads()">
-                    </div>
-                </div>
+<body class="overflow-hidden text-slate-800">
 
-                <div id="upload-status" class="text-xs font-bold text-center text-gray-500 mb-4">
-                    Waiting for both PDFs and API Key...
-                </div>
+<div id="app" class="h-screen">
 
-                <div id="loading-text" class="hidden text-center text-blue-600 font-bold mb-4 animate-pulse">
-                    ⚡ One-time AI Extraction in progress... Please wait!
-                </div>
+<!-- ================= START SCREEN ================= -->
 
-                <button id="btn-generate" onclick="uploadAndStart()" disabled class="w-full bg-gray-300 text-gray-500 font-black py-4 px-8 rounded-lg shadow-lg text-lg uppercase tracking-wide cursor-not-allowed transition-all">
-                    Generate & Start Assessment
-                </button>
-            </div>
-        </div>
+<section id="start" class="h-full overflow-y-auto flex items-center justify-center p-4">
 
-        <!-- TEST SCREEN -->
-        <div id="screen-test" class="absolute inset-0 flex flex-col hidden z-40">
-            <!-- Header -->
-            <header class="bg-white shadow-sm px-3 md:px-6 py-2 md:py-3 flex justify-between items-center border-b shrink-0 z-20">
-                <div class="font-extrabold text-xl text-blue-900 tracking-tight">JEE MOCK</div>
-                <div class="flex items-center space-x-4">
-                    <div class="flex flex-col items-end">
-                        <span class="text-[10px] md:text-xs text-gray-500 font-bold uppercase">Time Left</span>
-                        <span id="timer-display" class="text-lg md:text-xl font-mono font-bold leading-none text-gray-800">03:00:00</span>
-                    </div>
-                    <button onclick="togglePalette()" class="md:hidden p-2 bg-blue-50 text-blue-700 rounded border border-blue-200">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                    </button>
-                </div>
-            </header>
+<div class="w-full max-w-2xl bg-white rounded-2xl shadow-xl border overflow-hidden">
 
-            <!-- Subject Tabs -->
-            <div id="subject-tabs" class="flex overflow-x-auto bg-white border-b shadow-sm shrink-0 hide-scrollbar z-10"></div>
+<div class="bg-blue-700 text-white p-6">
+<h1 class="text-2xl md:text-3xl font-black">JEE AI CBT</h1>
+<p class="mt-1 text-blue-100">
+PDF → NTA-style test → instant AI analysis
+</p>
+</div>
 
-            <!-- Main Workspace -->
-            <div class="flex flex-1 overflow-hidden relative">
-                <!-- Question Area -->
-                <div class="flex-1 flex flex-col bg-white overflow-hidden pb-16 md:pb-0">
-                    <div class="px-4 py-2 border-b bg-gray-50 flex justify-between items-center shrink-0">
-                        <div id="q-header-number" class="font-bold text-gray-700 text-sm md:text-base">Question 1</div>
-                        <div id="q-header-type" class="text-[10px] md:text-xs font-bold px-2 py-1 bg-gray-200 rounded text-gray-600 uppercase">MCQ</div>
-                    </div>
-                    
-                    <div class="flex-1 overflow-y-auto p-4 md:p-8" id="question-container">
-                        <div id="q-text" class="text-base md:text-lg text-gray-800 mb-6 leading-relaxed font-medium whitespace-pre-wrap"></div>
-                        <div id="q-image-container" class="mb-4"></div>
-                        <div id="q-options" class="space-y-3 md:space-y-4 max-w-3xl"></div>
-                    </div>
-                </div>
+<div class="p-5 md:p-7">
 
-                <!-- Mobile Footer -->
-                <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t p-2 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-30 flex justify-between gap-2">
-                    <button onclick="handleMark()" class="flex-1 py-3 bg-purple-50 text-purple-700 border border-purple-200 rounded-lg font-bold text-[11px] uppercase leading-tight">Mark &<br/>Next</button>
-                    <button onclick="handleClear()" class="flex-1 py-3 bg-gray-50 text-gray-700 border border-gray-200 rounded-lg font-bold text-[11px] uppercase">Clear</button>
-                    <button onclick="handleSave()" class="flex-1 py-3 bg-blue-600 text-white rounded-lg font-bold text-[11px] uppercase shadow-md">Save &<br/>Next</button>
-                </div>
+<div class="grid gap-4">
 
-                <!-- Desktop Action Footer -->
-                <div class="hidden md:flex absolute bottom-0 left-0 right-0 bg-white border-t p-3 shadow-md z-30 justify-between items-center">
-                    <div class="flex gap-2">
-                        <button onclick="handleMark()" class="px-4 py-2.5 bg-purple-50 text-purple-700 border border-purple-200 rounded-lg font-bold text-xs uppercase">Mark for Review & Next</button>
-                        <button onclick="handleClear()" class="px-4 py-2.5 bg-gray-100 text-gray-700 border border-gray-200 rounded-lg font-bold text-xs uppercase">Clear Response</button>
-                    </div>
-                    <button onclick="handleSave()" class="px-6 py-2.5 bg-blue-600 text-white rounded-lg font-bold text-xs uppercase shadow">Save & Next</button>
-                </div>
+<label class="border-2 border-dashed border-blue-300 rounded-xl p-5 bg-blue-50 cursor-pointer">
 
-                <!-- Palette Drawer -->
-                <div id="palette-drawer" class="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl z-40 drawer-closed transition-transform duration-300 flex flex-col md:relative md:transform-none md:shadow-none md:border-l md:z-10">
-                    <div class="p-4 border-b bg-gray-50 flex justify-between items-center shrink-0">
-                        <div class="font-extrabold text-gray-700 text-sm tracking-wide">PALETTE</div>
-                        <button onclick="togglePalette()" class="md:hidden text-gray-500 bg-white p-1 rounded border shadow-sm"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-                    </div>
-                    <div class="p-3 border-b bg-white grid grid-cols-2 gap-y-2 gap-x-1 text-[10px] font-bold text-gray-600 uppercase shrink-0">
-                        <div class="flex items-center"><div id="cnt-ans" class="w-6 h-6 bg-green-500 rounded-full mr-2 flex items-center justify-center text-white">0</div> Answered</div>
-                        <div class="flex items-center"><div id="cnt-notans" class="w-6 h-6 bg-red-500 rounded-full mr-2 flex items-center justify-center text-white">0</div> Not Ans</div>
-                        <div class="flex items-center"><div id="cnt-notvis" class="w-6 h-6 bg-gray-200 rounded-full mr-2 flex items-center justify-center text-gray-600">0</div> Not Visited</div>
-                        <div class="flex items-center"><div id="cnt-mark" class="w-6 h-6 bg-purple-600 rounded-full mr-2 flex items-center justify-center text-white">0</div> Review</div>
-                    </div>
-                    <div class="flex-1 overflow-y-auto p-4 bg-gray-50">
-                        <div id="palette-grid" class="grid grid-cols-5 md:grid-cols-4 gap-2"></div>
-                    </div>
-                    <div class="p-4 border-t bg-white shrink-0 pb-20 md:pb-4">
-                        <button onclick="showSubmitConfirm()" class="w-full py-3.5 bg-green-500 text-white font-extrabold rounded-lg shadow-lg uppercase">Submit Test</button>
-                    </div>
-                </div>
+<div class="font-bold">Questions PDF</div>
 
-                <!-- Overlay -->
-                <div id="drawer-overlay" onclick="togglePalette()" class="md:hidden fixed inset-0 bg-black bg-opacity-50 z-30 hidden"></div>
-            </div>
-        </div>
+<div id="qname"
+class="text-sm text-slate-500 mt-1">
+Choose original JEE question paper
+</div>
 
-        <!-- RESULT SCREEN -->
-        <div id="screen-result" class="absolute inset-0 bg-gray-50 flex flex-col hidden z-50 overflow-y-auto">
-            <div class="bg-white border-b px-4 py-4 md:px-8 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4 sticky top-0 z-20">
-                <h1 class="text-2xl font-bold text-gray-800">Test Analysis & AI Review</h1>
-                <div class="flex gap-2 w-full md:w-auto">
-                    <button onclick="toggleReviewMode()" class="flex-1 md:flex-none bg-blue-600 text-white px-6 py-2.5 rounded font-bold">Review Test</button>
-                    <button onclick="localStorage.clear(); location.reload()" class="flex-1 md:flex-none bg-gray-800 text-white px-6 py-2.5 rounded font-bold">New Test</button>
-                </div>
-            </div>
-            
-            <div class="max-w-5xl mx-auto w-full p-4 md:p-8 space-y-6">
-                <!-- Score Cards -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="bg-white rounded-xl shadow-sm p-5 text-center border"><div class="text-xs font-bold text-gray-500 uppercase">Score</div><div id="res-score" class="text-4xl font-black text-blue-600 mt-2">0</div></div>
-                    <div class="bg-white rounded-xl shadow-sm p-5 text-center border"><div class="text-xs font-bold text-gray-500 uppercase">Accuracy</div><div id="res-acc" class="text-4xl font-black text-green-500 mt-2">0%</div></div>
-                    <div class="bg-white rounded-xl shadow-sm p-5 text-center border"><div class="text-xs font-bold text-gray-500 uppercase">Attempted</div><div id="res-att" class="text-4xl font-black text-purple-600 mt-2">0</div></div>
-                    <div class="bg-white rounded-xl shadow-sm p-5 text-center border"><div class="text-xs font-bold text-gray-500 uppercase">Time Used</div><div id="res-time" class="text-2xl md:text-3xl font-black text-orange-500 mt-3">0m 0s</div></div>
-                </div>
+<input id="qpdf"
+type="file"
+accept="application/pdf"
+class="hidden">
 
-                <!-- AI Deep Analysis Box -->
-                <div id="ai-analysis-box" class="bg-white rounded-xl shadow-sm p-6 border border-blue-100">
-                    <h2 class="text-lg font-bold text-blue-900 mb-3 flex items-center justify-between">
-                        <span>Deep AI Performance Analysis</span>
-                        <span id="ai-loading-badge" class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded font-normal animate-pulse">Generating insights...</span>
-                    </h2>
-                    <div id="ai-analysis-content" class="text-sm text-gray-700 space-y-3 font-medium">
-                        Analyzing attempt telemetry and question journey data...
-                    </div>
-                </div>
+</label>
 
-                <!-- Detailed Table -->
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden border">
-                    <div class="bg-gray-50 px-6 py-4 border-b"><h2 class="text-lg font-bold text-gray-800">Subject Analysis</h2></div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead><tr class="bg-white text-gray-500 text-xs uppercase"><th class="p-4 border-b">Subject</th><th class="p-4 border-b">Score</th><th class="p-4 border-b">Right / Wrong</th><th class="p-4 border-b">Time</th></tr></thead>
-                            <tbody id="res-subject-body" class="text-sm font-bold text-gray-700"></tbody>
-                        </table>
-                    </div>
-                </div>
 
-                <!-- Question Journey & Review Container -->
-                <div id="review-container" class="hidden bg-white rounded-xl shadow-sm p-6 border">
-                    <h2 class="text-lg font-bold text-gray-800 mb-4">Question Journey & Review</h2>
-                    <div id="review-list" class="space-y-6"></div>
-                </div>
-            </div>
-        </div>
+<label class="border-2 border-dashed border-emerald-300 rounded-xl p-5 bg-emerald-50 cursor-pointer">
 
-        <!-- MODAL -->
-        <div id="submit-modal" class="fixed inset-0 bg-black bg-opacity-60 z-[60] flex items-center justify-center p-4 hidden">
-            <div class="bg-white rounded-2xl p-6 w-full max-w-sm">
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Submit Assessment?</h3>
-                <p class="text-sm text-gray-500 mb-6">Are you sure you want to submit?</p>
-                <div class="flex space-x-3">
-                    <button onclick="document.getElementById('submit-modal').classList.add('hidden')" class="flex-1 py-3 bg-gray-100 text-gray-800 font-bold rounded-xl">Cancel</button>
-                    <button onclick="finalizeSubmit()" class="flex-1 py-3 bg-blue-600 text-white font-bold rounded-xl shadow-lg">Yes, Submit</button>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="font-bold">Answer Key PDF</div>
 
-    <script>
-        const MARKING_SCHEME = {
-            mcqCorrect: 4,
-            mcqWrong: -1,
-            numericalCorrect: 4,
-            numericalWrong: 0
-        };
+<div id="aname"
+class="text-sm text-slate-500 mt-1">
+Choose official answer key
+</div>
 
-        let QUESTION_DATA = [];
-        let subjects = [];
-        let currSubject = '';
-        let currIndex = 0; 
-        let responses = {}; 
-        let tempAns = '';
-        let timerInterval;
-        let timeLeft = 10800;
+<input id="apdf"
+type="file"
+accept="application/pdf"
+class="hidden">
 
-        // Persistent State on Load
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedState = localStorage.getItem('jee_cbt_state');
-            if (savedState) {
-                try {
-                    const state = JSON.parse(savedState);
-                    QUESTION_DATA = state.QUESTION_DATA;
-                    subjects = state.subjects;
-                    currSubject = state.currSubject;
-                    currIndex = state.currIndex;
-                    responses = state.responses;
-                    timeLeft = state.timeLeft;
-                    if (state.testStarted) {
-                        document.getElementById('screen-start').classList.add('hidden');
-                        document.getElementById('screen-test').classList.remove('hidden');
-                        initTestUI();
-                    }
-                } catch(e) { console.error(e); }
-            }
-        });
+</label>
 
-        function checkUploads() {
-            const qFile = document.getElementById('pdf-questions').files.length;
-            const aFile = document.getElementById('pdf-answerkey').files.length;
-            const apiKey = document.getElementById('gemini-api-key').value.trim();
-            const btn = document.getElementById('btn-generate');
-            const status = document.getElementById('upload-status');
+</div>
 
-            if (qFile && aFile && apiKey) {
-                btn.disabled = false;
-                btn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
-                btn.classList.add('bg-blue-600', 'hover:bg-blue-700', 'text-white');
-                status.innerText = "✓ Questions PDF loaded | ✓ Answer Key loaded | ✓ API Key ready";
-                status.className = "text-xs font-bold text-center text-green-600 mb-4";
-            } else {
-                btn.disabled = true;
-                btn.classList.add('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
-                btn.classList.remove('bg-blue-600', 'hover:bg-blue-700', 'text-white');
-                status.innerText = "Please provide Gemini API Key, Questions PDF, and Answer Key PDF.";
-                status.className = "text-xs font-bold text-center text-gray-500 mb-4";
-            }
-        }
 
-        document.getElementById('gemini-api-key').addEventListener('input', checkUploads);
+<div id="config" class="grid grid-cols-2 gap-3 mt-5">
 
-        async function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result.split(',')[1]);
-                reader.onerror = error => reject(error);
-            });
-        }
+<label class="text-sm font-bold">
 
-        async function uploadAndStart() {
-            const qFile = document.getElementById('pdf-questions').files[0];
-            const aFile = document.getElementById('pdf-answerkey').files[0];
-            const apiKey = document.getElementById('gemini-api-key').value.trim();
+Duration (min)
 
-            if (!qFile || !aFile || !apiKey) {
-                alert('Please upload both PDFs and provide Gemini API Key.');
-                return;
-            }
+<input
+id="duration"
+type="number"
+value="180"
+min="1"
+class="mt-1 w-full border rounded-lg px-3 py-2">
 
-            document.getElementById('loading-text').classList.remove('hidden');
+</label>
 
-            try {
-                const qBase64 = await fileToBase64(qFile);
-                const aBase64 = await fileToBase64(aFile);
 
-                const promptText = `You are an e
+<label class="text-sm font-bold">
+
+Exam
+
+<input
+value="JEE"
+disabled
+class="mt-1 w-full border rounded-lg px-3 py-2 bg-slate-100">
+
+</label>
+
+</div>
+
+
+<!-- GEMINI KEY BOX -->
+
+<div class="mt-5 p-4 rounded-xl border-2 border-amber-300 bg-amber-50">
+
+<label class="block text-sm font-black text-slate-800 mb-2">
+Gemini API Key
+</label>
+
+<input
+id="gemini-key"
+type="password"
+autocomplete="off"
+placeholder="Paste your Gemini API key here"
+class="w-full px-4 py-3 border-2 border-amber-300 rounded-lg bg-white outline-none focus:border-blue-600">
+
+<p class="text-xs text-slate-500 mt-2">
+Used for one-time PDF extraction and post-test AI analysis.
+</p>
+
+</div>
+
+
+<div id="progress" class="hidden mt-5">
+
+<div class="flex justify-between text-sm font-bold">
+
+<span id="ptext">
+Preparing...
+</span>
+
+<span id="pct">
+0%
+</span>
+
+</div>
+
+<div class="h-2 bg-slate-200 rounded-full mt-2 overflow-hidden">
+
+<div
+id="bar"
+class="h-full bg-blue-600 w-0">
+</div>
+
+</div>
+
+</div>
+
+
+<div
+id="error"
+class="hidden mt-4 p-3 rounded-lg bg-red-50 text-red-700 text-sm">
+</div>
+
+
+<button
+id="generate"
+disabled
+class="mt-6 w-full py-4 rounded-xl bg-blue-600 text-white font-black text-lg disabled:opacity-40 disabled:cursor-not-allowed">
+
+GENERATE CBT
+
+</button>
+
+
+<p class="text-xs text-slate-500 mt-4">
+AI extraction happens once. The actual CBT runs locally for speed.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= TEST SCREEN ================= -->
+
+<section id="test" class="hidden h-full flex flex-col">
+
+<header
+class="bg-white border-b px-3 md:px-5 py-2 flex items-center justify-between shrink-0">
+
+<div>
+
+<div class="font-black text-blue-800">
+JEE MOCK TEST
+</div>
+
+<div
+id="testMeta"
+class="text-xs text-slate-500">
+</div>
+
+</div>
+
+
+<div class="flex items-center gap-3">
+
+<div class="text-right">
+
+<div class="text-[10px] uppercase font-bold text-slate-400">
+Time Left
+</div>
+
+<div
+id="timer"
+class="font-mono text-lg font-black">
+03:00:00
+</div>
+
+</div>
+
+
+<button
+id="paletteBtn"
+class="md:hidden px-3 py-2 rounded-lg bg-blue-50 text-blue-700 font-bold">
+
+☰
+
+</button>
+
+</div>
+
+</header>
+
+
+<nav
+id="subjects"
+class="bg-white border-b flex overflow-x-auto shrink-0">
+</nav>
+
+
+<div class="flex-1 flex overflow-hidden relative">
+
+
+<main class="flex-1 min-w-0 flex flex-col">
+
+
+<div
+class="px-4 py-2 bg-slate-50 border-b flex justify-between shrink-0">
+
+<b id="qnum">
+Question 1
+</b>
+
+<span
+id="qtype"
+class="text-xs font-bold bg-slate-200 px-2 py-1 rounded">
+</span>
+
+</div>
+
+
+<div
+id="question"
+class="flex-1 overflow-y-auto p-4 md:p-8">
+</div>
+
+
+<footer
+class="bg-white border-t p-3 flex justify-between gap-2 shrink-0">
+
+<div class="flex gap-2">
+
+<button
+id="mark"
+class="px-3 py-2 rounded-lg bg-purple-50 text-purple-700 font-bold text-xs">
+
+MARK & NEXT
+
+</button>
+
+
+<button
+id="clear"
+class="px-3 py-2 rounded-lg bg-slate-100 font-bold text-xs">
+
+CLEAR
+
+</button>
+
+</div>
+
+
+<button
+id="save"
+class="px-6 py-2 rounded-lg bg-blue-600 text-white font-bold text-xs">
+
+SAVE & NEXT
+
+</button>
+
+</footer>
+
+</main>
+
+
+<!-- PALETTE -->
+
+<aside
+id="palette"
+class="w-80 bg-white border-l flex flex-col fixed md:relative right-0 top-0 bottom-0 z-30 translate-x-full md:translate-x-0 transition-transform">
+
+<div class="p-4 border-b flex justify-between">
+
+<b>QUESTION PALETTE</b>
+
+<button
+id="closePalette"
+class="md:hidden">
+✕
+</button>
+
+</div>
+
+
+<div class="p-3 grid grid-cols-2 gap-2 text-xs font-bold">
+
+<span>
+🟢 Answered
+<b id="ca">0</b>
+</span>
+
+<span>
+🔴 Not Answered
+<b id="cn">0</b>
+</span>
+
+<span>
+⚪ Not Visited
+<b id="cv">0</b>
+</span>
+
+<span>
+🟣 Review
+<b id="cr">0</b>
+</span>
+
+</div>
+
+
+<div
+id="grid"
+class="palette flex-1 overflow-y-auto p-4 grid grid-cols-5 gap-2 bg-slate-50">
+</div>
+
+
+<button
+id="submit"
+class="m-4 py-3 bg-emerald-600 text-white font-black rounded-xl">
+
+SUBMIT TEST
+
+</button>
+
+</aside>
+
+</div>
+
+</section>
+
+
+<!-- ================= RESULT ================= -->
+
+<section id="result" class="hidden h-full overflow-y-auto">
+
+<header
+class="sticky top-0 z-20 bg-white border-b p-4 flex justify-between">
+
+<h1 class="text-xl font-black">
+AI Test Analysis
+</h1>
+
+<button
+onclick="location.reload()"
+class="px-4 py-2 bg-slate-800 text-white rounded-lg font-bold">
+
+New Test
+
+</button>
+
+</header>
+
+
+<div class="max-w-6xl mx-auto p-4 md:p-7 space-y-5">
+
+
+<div
+id="cards"
+class="grid grid-cols-2 md:grid-cols-5 gap-3">
+</div>
+
+
+<div
+class="bg-white rounded-xl border p-5">
+
+<h2 class="font-black text-lg">
+Gemini Analysis
+</h2>
+
+<div
+id="analysis"
+class="mt-3 text-sm leading-6 text-slate-700">
+
+Preparing analysis...
+
+</div>
+
+</div>
+
+
+<div
+class="bg-white rounded-xl border overflow-hidden">
+
+<div class="p-4 border-b font-black">
+Question Review
+</div>
+
+
+<div class="overflow-x-auto">
+
+<table class="w-full text-sm">
+
+<thead class="bg-slate-50">
+
+<tr>
+
+<th class="p-3 text-left">Q</th>
+<th>Subject</th>
+<th>Your Answer</th>
+<th>Correct</th>
+<th>Status</th>
+<th>Time</th>
+<th>Marks</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="review">
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   GEMINI CONFIG
+========================================================= */
+
+let GEMINI_API_KEY = "";
+
+const GEMINI_MODEL = "gemini-2.5-flash";
+
+
+/* =========================================================
+   PDF.JS
+========================================================= */
+
+const PDFJS_URL =
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
+
+let pdfjsReady = null;
+
+
+async function getPdfJs(){
+
+if(!pdfjsReady){
+
+pdfjsReady =
+import(PDFJS_URL)
+.then(m=>{
+
+m.GlobalWorkerOptions.workerSrc =
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
+
+return m;
+
+});
+
+}
+
+return pdfjsReady;
+
+}
+
+
+/* =========================================================
+   PDF PAGE RENDER
+========================================================= */
+
+async function renderPdfPage(
+pdfBytes,
+pageNo,
+scale=1.7
+){
+
+const pdfjs=await getPdfJs();
+
+const pdf=
+await pdfjs.getDocument({
+data:
