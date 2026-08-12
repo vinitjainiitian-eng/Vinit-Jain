@@ -2,7 +2,6 @@
 <html lang="en">
  <head>
   <meta charset="utf-8">
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>JEE Main 2027 • CBT</title>
   <style>
@@ -225,14 +224,31 @@ function decodeGoogleJWT(token){
  }catch{return null}
 }
 
-function initGoogle(){
+async function loadGoogleSDK(){
+ if(window.google?.accounts?.id) return true;
+ $("googleStatus").innerHTML='<span class="warn">Google Sign-In library load ho rahi hai…</span>';
+ if(!document.getElementById("gis-sdk")){
+  const s=document.createElement("script");
+  s.id="gis-sdk";
+  s.src="https://accounts.google.com/gsi/client";
+  s.async=true;
+  s.defer=true;
+  document.head.appendChild(s);
+ }
+ for(let i=0;i<40;i++){
+  if(window.google?.accounts?.id) return true;
+  await new Promise(r=>setTimeout(r,250));
+ }
+ return false;
+}
+async function initGoogle(){
  const clientId=$("googleClientId").value.trim();
  if(!clientId.endsWith(".apps.googleusercontent.com")){
-  $("googleStatus").innerHTML='<span class="bad">Valid Google Web Client ID paste karo.</span>';
+  $("googleStatus").innerHTML='<span class="bad">Valid Google Web OAuth Client ID paste karo.</span>';
   return;
  }
- if(!window.google?.accounts?.id){
-  $("googleStatus").innerHTML='<span class="warn">Google Identity Services loading hai. 2–3 seconds baad try karo.</span>';
+ if(!(await loadGoogleSDK())){
+  $("googleStatus").innerHTML='<span class="bad">Google Sign-In SDK load nahi hua. Internet ya ad-blocker check karo.</span>';
   return;
  }
  try{
@@ -386,8 +402,4 @@ function draw(){
  if(q.type==="numerical"||q.type==="integer"){
   $("opts").innerHTML=`<input id="num" style="width:180px;padding:10px;border:1px solid #777" inputmode="decimal" value="${val||""}" placeholder="Enter answer">`;
   $("num").oninput=e=>answers.set(idx,e.target.value);
- }else{
-  const multi=q.type==="multiple";
-  $("opts").innerHTML=opts.map((o,i)=>{let l="ABCDE"[i]||String(i+1);let checked=multi?(Array.isArray(val)&&val.includes(l)):val===l;return `<label class="opt"><input type="${multi?"checkbox":"radio"}" name="o" value="${l}" ${checked?"checked":""}><span><b>${l}.</b> ${escape(o)}</span></label>`}).join("");
-  document.querySelectorAll('input[name="o"]').forEach(x=>x.onchange=()=>{
-   if(multi)answers.set(idx,[...document.q
+ }
