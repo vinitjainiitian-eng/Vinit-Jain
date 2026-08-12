@@ -1,770 +1,132 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>JEE Nexus AI • CBT Studio</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs" type="module"></script>
-<style>
-:root{--bg:#070b14;--panel:#0d1422;--panel2:#111b2d;--line:#22304a;--text:#edf3ff;--muted:#8fa0ba;--blue:#4f7cff;--green:#25d695;--red:#ff6377;--gold:#ffc857}
-*{box-sizing:border-box}html,body{margin:0;background:radial-gradient(circle at 20% 0%,#14264b 0,#070b14 35%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif}
-body{min-height:100vh}.app{max-width:1100px;margin:auto;padding:18px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:18px 20px;border:1px solid var(--line);background:#0b1220d9;backdrop-filter:blur(18px);border-radius:22px;position:sticky;top:10px;z-index:20}
-.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#4f7cff,#7c4dff);display:grid;place-items:center;font-weight:900}.brand h1{font-size:18px;margin:0}.brand p{font-size:12px;color:var(--muted);margin:3px 0 0}
-.user-pill{padding:10px 13px;border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:12px}
-.hero{padding:48px 10px 28px}.hero h2{font-size:clamp(32px,6vw,62px);line-height:.98;margin:0;letter-spacing:-2px}.hero h2 span{color:#7194ff}.hero p{color:var(--muted);max-width:720px;font-size:16px;line-height:1.6}
-.grid{display:grid;grid-template-columns:1.3fr .7fr;gap:18px}.panel{background:linear-gradient(180deg,#0e1728,#0b1220);border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:0 18px 50px #0005}.panel h3{margin:0 0 5px;font-size:19px}.sub{font-size:13px;color:var(--muted);line-height:1.5;margin:0 0 16px}
-input,select{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--line);background:#080e19;color:var(--text);outline:0}input:focus,select:focus{border-color:#5c82ff;box-shadow:0 0 0 3px #4f7cff22}
-.btn{border:0;border-radius:13px;padding:13px 16px;font-weight:800;color:#fff;background:#1a2740;cursor:pointer}.btn.primary{background:linear-gradient(135deg,#4f7cff,#684cff)}.btn.green{background:linear-gradient(135deg,#17b979,#1d9d72)}.btn:disabled{opacity:.45;cursor:not-allowed}.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1}
-.auth{display:grid;gap:10px}.auth-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tiny{font-size:11px;color:var(--muted);line-height:1.5}.status{font-size:12px;margin-top:8px}.ok{color:var(--green)}.bad{color:var(--red)}.warn{color:var(--gold)}
-.provider{border:1px solid var(--line);border-radius:15px;padding:14px;margin-top:10px;background:#0a111e}.provider-head{display:flex;justify-content:space-between;align-items:center}.provider-name{font-weight:800}.badge{font-size:10px;padding:4px 7px;border-radius:20px;background:#18243a;color:#a9b9d3}
-.drop{display:block;width:100%;border:1.5px dashed #38517c;padding:24px;text-align:center;border-radius:16px;background:#09111f;cursor:pointer}.drop strong{display:block;margin-bottom:5px}.drop small{color:var(--muted)}.drop input{display:none}
-.file{margin-top:8px;font-size:12px;color:#9fb0c9;word-break:break-all}
-.controls{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.control label{font-size:11px;color:var(--muted);display:block;margin-bottom:6px}
-.progress{height:10px;border-radius:20px;background:#182238;overflow:hidden;margin-top:12px}.bar{height:100%;width:0;background:linear-gradient(90deg,#4f7cff,#25d695);transition:.25s}
-.checker{background-color:#e9edf4;background-image:linear-gradient(45deg,#cfd5df 25%,transparent 25%),linear-gradient(-45deg,#cfd5df 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#cfd5df 75%),linear-gradient(-45deg,transparent 75%,#cfd5df 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0;border-radius:15px;padding:12px;overflow:auto;min-height:160px}
-canvas{display:block;max-width:none;margin:auto;box-shadow:0 8px 25px #0005}
-.full{grid-column:1/-1}.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat{padding:14px;border:1px solid var(--line);border-radius:15px;background:#0a111e}.stat b{display:block;font-size:22px}.stat span{font-size:11px;color:var(--muted)}
-.question{padding:16px;border:1px solid var(--line);border-radius:15px;margin-top:10px;background:#0a111e}.qnum{color:#7ea0ff;font-weight:800}.option{padding:11px;border:1px solid var(--line);border-radius:10px;margin-top:7px;cursor:pointer}.option:hover{border-color:#5b80ed;background:#101b31}
-@media(max-width:800px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.controls,.stat-grid{grid-template-columns:1fr 1fr}.hero{padding-top:35px}}
-@media(max-width:500px){.app{padding:10px}.top{position:relative;top:0}.auth-actions,.controls,.stat-grid{grid-template-columns:1fr}.hero h2{font-size:39px}}
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>JEE Main 2027 • Gemini Connect</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+*{box-sizing:border-box}body{margin:0;background:#070b12;color:#f4f7fb;font-family:system-ui,-apple-system,Segoe UI,Arial;padding:10px}
+.app{max-width:620px;margin:auto}.card{background:#0d1420;border:1px solid #202d40;border-radius:16px;padding:16px;margin-top:10px}
+h1{font-size:25px;margin:0}.sub{color:#8d99aa;font-size:12px;line-height:1.5;margin-top:5px}h2{font-size:17px;margin:0 0 5px}
+input{width:100%;padding:12px;margin-top:9px;border:1px solid #26354a;border-radius:9px;background:#080e18;color:#fff}
+button{width:100%;padding:12px;margin-top:9px;border:0;border-radius:9px;background:#2563eb;color:#fff;font-weight:800}
+.googlewrap{margin-top:10px;min-height:44px;display:flex;justify-content:center}
+.status{font-size:12px;line-height:1.5;margin-top:8px;min-height:18px}.ok{color:#22c55e}.bad{color:#ef4444}.warn{color:#f59e0b}.muted{color:#8d99aa}
+.connected{display:none;margin-top:10px;padding:11px;border-radius:10px;background:#0a1d13;border:1px solid #174c31;color:#8de1aa;font-size:12px}
+.test{display:none}.q{padding:12px;background:#0a111c;border:1px solid #202d40;border-radius:10px;margin-top:8px;font-size:13px;line-height:1.5}.opt{padding:8px;margin-top:6px;border:1px solid #253349;border-radius:8px}.sel{border-color:#3b82f6;background:#102449}
+.note{font-size:10px;color:#707d90;line-height:1.45;margin-top:10px}
 </style>
-</head>
-<body>
-<div class="app">
-<header class="top">
-<div class="brand"><div class="logo">JN</div><div><h1>JEE Nexus AI</h1><p>CBT Studio • PDF Intelligence</p></div></div>
-<div class="user-pill" id="userPill">Not signed in</div>
-</header>
-
-<section class="hero">
-<h2>Turn JEE PDFs into a<br><span>real CBT.</span></h2>
-<p>Exact-question extraction, official answer-key mapping, transparent image cropping, AI fallback, and an NTA-style test workspace.</p>
-</section>
-
-<div class="grid">
-
-<section class="panel">
-<h3>Account &amp; AI connection</h3>
-<p class="sub">Email identifies the workspace. Actual provider access requires the provider's official authorization flow or an API key. An email address alone cannot grant API access.</p>
-
-<div class="auth">
-<input id="email" type="email" placeholder="your@email.com" autocomplete="email">
-<div class="auth-actions">
-<button class="btn primary" id="saveEmail">Continue with email</button>
-<button class="btn" id="clearEmail">Clear session</button>
-</div>
-<div class="tiny">This demo stores only the email locally. It does not pretend to authenticate you with Google, OpenAI, or another provider.</div>
-</div>
-
-<div class="provider">
-<div class="provider-head"><span class="provider-name">Google / Gemini</span><span class="badge">Needs OAuth setup</span></div>
-<button class="btn" style="width:100%;margin-top:10px" id="googleBtn">Connect Google</button>
-<div id="googleStatus" class="status"></div>
-</div>
-
-<div class="provider">
-<div class="provider-head"><span class="provider-name">OpenAI</span><span class="badge">API</span></div>
-<input id="openaiKey" type="password" placeholder="OpenAI API key" autocomplete="off" style="margin-top:10px">
-<div id="openaiStatus" class="status"></div>
-</div>
-
-<div class="provider">
-<div class="provider-head"><span class="provider-name">Gemini</span><span class="badge">API</span></div>
-<input id="geminiKey" type="password" placeholder="Gemini API key" autocomplete="off" style="margin-top:10px">
-<select id="geminiModel" style="margin-top:10px">
-<option value="gemini-3.6-flash" selected>Gemini 3.6 Flash • Latest</option>
-<option value="gemini-3.5-flash">Gemini 3.5 Flash</option>
-<option value="gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite • Fast</option>
-<option value="gemini-3.1-flash-lite">Gemini 3.1 Flash-Lite</option>
-<option value="gemini-2.5-flash">Gemini 2.5 Flash • Legacy fallback</option>
-</select>
-<div id="geminiStatus" class="status"></div>
-</div>
-
-<div class="provider">
-<div class="provider-head"><span class="provider-name">Groq</span><span class="badge">Optional fallback</span></div>
-<input id="groqKey" type="password" placeholder="Groq API key" autocomplete="off" style="margin-top:10px">
-</div>
-
-<div class="provider">
-<div class="provider-head"><span class="provider-name">DeepSeek</span><span class="badge">Optional fallback</span></div>
-<input id="deepseekKey" type="password" placeholder="DeepSeek API key" autocomplete="off" style="margin-top:10px">
-</div>
-
-<button class="btn green" id="testAI" style="width:100%;margin-top:12px">TEST AVAILABLE AI</button>
-<div id="globalStatus" class="status"></div>
-</section>
-
-<section class="panel">
-<h3>PDF source</h3>
-<p class="sub">Process page-by-page to reduce memory pressure on phones.</p>
-
-<label class="drop"><strong>📄 Questions PDF</strong><small>Tap to select</small><input id="qFile" type="file" accept="application/pdf"></label>
-<div class="file" id="qName">No file selected</div>
-
-<label class="drop" style="margin-top:12px"><strong>🔑 Official Answer Key PDF</strong><small>Tap to select</small><input id="aFile" type="file" accept="application/pdf"></label>
-<div class="file" id="aName">No file selected</div>
-
-<div style="height:18px"></div>
-
-<div class="controls">
-<div class="control"><label>Render scale</label><select id="scale"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option></select></div>
-<div class="control"><label>Threshold</label><input id="threshold" type="number" min="0" max="255" value="245"></div>
-<div class="control"><label>Padding px</label><input id="padding" type="number" min="0" max="1000" value="0"></div>
-</div>
-
-<button class="btn primary" id="preview" style="width:100%;margin-top:14px">PREVIEW + AUTO CROP</button>
-<div class="progress"><div class="bar" id="bar"></div></div>
-<div class="status" id="progressText">Ready</div>
-</section>
-
-<section class="panel full">
-<h3>Transparent image engine</h3>
-<p class="sub">The checkerboard is only a preview of transparency. The exported PNG contains alpha transparency. There is no artificial crop width/height limit; physical browser memory is the only practical constraint.</p>
-
-<div class="checker" id="previewBox"><canvas id="previewCanvas"></canvas></div>
-
-<div class="row" style="margin-top:12px">
-<button class="btn" id="downloadPNG">DOWNLOAD TRANSPARENT PNG</button>
-<button class="btn" id="clearPreview">CLEAR PREVIEW</button>
-</div>
-</section>
-
-<section class="panel full">
-<h3>CBT generator</h3>
-<p class="sub">Strict mode: use only supplied questions. Never invent missing questions.</p>
-
-<div class="controls">
-<div class="control"><label>Exam</label><select id="exam"><option>JEE Main</option><option>JEE Advanced</option><option>JEE</option></select></div>
-<div class="control"><label>Duration</label><input id="duration" type="number" value="180" min="1"></div>
-<div class="control"><label>Language</label><select id="language"><option>English</option><option>Hindi</option><option>English + Hindi</option></select></div>
-</div>
-
-<button class="btn primary" id="generate" style="width:100%;margin-top:14px">GENERATE CBT</button>
-</section>
-
-<section class="panel full" id="outputPanel" style="display:none">
-<h3>CBT preview</h3>
-<div class="stat-grid">
-<div class="stat"><b id="count">0</b><span>Questions</span></div>
-<div class="stat"><b id="subjects">0</b><span>Subjects</span></div>
-<div class="stat"><b id="durationOut">0</b><span>Minutes</span></div>
-<div class="stat"><b id="providerOut">—</b><span>AI</span></div>
-</div>
-<div id="questions"></div>
-</section>
-
-</div>
-</div>
-
-<script type="module">
-import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
-
-pdfjsLib.GlobalWorkerOptions.workerSrc=
-"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
-
+ </head>
+ <body>
+  <div class="app">
+   <div class="card">
+    <h1>JEE Main 2027</h1>
+    <div class="sub">Google → Gemini connection test • Ganpati Bappa Morya 🙏</div>
+   </div>
+   <div class="card">
+    <h2>1. Google Authentication</h2>
+    <div class="sub">Paste your Web OAuth Client ID, then use the real Google Sign-In button.</div>
+    <input id="clientId" placeholder="123...apps.googleusercontent.com" autocomplete="off">
+    <button id="loadGoogle">LOAD GOOGLE SIGN-IN</button>
+    <div class="googlewrap" id="googleButton"></div>
+    <div class="status" id="googleStatus"></div>
+    <div class="connected" id="connected"></div>
+    <div class="note">The OAuth Client ID is not a secret. Do not paste a Client Secret here. Your deployed site's origin must be added to Google Cloud → OAuth client → Authorized JavaScript origins.</div>
+   </div>
+   <div class="card">
+    <h2>2. Gemini API</h2>
+    <div class="sub">For this browser-only smoke test, Gemini API access still uses an API key. Google Sign-In and API-key access are separate authentication methods.</div>
+    <input id="apiKey" type="password" placeholder="Gemini API key" autocomplete="off">
+    <button id="testGemini">TEST GEMINI</button>
+    <div class="status" id="geminiStatus"></div>
+   </div>
+   <div class="card test" id="cbt">
+    <h2>3. CBT Smoke Test</h2>
+    <div class="sub">This opens only after Gemini responds successfully.</div>
+    <div id="questions"></div>
+    <button id="submit">SUBMIT TEST</button>
+    <div id="score" class="status"></div>
+   </div>
+  </div>
+  <script>
 const $=id=>document.getElementById(id);
 
-let qFile=null;
-let aFile=null;
-let rendered=null;
-let transparent=null;
-
-function progress(p,t){
-$("bar").style.width=Math.max(0,Math.min(100,p))+"%";
-$("progressText").textContent=t;
+function decodeJwt(token){
+ try{
+  const b=token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
+  const s=decodeURIComponent(atob(b).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+  return JSON.parse(s);
+ }catch{return null}
 }
 
-$("qFile").onchange=e=>{
-qFile=e.target.files[0]||null;
-$("qName").textContent=qFile?"✓ "+qFile.name:"No file selected";
+function googleInit(){
+ const id=$('clientId').value.trim();
+ if(!id.endsWith('.apps.googleusercontent.com')){
+  $('googleStatus').innerHTML='<span class="bad">Valid Web OAuth Client ID paste karo.</span>';return;
+ }
+ if(!window.google?.accounts?.id){
+  $('googleStatus').innerHTML='<span class="warn">Google Sign-In library abhi load ho rahi hai. 2 seconds baad LOAD dabao.</span>';return;
+ }
+ google.accounts.id.initialize({
+  client_id:id,
+  callback:(response)=>{
+   const data=decodeJwt(response.credential);
+   if(!data){$('googleStatus').innerHTML='<span class="bad">Google credential read nahi hua.</span>';return}
+   $('connected').style.display='block';
+   $('connected').textContent='✓ Google connected: '+(data.name||'Google user')+(data.email?' • '+data.email:'');
+   $('googleStatus').innerHTML='<span class="ok">Authentication successful.</span>';
+  },
+  auto_select:false
+ });
+ $('googleButton').innerHTML='';
+ google.accounts.id.renderButton($('googleButton'),{
+  theme:'outline',size:'large',text:'signin_with',shape:'rectangular',
+  width:Math.min(360,window.innerWidth-50)
+ });
+ $('googleStatus').innerHTML='<span class="ok">✓ Google Sign-In ready. Tap the button above.</span>';
+}
+$('loadGoogle').onclick=googleInit;
+
+const qs=[
+ {s:'Physics',q:'A body moves at 10 m/s for 5 s. Its displacement is:',o:['2 m','15 m','50 m','100 m'],a:'C'},
+ {s:'Chemistry',q:'The molar mass of H₂O is:',o:['16 g mol⁻¹','18 g mol⁻¹','20 g mol⁻¹','22 g mol⁻¹'],a:'B'},
+ {s:'Mathematics',q:'If f(x)=x², then f(3) equals:',o:['3','6','9','12'],a:'C'}
+];
+const ans={};
+function draw(){
+ $('questions').innerHTML=qs.map((q,i)=>`<div class="q"><b>Q${i+1} • ${q.s}</b><div style="margin-top:6px">${q.q}</div>${q.o.map((x,j)=>`<div class="opt" data-i="${i}" data-v="${'ABCD'[j]}">${'ABCD'[j]}. ${x}</div>`).join('')}</div>`).join('');
+ document.querySelectorAll('.opt').forEach(x=>x.onclick=()=>{
+  const i=+x.dataset.i;ans[i]=x.dataset.v;
+  document.querySelectorAll('.opt[data-i="'+i+'"]').forEach(y=>y.classList.remove('sel'));x.classList.add('sel');
+ });
+}
+async function testGemini(){
+ const key=$('apiKey').value.trim();
+ if(!key)throw Error('Gemini API key enter karo.');
+ const model='gemini-3.6-flash';
+ const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+encodeURIComponent(key),{
+  method:'POST',headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({contents:[{parts:[{text:'Reply only with OK.'}]}]})
+ });
+ const d=await r.json();
+ if(!r.ok)throw Error(d.error?.message||('Gemini HTTP '+r.status));
+ return d.candidates?.[0]?.content?.parts?.map(x=>x.text||'').join('')||'';
+}
+$('testGemini').onclick=async()=>{
+ $('testGemini').disabled=true;$('geminiStatus').innerHTML='<span class="warn">Connecting to Gemini…</span>';
+ try{
+  const r=await testGemini();
+  $('geminiStatus').innerHTML='<span class="ok">✓ Gemini connected successfully • '+r+'</span>';
+  $('cbt').style.display='block';draw();
+ }catch(e){$('geminiStatus').innerHTML='<span class="bad">✕ '+e.message+'</span>'}
+ finally{$('testGemini').disabled=false}
 };
-
-$("aFile").onchange=e=>{
-aFile=e.target.files[0]||null;
-$("aName").textContent=aFile?"✓ "+aFile.name:"No file selected";
+$('submit').onclick=()=>{
+ let correct=0,attempted=Object.keys(ans).length;
+ qs.forEach((q,i)=>{if(ans[i]===q.a)correct++});
+ $('score').innerHTML='<span class="ok"><b>Test complete</b><br>Questions: '+qs.length+' • Attempted: '+attempted+' • Correct: '+correct+' • Wrong: '+(attempted-correct)+' • Unattempted: '+(qs.length-attempted)+'</span>';
 };
-
-$("saveEmail").onclick=()=>{
-const email=$("email").value.trim();
-
-if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-alert("Valid email enter karo.");
-return;
-}
-
-localStorage.setItem("jee_nexus_email",email);
-$("userPill").textContent=email;
-
-$("globalStatus").innerHTML=
-'<span class="ok">Workspace identified.</span>';
-};
-
-$("clearEmail").onclick=()=>{
-localStorage.removeItem("jee_nexus_email");
-$("email").value="";
-$("userPill").textContent="Not signed in";
-};
-
-const saved=localStorage.getItem("jee_nexus_email");
-
-if(saved){
-$("email").value=saved;
-$("userPill").textContent=saved;
-}
-
-/*
- IMPORTANT:
- This is deliberately NOT a fake Google login.
- A real Google OAuth connection requires a Google Cloud OAuth
- client and a server-side callback/token exchange.
-*/
-$("googleBtn").onclick=()=>{
-$("googleStatus").innerHTML=
-'<span class="warn">Google sign-in is not wired yet. A Google OAuth client ID and backend authorization endpoint are required.</span>';
-};
-
-function bg(r,g,b,a,t){
-return a<10 ||
-(r>=t&&g>=t&&b>=t&&
-Math.max(r,g,b)-Math.min(r,g,b)<=12);
-}
-
-function cropTransparent(source){
-
-const ctx=
-source.getContext("2d",{willReadFrequently:true});
-
-const w=source.width;
-const h=source.height;
-const t=Number($("threshold").value)||245;
-
-const d=ctx.getImageData(0,0,w,h);
-const x=d.data;
-
-let l=w;
-let tb=h;
-let r=-1;
-let b=-1;
-
-for(let y=0;y<h;y++){
-
-for(let xx=0;xx<w;xx++){
-
-const i=(y*w+xx)*4;
-
-if(!bg(x[i],x[i+1],x[i+2],x[i+3],t)){
-
-if(xx<l)l=xx;
-if(xx>r)r=xx;
-if(y<tb)tb=y;
-if(y>b)b=y;
-
-}
-}
-}
-
-if(r<0)return source;
-
-const pad=Math.max(
-0,
-Number($("padding").value)||0
-);
-
-l=Math.max(0,l-pad);
-tb=Math.max(0,tb-pad);
-r=Math.min(w-1,r+pad);
-b=Math.min(h-1,b+pad);
-
-const out=document.createElement("canvas");
-
-out.width=r-l+1;
-out.height=b-tb+1;
-
-out.getContext("2d").drawImage(
-source,
-l,tb,
-out.width,out.height,
-0,0,
-out.width,out.height
-);
-
-const oc=out.getContext(
-"2d",
-{willReadFrequently:true}
-);
-
-const im=oc.getImageData(
-0,0,
-out.width,
-out.height
-);
-
-const z=im.data;
-
-for(let i=0;i<z.length;i+=4){
-
-if(bg(z[i],z[i+1],z[i+2],z[i+3],t)){
-z[i+3]=0;
-}
-
-}
-
-oc.putImageData(im,0,0);
-
-return out;
-}
-
-async function load(file){
-
-return pdfjsLib.getDocument({
-data:new Uint8Array(
-await file.arrayBuffer()
-)
-}).promise;
-
-}
-
-async function renderFirst(){
-
-if(!qFile)
-throw Error("Questions PDF select karo.");
-
-const pdf=await load(qFile);
-const page=await pdf.getPage(1);
-const scale=Number($("scale").value);
-
-const vp=page.getViewport({scale});
-
-const c=document.createElement("canvas");
-
-c.width=Math.ceil(vp.width);
-c.height=Math.ceil(vp.height);
-
-await page.render({
-canvasContext:c.getContext("2d"),
-viewport:vp
-}).promise;
-
-return c;
-}
-
-$("preview").onclick=async()=>{
-
-try{
-
-progress(15,"Loading PDF...");
-
-rendered=await renderFirst();
-
-progress(65,"Detecting content...");
-
-transparent=cropTransparent(rendered);
-
-const c=$("previewCanvas");
-
-c.width=transparent.width;
-c.height=transparent.height;
-
-c.getContext("2d").drawImage(
-transparent,
-0,
-0
-);
-
-progress(100,"Transparent crop ready");
-
-}catch(e){
-
-progress(0,e.message);
-alert(e.message);
-
-}
-};
-
-$("clearPreview").onclick=()=>{
-
-$("previewCanvas").width=0;
-$("previewCanvas").height=0;
-
-transparent=null;
-
-progress(0,"Ready");
-};
-
-$("downloadPNG").onclick=()=>{
-
-if(!transparent){
-alert("Preview/crop first.");
-return;
-}
-
-transparent.toBlob(blob=>{
-
-const u=URL.createObjectURL(blob);
-const a=document.createElement("a");
-
-a.href=u;
-a.download="transparent-question.png";
-
-document.body.appendChild(a);
-a.click();
-a.remove();
-
-setTimeout(
-()=>URL.revokeObjectURL(u),
-1000
-);
-
-},"image/png");
-};
-
-function providers(){
-
-return[
-["openai","openaiKey"],
-["gemini","geminiKey"],
-["groq","groqKey"],
-["deepseek","deepseekKey"]
-]
-.filter(x=>$(x[1]).value.trim())
-.map(x=>x[0]);
-
-}
-
-async function retry(fn,n=3){
-
-let e;
-
-for(let i=0;i<n;i++){
-
-try{
-return await fn();
-}catch(x){
-
-e=x;
-
-await new Promise(
-r=>setTimeout(r,900*(i+1))
-);
-
-}
-}
-
-throw e;
-}
-
-async function callOpenAI(prompt){
-
-const key=$("openaiKey").value.trim();
-
-return retry(async()=>{
-
-const r=await fetch(
-"https://api.openai.com/v1/responses",
-{
-method:"POST",
-headers:{
-"Content-Type":"application/json",
-"Authorization":"Bearer "+key
-},
-body:JSON.stringify({
-model:"gpt-4.1-mini",
-input:prompt
-})
-}
-);
-
-const d=await r.json();
-
-if(!r.ok)
-throw Error(
-"OpenAI "+r.status+": "+
-(d.error?.message||"API error")
-);
-
-return d.output_text||"";
-
-});
-}
-
-async function callGemini(prompt){
-
-const key=$("geminiKey").value.trim();
-
-if(!key)
-throw Error("Gemini API key is empty.");
-
-const selected=$("geminiModel")?.value||"gemini-3.6-flash";
-
-const models=[
-selected,
-"gemini-3.6-flash",
-"gemini-3.5-flash",
-"gemini-3.5-flash-lite",
-"gemini-3.1-flash-lite",
-"gemini-2.5-flash"
-].filter((v,i,a)=>a.indexOf(v)===i);
-
-let lastError=null;
-
-for(const model of models){
-
-try{
-
-const result=await retry(async()=>{
-
-const r=await fetch(
-"https://generativelanguage.googleapis.com/v1beta/models/"+
-encodeURIComponent(model)+
-":generateContent?key="+
-encodeURIComponent(key),
-{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-contents:[
-{
-parts:[
-{text:prompt}
-]
-}
-]
-})
-}
-);
-
-const d=await r.json();
-
-if(!r.ok){
-
-throw Error(
-"Gemini "+model+" "+r.status+": "+
-(d.error?.message||"API error")
-);
-
-}
-
-const text=d.candidates?.[0]?.content?.parts
-?.map(x=>x.text||"")
-.join("")||"";
-
-if(!text)
-throw Error(
-"Gemini "+model+": empty response"
-);
-
-return text;
-
-},3);
-
-$("geminiStatus").innerHTML=
-'<span class="ok">✓ '+model+' connected</span>';
-
-return result;
-
-}catch(e){
-
-lastError=e;
-console.warn("Gemini model failed:",model,e);
-
-}
-
-}
-
-throw lastError||Error("No Gemini model responded.");
-}
-
-async function callGroq(prompt){
-
-const key=$("groqKey").value.trim();
-
-return retry(async()=>{
-
-const r=await fetch(
-"https://api.groq.com/openai/v1/chat/completions",
-{
-method:"POST",
-headers:{
-"Content-Type":"application/json",
-"Authorization":"Bearer "+key
-},
-body:JSON.stringify({
-model:"llama-3.3-70b-versatile",
-messages:[
-{
-role:"user",
-content:prompt
-}
-]
-})
-}
-);
-
-const d=await r.json();
-
-if(!r.ok)
-throw Error(
-"Groq "+r.status+": "+
-(d.error?.message||"API error")
-);
-
-return d.choices?.[0]?.message?.content||"";
-
-});
-}
-
-async function callDeepSeek(prompt){
-
-const key=$("deepseekKey").value.trim();
-
-return retry(async()=>{
-
-const r=await fetch(
-"https://api.deepseek.com/chat/completions",
-{
-method:"POST",
-headers:{
-"Content-Type":"application/json",
-"Authorization":"Bearer "+key
-},
-body:JSON.stringify({
-model:"deepseek-chat",
-messages:[
-{
-role:"user",
-content:prompt
-}
-]
-})
-}
-);
-
-const d=await r.json();
-
-if(!r.ok)
-throw Error(
-"DeepSeek "+r.status+": "+
-(d.error?.message||"API error")
-);
-
-return d.choices?.[0]?.message?.content||"";
-
-});
-}
-
-async function askAI(prompt){
-
-const ps=providers();
-
-if(!ps.length)
-throw Error(
-"At least one AI API key enter karo."
-);
-
-const errors=[];
-
-for(const p of ps){
-
-try{
-
-progress(
-55,
-"Using "+p.toUpperCase()+"..."
-);
-
-let x;
-
-if(p==="openai")
-x=await callOpenAI(prompt);
-
-else if(p==="gemini")
-x=await callGemini(prompt);
-
-else if(p==="groq")
-x=await callGroq(prompt);
-
-else
-x=await callDeepSeek(prompt);
-
-if(x.trim())
-return[p,x];
-
-errors.push(p.toUpperCase()+": empty response");
-
-}catch(e){
-
-console.warn(p,e);
-errors.push(p.toUpperCase()+": "+(e?.message||"request failed"));
-
-}
-
-}
-
-throw Error(
-"AI connection failed. "+errors.join(" | ")
-);
-}
-
-$("testAI").onclick=async()=>{
-
-try{
-
-const ps=providers();
-
-if(!ps.length)
-throw Error(
-"At least one key enter karo."
-);
-
-const [p]=await askAI(
-"Reply only with OK."
-);
-
-$("globalStatus").innerHTML=
-'<span class="ok">✓ '+
-p.toUpperCase()+
-" responded.</span>";
-
-}catch(e){
-
-$("globalStatus").innerHTML=
-'<span class="bad">'+
-e.message+
-"</span>";
-
-}
-};
-
-async function pdfText(file){
-
-const pdf=await load(file);
-let out="";
-
-for(let i=1;i<=pdf.numPages;i++){
-
-const page=await pdf.getPage(i);
-const c=await page.getTextContent();
-
-out+=
-`\n===== PAGE ${i} =====\n`+
-c.items.map(x=>x.str).join(" ");
-
-progress(
-15+(i/pdf.numPages)*30,
-"Reading PDF • page "+
-i+"/"+pdf.numPages
-);
-
-await new Promise(r=>setTimeout(r,0));
-}
-
-return out;
-}
-
-function esc(s){
-
-return 
+</script>
+ </body>
+</html>
