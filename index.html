@@ -99,9 +99,9 @@ canvas{display:block;max-width:none;margin:auto;box-shadow:0 8px 25px #0005}
     <section class="panel">
      <h3>PDF source</h3>
      <p class="sub">Process page-by-page to reduce memory pressure on phones.</p>
-     <label class="drop"> <strong>📄 Questions PDF</strong> <small>Tap to select</small> <input id="qFile" type="file" accept="application/pdf"> </label>
+     <label class="drop"><strong>📄 Questions PDF</strong><small>Tap to select</small><input id="qFile" type="file" accept="application/pdf"></label>
      <div class="file" id="qName">No file selected</div>
-     <label class="drop" style="margin-top:12px"> <strong>🔑 Official Answer Key PDF</strong> <small>Tap to select</small> <input id="aFile" type="file" accept="application/pdf"> </label>
+     <label class="drop" style="margin-top:12px"><strong>🔑 Official Answer Key PDF</strong><small>Tap to select</small><input id="aFile" type="file" accept="application/pdf"></label>
      <div class="file" id="aName">No file selected</div>
      <div style="height:18px"></div>
      <div class="controls">
@@ -170,98 +170,744 @@ canvas{display:block;max-width:none;margin:auto;box-shadow:0 8px 25px #0005}
   </div>
   <script type="module">
 import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
-pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
+
+pdfjsLib.GlobalWorkerOptions.workerSrc=
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
 
 const $=id=>document.getElementById(id);
-let qFile=null,aFile=null,rendered=null,transparent=null;
 
-function progress(p,t){$("bar").style.width=Math.max(0,Math.min(100,p))+"%";$("progressText").textContent=t;}
+let qFile=null;
+let aFile=null;
+let rendered=null;
+let transparent=null;
 
-$("qFile").onchange=e=>{qFile=e.target.files[0]||null;$("qName").textContent=qFile?"✓ "+qFile.name:"No file selected"};
-$("aFile").onchange=e=>{aFile=e.target.files[0]||null;$("aName").textContent=aFile?"✓ "+aFile.name:"No file selected"};
+function progress(p,t){
+$("bar").style.width=Math.max(0,Math.min(100,p))+"%";
+$("progressText").textContent=t;
+}
+
+$("qFile").onchange=e=>{
+qFile=e.target.files[0]||null;
+$("qName").textContent=qFile?"✓ "+qFile.name:"No file selected";
+};
+
+$("aFile").onchange=e=>{
+aFile=e.target.files[0]||null;
+$("aName").textContent=aFile?"✓ "+aFile.name:"No file selected";
+};
 
 $("saveEmail").onclick=()=>{
-  const email=$("email").value.trim();
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alert("Valid email enter karo.");return}
-  localStorage.setItem("jee_nexus_email",email);
-  $("userPill").textContent=email;
-  $("globalStatus").innerHTML='<span class="ok">Workspace identified.</span>';
-};
-$("clearEmail").onclick=()=>{localStorage.removeItem("jee_nexus_email");$("email").value="";$("userPill").textContent="Not signed in"};
-const saved=localStorage.getItem("jee_nexus_email");if(saved){$("email").value=saved;$("userPill").textContent=saved}
+const email=$("email").value.trim();
 
+if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+alert("Valid email enter karo.");
+return;
+}
+
+localStorage.setItem("jee_nexus_email",email);
+$("userPill").textContent=email;
+
+$("globalStatus").innerHTML=
+'<span class="ok">Workspace identified.</span>';
+};
+
+$("clearEmail").onclick=()=>{
+localStorage.removeItem("jee_nexus_email");
+$("email").value="";
+$("userPill").textContent="Not signed in";
+};
+
+const saved=localStorage.getItem("jee_nexus_email");
+
+if(saved){
+$("email").value=saved;
+$("userPill").textContent=saved;
+}
+
+/*
+ IMPORTANT:
+ This is deliberately NOT a fake Google login.
+ A real Google OAuth connection requires a Google Cloud OAuth
+ client and a server-side callback/token exchange.
+*/
 $("googleBtn").onclick=()=>{
-  $("googleStatus").innerHTML='<span class="warn">OAuth needs a real backend/client ID. This button intentionally does not fake a Google login.</span>';
+$("googleStatus").innerHTML=
+'<span class="warn">Google OAuth is not configured yet. Add the real Google OAuth client/backend before enabling this button.</span>';
 };
 
 function bg(r,g,b,a,t){
-  return a<10 || (r>=t&&g>=t&&b>=t&&Math.max(r,g,b)-Math.min(r,g,b)<=12);
+return a<10 ||
+(r>=t&&g>=t&&b>=t&&
+Math.max(r,g,b)-Math.min(r,g,b)<=12);
 }
-function cropTransparent(source){
-  const ctx=source.getContext("2d",{willReadFrequently:true}),w=source.width,h=source.height,t=Number($("threshold").value)||245;
-  const d=ctx.getImageData(0,0,w,h),x=d.data;let l=w,tb=h,r=-1,b=-1;
-  for(let y=0;y<h;y++)for(let xx=0;xx<w;xx++){const i=(y*w+xx)*4;if(!bg(x[i],x[i+1],x[i+2],x[i+3],t)){if(xx<l)l=xx;if(xx>r)r=xx;if(y<tb)tb=y;if(y>b)b=y}}
-  if(r<0)return source;
-  const pad=Math.max(0,Number($("padding").value)||0);l=Math.max(0,l-pad);tb=Math.max(0,tb-pad);r=Math.min(w-1,r+pad);b=Math.min(h-1,b+pad);
-  const out=document.createElement("canvas");out.width=r-l+1;out.height=b-tb+1;out.getContext("2d").drawImage(source,l,tb,out.width,out.height,0,0,out.width,out.height);
-  const oc=out.getContext("2d",{willReadFrequently:true}),im=oc.getImageData(0,0,out.width,out.height),z=im.data;
-  for(let i=0;i<z.length;i+=4)if(bg(z[i],z[i+1],z[i+2],z[i+3],t))z[i+3]=0;
-  oc.putImageData(im,0,0);return out;
-}
-async function load(file){return pdfjsLib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise}
-async function renderFirst(){
-  if(!qFile)throw Error("Questions PDF select karo.");
-  const pdf=await load(qFile),page=await pdf.getPage(1),scale=Number($("scale").value);
-  const vp=page.getViewport({scale}),c=document.createElement("canvas");c.width=Math.ceil(vp.width);c.height=Math.ceil(vp.height);
-  await page.render({canvasContext:c.getContext("2d"),viewport:vp}).promise;return c;
-}
-$("preview").onclick=async()=>{
-  try{progress(15,"Loading PDF...");rendered=await renderFirst();progress(65,"Detecting content...");transparent=cropTransparent(rendered);const c=$("previewCanvas");c.width=transparent.width;c.height=transparent.height;c.getContext("2d").drawImage(transparent,0,0);progress(100,"Transparent crop ready");}
-  catch(e){progress(0,e.message);alert(e.message)}
-};
-$("clearPreview").onclick=()=>{$("previewCanvas").width=0;$("previewCanvas").height=0;transparent=null;progress(0,"Ready")};
-$("downloadPNG").onclick=()=>{if(!transparent){alert("Preview/crop first.");return}transparent.toBlob(blob=>{const u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="transparent-question.png";a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)},"image/png")};
 
-function providers(){return [["openai","openaiKey"],["gemini","geminiKey"],["groq","groqKey"],["deepseek","deepseekKey"]].filter(x=>$(x[1]).value.trim()).map(x=>x[0])}
-async function retry(fn,n=3){let e;for(let i=0;i<n;i++){try{return await fn()}catch(x){e=x;await new Promise(r=>setTimeout(r,900*(i+1)))}}throw e}
+function cropTransparent(source){
+
+const ctx=
+source.getContext("2d",{willReadFrequently:true});
+
+const w=source.width;
+const h=source.height;
+const t=Number($("threshold").value)||245;
+
+const d=ctx.getImageData(0,0,w,h);
+const x=d.data;
+
+let l=w;
+let tb=h;
+let r=-1;
+let b=-1;
+
+for(let y=0;y<h;y++){
+
+for(let xx=0;xx<w;xx++){
+
+const i=(y*w+xx)*4;
+
+if(!bg(x[i],x[i+1],x[i+2],x[i+3],t)){
+
+if(xx<l)l=xx;
+if(xx>r)r=xx;
+if(y<tb)tb=y;
+if(y>b)b=y;
+
+}
+}
+}
+
+if(r<0)return source;
+
+const pad=Math.max(
+0,
+Number($("padding").value)||0
+);
+
+l=Math.max(0,l-pad);
+tb=Math.max(0,tb-pad);
+r=Math.min(w-1,r+pad);
+b=Math.min(h-1,b+pad);
+
+const out=document.createElement("canvas");
+
+out.width=r-l+1;
+out.height=b-tb+1;
+
+out.getContext("2d").drawImage(
+source,
+l,tb,
+out.width,out.height,
+0,0,
+out.width,out.height
+);
+
+const oc=out.getContext(
+"2d",
+{willReadFrequently:true}
+);
+
+const im=oc.getImageData(
+0,0,
+out.width,
+out.height
+);
+
+const z=im.data;
+
+for(let i=0;i<z.length;i+=4){
+
+if(bg(z[i],z[i+1],z[i+2],z[i+3],t)){
+z[i+3]=0;
+}
+
+}
+
+oc.putImageData(im,0,0);
+
+return out;
+}
+
+async function load(file){
+
+return pdfjsLib.getDocument({
+data:new Uint8Array(
+await file.arrayBuffer()
+)
+}).promise;
+
+}
+
+async function renderFirst(){
+
+if(!qFile)
+throw Error("Questions PDF select karo.");
+
+const pdf=await load(qFile);
+const page=await pdf.getPage(1);
+const scale=Number($("scale").value);
+
+const vp=page.getViewport({scale});
+
+const c=document.createElement("canvas");
+
+c.width=Math.ceil(vp.width);
+c.height=Math.ceil(vp.height);
+
+await page.render({
+canvasContext:c.getContext("2d"),
+viewport:vp
+}).promise;
+
+return c;
+}
+
+$("preview").onclick=async()=>{
+
+try{
+
+progress(15,"Loading PDF...");
+
+rendered=await renderFirst();
+
+progress(65,"Detecting content...");
+
+transparent=cropTransparent(rendered);
+
+const c=$("previewCanvas");
+
+c.width=transparent.width;
+c.height=transparent.height;
+
+c.getContext("2d").drawImage(
+transparent,
+0,
+0
+);
+
+progress(100,"Transparent crop ready");
+
+}catch(e){
+
+progress(0,e.message);
+alert(e.message);
+
+}
+};
+
+$("clearPreview").onclick=()=>{
+
+$("previewCanvas").width=0;
+$("previewCanvas").height=0;
+
+transparent=null;
+
+progress(0,"Ready");
+};
+
+$("downloadPNG").onclick=()=>{
+
+if(!transparent){
+alert("Preview/crop first.");
+return;
+}
+
+transparent.toBlob(blob=>{
+
+const u=URL.createObjectURL(blob);
+const a=document.createElement("a");
+
+a.href=u;
+a.download="transparent-question.png";
+
+document.body.appendChild(a);
+a.click();
+a.remove();
+
+setTimeout(
+()=>URL.revokeObjectURL(u),
+1000
+);
+
+},"image/png");
+};
+
+function providers(){
+
+return[
+["openai","openaiKey"],
+["gemini","geminiKey"],
+["groq","groqKey"],
+["deepseek","deepseekKey"]
+]
+.filter(x=>$(x[1]).value.trim())
+.map(x=>x[0]);
+
+}
+
+async function retry(fn,n=3){
+
+let e;
+
+for(let i=0;i<n;i++){
+
+try{
+return await fn();
+}catch(x){
+
+e=x;
+
+await new Promise(
+r=>setTimeout(r,900*(i+1))
+);
+
+}
+}
+
+throw e;
+}
+
 async function callOpenAI(prompt){
- const key=$("openaiKey").value.trim();
- return retry(async()=>{const r=await fetch("https://api.openai.com/v1/responses",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+key},body:JSON.stringify({model:"gpt-4.1-mini",input:prompt})});const d=await r.json();if(!r.ok)throw Error("OpenAI "+r.status+": "+(d.error?.message||"API error"));return d.output_text||""})
+
+const key=$("openaiKey").value.trim();
+
+return retry(async()=>{
+
+const r=await fetch(
+"https://api.openai.com/v1/responses",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+"Authorization":"Bearer "+key
+},
+body:JSON.stringify({
+model:"gpt-4.1-mini",
+input:prompt
+})
 }
+);
+
+const d=await r.json();
+
+if(!r.ok)
+throw Error(
+"OpenAI "+r.status+": "+
+(d.error?.message||"API error")
+);
+
+return d.output_text||"";
+
+});
+}
+
 async function callGemini(prompt){
- const key=$("geminiKey").value.trim();
- return retry(async()=>{const r=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key="+encodeURIComponent(key),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});const d=await r.json();if(!r.ok)throw Error("Gemini "+r.status+": "+(d.error?.message||"API error"));return d.candidates?.[0]?.content?.parts?.map(x=>x.text||"").join("")||""})
+
+const key=$("geminiKey").value.trim();
+
+return retry(async()=>{
+
+const r=await fetch(
+"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key="+encodeURIComponent(key),
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+contents:[
+{
+parts:[
+{text:prompt}
+]
 }
+]
+})
+}
+);
+
+const d=await r.json();
+
+if(!r.ok)
+throw Error(
+"Gemini "+r.status+": "+
+(d.error?.message||"API error")
+);
+
+return d.candidates?.[0]?.content?.parts
+?.map(x=>x.text||"")
+.join("")||"";
+
+});
+}
+
 async function callGroq(prompt){
- const key=$("groqKey").value.trim();
- return retry(async()=>{const r=await fetch("https://api.groq.com/openai/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+key},body:JSON.stringify({model:"llama-3.3-70b-versatile",messages:[{role:"user",content:prompt}]})});const d=await r.json();if(!r.ok)throw Error("Groq "+r.status+": "+(d.error?.message||"API error"));return d.choices?.[0]?.message?.content||""})
+
+const key=$("groqKey").value.trim();
+
+return retry(async()=>{
+
+const r=await fetch(
+"https://api.groq.com/openai/v1/chat/completions",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+"Authorization":"Bearer "+key
+},
+body:JSON.stringify({
+model:"llama-3.3-70b-versatile",
+messages:[
+{
+role:"user",
+content:prompt
 }
+]
+})
+}
+);
+
+const d=await r.json();
+
+if(!r.ok)
+throw Error(
+"Groq "+r.status+": "+
+(d.error?.message||"API error")
+);
+
+return d.choices?.[0]?.message?.content||"";
+
+});
+}
+
 async function callDeepSeek(prompt){
- const key=$("deepseekKey").value.trim();
- return retry(async()=>{const r=await fetch("https://api.deepseek.com/chat/completions",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+key},body:JSON.stringify({model:"deepseek-chat",messages:[{role:"user",content:prompt}]})});const d=await r.json();if(!r.ok)throw Error("DeepSeek "+r.status+": "+(d.error?.message||"API error"));return d.choices?.[0]?.message?.content||""})
+
+const key=$("deepseekKey").value.trim();
+
+return retry(async()=>{
+
+const r=await fetch(
+"https://api.deepseek.com/chat/completions",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+"Authorization":"Bearer "+key
+},
+body:JSON.stringify({
+model:"deepseek-chat",
+messages:[
+{
+role:"user",
+content:prompt
 }
+]
+})
+}
+);
+
+const d=await r.json();
+
+if(!r.ok)
+throw Error(
+"DeepSeek "+r.status+": "+
+(d.error?.message||"API error")
+);
+
+return d.choices?.[0]?.message?.content||"";
+
+});
+}
+
 async function askAI(prompt){
- const ps=providers();if(!ps.length)throw Error("At least one AI API key enter karo.");
- for(const p of ps){try{progress(55,"Using "+p.toUpperCase()+"...");let x=p==="openai"?await callOpenAI(prompt):p==="gemini"?await callGemini(prompt):p==="groq"?await callGroq(prompt):await callDeepSeek(prompt);if(x.trim())return [p,x]}catch(e){console.warn(p,e)}}
- throw Error("All configured AI providers failed.");
+
+const ps=providers();
+
+if(!ps.length)
+throw Error(
+"At least one AI API key enter karo."
+);
+
+for(const p of ps){
+
+try{
+
+progress(
+55,
+"Using "+p.toUpperCase()+"..."
+);
+
+let x;
+
+if(p==="openai")
+x=await callOpenAI(prompt);
+
+else if(p==="gemini")
+x=await callGemini(prompt);
+
+else if(p==="groq")
+x=await callGroq(prompt);
+
+else
+x=await callDeepSeek(prompt);
+
+if(x.trim())
+return[p,x];
+
+}catch(e){
+
+console.warn(p,e);
+
 }
+
+}
+
+throw Error(
+"All configured AI providers failed."
+);
+}
+
 $("testAI").onclick=async()=>{
- try{const ps=providers();if(!ps.length)throw Error("At least one key enter karo.");const [p]=await askAI("Reply only with OK.");$("globalStatus").innerHTML='<span class="ok">✓ '+p.toUpperCase()+" responded.</span>"}catch(e){$("globalStatus").innerHTML='<span class="bad">'+e.message+"</span>"}
+
+try{
+
+const ps=providers();
+
+if(!ps.length)
+throw Error(
+"At least one key enter karo."
+);
+
+const [p]=await askAI(
+"Reply only with OK."
+);
+
+$("globalStatus").innerHTML=
+'<span class="ok">✓ '+
+p.toUpperCase()+
+" responded.</span>";
+
+}catch(e){
+
+$("globalStatus").innerHTML=
+'<span class="bad">'+
+e.message+
+"</span>";
+
+}
 };
 
 async function pdfText(file){
- const pdf=await load(file);let out="";
- for(let i=1;i<=pdf.numPages;i++){const page=await pdf.getPage(i),c=await page.getTextContent();out+=`\n===== PAGE ${i} =====\n`+c.items.map(x=>x.str).join(" ");progress(15+(i/pdf.numPages)*30,"Reading PDF • page "+i+"/"+pdf.numPages);await new Promise(r=>setTimeout(r,0))}
- return out;
+
+const pdf=await load(file);
+let out="";
+
+for(let i=1;i<=pdf.numPages;i++){
+
+const page=await pdf.getPage(i);
+const c=await page.getTextContent();
+
+out+=
+`\n===== PAGE ${i} =====\n`+
+c.items.map(x=>x.str).join(" ");
+
+progress(
+15+(i/pdf.numPages)*30,
+"Reading PDF • page "+
+i+"/"+pdf.numPages
+);
+
+await new Promise(r=>setTimeout(r,0));
 }
-function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+
+return out;
+}
+
+function esc(s){
+
+return String(s??"").replace(
+/[&<>"']/g,
+m=>({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+}[m])
+);
+
+}
+
 $("generate").onclick=async()=>{
- try{
-  if(!qFile||!aFile)throw Error("Questions PDF aur Answer Key PDF dono select karo.");
-  if(!providers().length)throw Error("At least one AI key enter karo.");
-  progress(5,"Starting...");
-  const qt=await pdfText(qFile),at=await pdfText(aFile);
-  const prompt=`You are a strict JEE CBT data extractor. DO NOT create, paraphrase, solve, or modify questions. Use ONLY the supplied Questions PDF text. Use the Answer Key PDF only for official answers. Return JSON only with {"questions":[{"id":1,"subject":"Physics","type":"single","question":"EXACT TEXT","options":["EXACT A","EXACT B","EXACT C","EXACT D"],"correctAnswer":"A"}]}. If a question is numerical, use type numerical and no options. Never invent missing content.\nQUESTIONS:\n${qt}\nANSWER KEY:\n${at}`;
-  const [provider,out]=await askAI(prompt);progress(90,"Validating AI output...");
-  let data;try{data=JSON.parse(out.replace(/^```json/i,"").replace(/```/g,"").trim())}catch{throw Error("AI returned invalid JSON. Try another configured provider.")}
-  const qs=Array.isArray(data.questions)?data.questions:[];$("outputPanel").style.display="block";$("count").textContent=qs.length;$("dura
+
+try{
+
+if(!qFile||!aFile)
+throw Error(
+"Questions PDF aur Answer Key PDF dono select karo."
+);
+
+if(!providers().length)
+throw Error(
+"At least one AI key enter karo."
+);
+
+progress(5,"Starting...");
+
+const qt=await pdfText(qFile);
+const at=await pdfText(aFile);
+
+const prompt=`You are a strict JEE CBT data extractor.
+
+DO NOT create questions.
+DO NOT paraphrase questions.
+DO NOT solve questions.
+DO NOT modify numbers, symbols or options.
+
+Use ONLY the supplied Questions PDF text.
+
+Use the Answer Key PDF only for official answers.
+
+Return JSON only.
+
+Format:
+
+{
+ "questions":[
+  {
+   "id":1,
+   "subject":"Physics",
+   "type":"single",
+   "question":"EXACT TEXT",
+   "options":[
+    "EXACT A",
+    "EXACT B",
+    "EXACT C",
+    "EXACT D"
+   ],
+   "correctAnswer":"A"
+  }
+ ]
+}
+
+If numerical:
+
+{
+ "id":1,
+ "subject":"Physics",
+ "type":"numerical",
+ "question":"EXACT TEXT",
+ "correctAnswer":"..."
+}
+
+Never invent missing content.
+
+QUESTIONS:
+${qt}
+
+ANSWER KEY:
+${at}`;
+
+const [provider,out]=await askAI(prompt);
+
+progress(
+90,
+"Validating AI output..."
+);
+
+let data;
+
+try{
+
+data=JSON.parse(
+out
+.replace(/^```json/i,"")
+.replace(/```/g,"")
+.trim()
+);
+
+}catch{
+
+throw Error(
+"AI returned invalid JSON. Try another configured provider."
+);
+
+}
+
+const qs=
+Array.isArray(data.questions)
+?data.questions
+:[];
+
+$("outputPanel").style.display="block";
+
+$("count").textContent=qs.length;
+
+$("durationOut").textContent=
+$("duration").value;
+
+$("providerOut").textContent=
+provider.toUpperCase();
+
+$("subjects").textContent=
+new Set(
+qs.map(q=>q.subject).filter(Boolean)
+).size;
+
+$("questions").innerHTML=
+qs.map(q=>`
+
+<div class="question">
+
+<div class="qnum">
+Question ${esc(q.id)}
+•
+${esc(q.subject||"")}
+</div>
+
+<div style="margin-top:8px;line-height:1.6">
+${esc(q.question)}
+</div>
+
+${
+(q.options||[])
+.map(
+(o,i)=>`
+<div class="option">
+<b>${"ABCDE"[i]}.</b>
+${esc(o)}
+</div>
+`
+)
+.join("")
+}
+
+</div>
+
+`).join("");
+
+localStorage.setItem(
+"jee_nexus_cbt",
+JSON.stringify(data)
+);
+
+progress(
+100,
+"CBT generated successfully."
+);
+
+}catch(e){
+
+progress(
+0,
+e.message
+);
+
+alert(
+e.message
+);
+
+}
+
+};
+</script>
+ </body>
+</html>
