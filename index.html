@@ -2,131 +2,392 @@
 <html lang="en">
  <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>JEE Main 2027 • Gemini Connect</title>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>JEE Main 2027 • CBT</title>
   <style>
-*{box-sizing:border-box}body{margin:0;background:#070b12;color:#f4f7fb;font-family:system-ui,-apple-system,Segoe UI,Arial;padding:10px}
-.app{max-width:620px;margin:auto}.card{background:#0d1420;border:1px solid #202d40;border-radius:16px;padding:16px;margin-top:10px}
-h1{font-size:25px;margin:0}.sub{color:#8d99aa;font-size:12px;line-height:1.5;margin-top:5px}h2{font-size:17px;margin:0 0 5px}
-input{width:100%;padding:12px;margin-top:9px;border:1px solid #26354a;border-radius:9px;background:#080e18;color:#fff}
-button{width:100%;padding:12px;margin-top:9px;border:0;border-radius:9px;background:#2563eb;color:#fff;font-weight:800}
-.googlewrap{margin-top:10px;min-height:44px;display:flex;justify-content:center}
-.status{font-size:12px;line-height:1.5;margin-top:8px;min-height:18px}.ok{color:#22c55e}.bad{color:#ef4444}.warn{color:#f59e0b}.muted{color:#8d99aa}
-.connected{display:none;margin-top:10px;padding:11px;border-radius:10px;background:#0a1d13;border:1px solid #174c31;color:#8de1aa;font-size:12px}
-.test{display:none}.q{padding:12px;background:#0a111c;border:1px solid #202d40;border-radius:10px;margin-top:8px;font-size:13px;line-height:1.5}.opt{padding:8px;margin-top:6px;border:1px solid #253349;border-radius:8px}.sel{border-color:#3b82f6;background:#102449}
-.note{font-size:10px;color:#707d90;line-height:1.45;margin-top:10px}
+:root{
+  --bg:#070b12;--card:#0d1420;--card2:#111a28;--line:#202d40;
+  --text:#f5f7fb;--muted:#8e9aae;--blue:#3b82f6;--green:#22c55e;
+  --red:#ef4444;--white:#fff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);
+font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+body{padding:10px}
+button,input,select{font:inherit}
+.app{width:min(720px,100%);margin:auto;padding-bottom:30px}
+.header{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:13px 14px;background:rgba(13,20,32,.96);border:1px solid var(--line);
+  border-radius:16px;position:sticky;top:8px;z-index:20;backdrop-filter:blur(16px)
+}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:40px;height:40px;border-radius:11px;background:var(--blue);
+display:grid;place-items:center;font-weight:900}
+.brand b{font-size:15px}.brand span{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+.timer{font-weight:800;background:#182235;border:1px solid #2a3950;padding:8px 10px;border-radius:10px;font-size:13px}
+.hero{padding:28px 4px 17px}
+.hero h1{font-size:30px;line-height:1.05;margin:0;letter-spacing:-1px}
+.hero h1 em{font-style:normal;color:#5b96ff}.hero p{color:var(--muted);font-size:13px;line-height:1.5;margin:8px 0 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:15px;margin-top:11px}
+.card h2{font-size:17px;margin:0}.hint{color:var(--muted);font-size:11px;line-height:1.45;margin:5px 0 12px}
+.google{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:9px;
+  background:#fff;color:#182033;border:0;border-radius:10px;padding:12px;font-weight:800
+}
+.g{font-weight:900;color:#4285f4;font-size:18px}
+.user{margin-top:8px;padding:9px;border-radius:9px;background:#0a111c;color:#8dd6a4;font-size:11px;display:none}
+.files{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.upload{
+  border:1.5px dashed #34465f;background:#0a111c;border-radius:12px;
+  min-height:122px;padding:15px 10px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden
+}
+.upload input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
+.upload .icon{font-size:25px;margin-bottom:7px}.upload b{font-size:12px}.upload small{color:var(--muted);font-size:10px;margin-top:4px}
+.file-name{color:#55d98a;font-size:10px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:7px}
+.settings{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}
+label{display:block;color:#9ba8bb;font-size:10px;margin-bottom:5px}
+input[type=text],input[type=number],input[type=password],select{
+ width:100%;background:#080e18;color:var(--text);border:1px solid var(--line);
+ border-radius:9px;padding:11px;outline:0
+}
+select option{background:#101824}
+.ai-row{display:grid;grid-template-columns:115px 1fr;gap:8px}
+.ai-row button{border:1px solid var(--line);background:#111b2a;color:#fff;border-radius:9px;padding:0 9px;font-size:11px;font-weight:800}
+.status{font-size:10px;min-height:14px;margin-top:7px}.ok{color:var(--green)}.bad{color:var(--red)}.muted{color:var(--muted)}
+.mainbtn{
+ width:100%;border:0;border-radius:11px;padding:13px;background:linear-gradient(135deg,#2563eb,#4f46e5);
+ color:#fff;font-weight:900;margin-top:12px
+}
+.mainbtn:disabled{opacity:.4}
+.progress{height:7px;background:#182235;border-radius:20px;overflow:hidden;margin-top:10px}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#3b82f6,#22c55e);transition:.2s}
+.log{color:var(--muted);font-size:10px;margin-top:6px}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}
+.feature{background:#0a111c;border:1px solid var(--line);border-radius:9px;padding:9px}
+.feature b{font-size:10px}.feature span{display:block;color:var(--muted);font-size:9px;margin-top:3px}
+.result{display:none}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.stat{background:#0a111c;border:1px solid var(--line);border-radius:9px;padding:10px}.stat b{font-size:18px}.stat span{display:block;color:var(--muted);font-size:9px}
+.search{margin-top:9px}
+.q{padding:11px;border:1px solid var(--line);background:#0a111c;border-radius:9px;margin-top:7px;font-size:11px;line-height:1.45}
+.q b{color:#6fa2ff}.q small{display:block;color:var(--muted);margin-top:4px}
+#cbt{display:none;position:fixed;inset:0;z-index:1000;background:#f5f5f5;color:#222}
+.cbt-top{height:58px;background:#fff;border-bottom:1px solid #bbb;display:flex;align-items:center;justify-content:space-between;padding:0 11px}
+.cbt-logo{width:34px;height:34px;background:#145db8;color:#fff;border-radius:4px;display:grid;place-items:center;font-weight:900}
+.cbt-brand{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800}.cbt-brand small{display:block;font-weight:400;color:#777;font-size:9px}
+.clock{font-weight:900;font-size:15px}
+.cbt-body{height:calc(100vh - 58px);display:flex;flex-direction:column}
+.cbt-tabs{height:42px;background:#e9e9e9;display:flex;border-bottom:1px solid #aaa}.cbt-tabs button{flex:1;border:0;border-right:1px solid #bbb;background:#ddd;font-size:11px;font-weight:800}.cbt-tabs .on{background:#fff;color:#1559ad;border-top:3px solid #1559ad}
+.question{flex:1;background:#fff;overflow:auto;padding:17px}.qtop{display:flex;justify-content:space-between;font-weight:800;font-size:12px;border-bottom:1px solid #ddd;padding-bottom:10px}.qtext{white-space:pre-wrap;line-height:1.6;font-size:15px;margin-top:15px}.opts{margin-top:15px}.opt{display:flex;gap:9px;margin:13px 0;font-size:14px;line-height:1.5}.opt input{accent-color:#155eef;width:18px;height:18px}
+.cbt-actions{background:#f0f0f0;border-top:1px solid #aaa;padding:7px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}.cbt-actions button{padding:10px 5px;background:#fff;border:1px solid #888;border-radius:3px;font-size:10px;font-weight:800}.cbt-actions .next{background:#1769d3;color:#fff;border-color:#1769d3}
+@media(max-width:500px){
+ body{padding:7px}.hero h1{font-size:27px}.files{grid-template-columns:1fr 1fr}.upload{min-height:115px}.settings{grid-template-columns:1fr 1fr}.features{grid-template-columns:1fr 1fr 1fr}
+}
+@media(max-width:370px){.files{grid-template-columns:1fr}.ai-row{grid-template-columns:105px 1fr}.hero h1{font-size:24px}}
 </style>
  </head>
  <body>
-  <div class="app">
-   <div class="card">
-    <h1>JEE Main 2027</h1>
-    <div class="sub">Google → Gemini connection test • Ganpati Bappa Morya 🙏</div>
-   </div>
-   <div class="card">
-    <h2>1. Google Authentication</h2>
-    <div class="sub">Paste your Web OAuth Client ID, then use the real Google Sign-In button.</div>
-    <input id="clientId" placeholder="123...apps.googleusercontent.com" autocomplete="off">
-    <button id="loadGoogle">LOAD GOOGLE SIGN-IN</button>
-    <div class="googlewrap" id="googleButton"></div>
+  <div class="app" id="app">
+   <header class="header">
+    <div class="brand">
+     <div class="logo">JN</div>
+     <div>
+      <b>JEE Main 2027</b><span>Mock Test • CBT Studio</span>
+     </div>
+    </div>
+    <div class="timer" id="topTimer">03:00:00</div>
+   </header>
+   <section class="hero">
+    <h1>PDF → <em>JEE Main CBT</em></h1>
+    <p>One simple setup. Upload both PDFs, connect one AI, map the official answers, then start the mock test.</p>
+   </section>
+   <section class="card">
+    <h2>Google Authentication</h2>
+    <p class="hint">Apna Google Web Client ID ek baar paste karo. Phir real Google Sign-In button se connect karo.</p>
+    <input id="googleClientId" type="text" placeholder="Google Web Client ID • ...apps.googleusercontent.com">
+    <button class="mainbtn" id="setupGoogle" style="margin-top:8px">LOAD GOOGLE SIGN-IN</button>
+    <div id="googleButton" style="margin-top:10px;min-height:42px"></div>
+    <div class="user" id="googleUser"></div>
     <div class="status" id="googleStatus"></div>
-    <div class="connected" id="connected"></div>
-    <div class="note">The OAuth Client ID is not a secret. Do not paste a Client Secret here. Your deployed site's origin must be added to Google Cloud → OAuth client → Authorized JavaScript origins.</div>
-   </div>
-   <div class="card">
-    <h2>2. Gemini API</h2>
-    <div class="sub">For this browser-only smoke test, Gemini API access still uses an API key. Google Sign-In and API-key access are separate authentication methods.</div>
-    <input id="apiKey" type="password" placeholder="Gemini API key" autocomplete="off">
-    <button id="testGemini">TEST GEMINI</button>
-    <div class="status" id="geminiStatus"></div>
-   </div>
-   <div class="card test" id="cbt">
-    <h2>3. CBT Smoke Test</h2>
-    <div class="sub">This opens only after Gemini responds successfully.</div>
-    <div id="questions"></div>
-    <button id="submit">SUBMIT TEST</button>
-    <div id="score" class="status"></div>
+    <div class="hint" style="margin-top:8px">For real login, add this site URL under Google Cloud → OAuth Client → Authorized JavaScript origins.</div>
+   </section>
+   <section class="card">
+    <h2>Upload Question Paper</h2>
+    <p class="hint">Select both original PDFs. No separate upload screens.</p>
+    <div class="files">
+     <label class="upload"> <input id="qFile" type="file" accept="application/pdf"> <span class="icon">📄</span><b>Questions PDF</b><small>Tap to select</small> <span class="file-name" id="qName"></span> </label> <label class="upload"> <input id="aFile" type="file" accept="application/pdf"> <span class="icon">🔑</span><b>Answer Key PDF</b><small>Tap to select</small> <span class="file-name" id="aName"></span> </label>
+    </div>
+   </section>
+   <section class="card">
+    <h2>AI Connection</h2>
+    <p class="hint">Bas ek AI choose karo. Dono bharna compulsory nahi hai.</p>
+    <div class="ai-row">
+     <button id="aiChoice">Gemini</button>
+     <input id="apiKey" type="password" placeholder="Paste Gemini API key">
+    </div>
+    <select id="model" style="margin-top:8px"></select>
+    <button class="mainbtn" id="testAI">TEST AI CONNECTION</button>
+    <div class="status" id="aiStatus"></div>
+   </section>
+   <section class="card">
+    <h2>Test Settings</h2>
+    <div class="settings">
+     <div>
+      <label>Paper</label><select id="paper"><option>JEE Main 2027 Paper 1</option></select>
+     </div>
+     <div>
+      <label>Duration</label><input id="duration" type="number" value="180" min="1">
+     </div>
+    </div>
+    <div class="features">
+     <div class="feature">
+      <b>Exact text</b><span>No invented questions</span>
+     </div>
+     <div class="feature">
+      <b>Answer mapping</b><span>Official key only</span>
+     </div>
+     <div class="feature">
+      <b>White CBT</b><span>Clean JEE layout</span>
+     </div>
+    </div>
+    <button class="mainbtn" id="generate" disabled>GENERATE JEE MAIN 2027 MOCK</button>
+    <div class="progress">
+     <i id="bar"></i>
+    </div>
+    <div class="log" id="log">Select both PDFs and connect AI.</div>
+   </section>
+   <section class="card result" id="resultCard">
+    <h2>Analysis</h2>
+    <div class="stats">
+     <div class="stat">
+      <b id="total">0</b><span>Questions</span>
+     </div>
+     <div class="stat">
+      <b id="phy">0</b><span>Physics</span>
+     </div>
+     <div class="stat">
+      <b id="chem">0</b><span>Chemistry</span>
+     </div>
+    </div>
+    <input class="search" id="search" placeholder="Search question...">
+    <div id="list"></div>
+   </section>
+  </div>
+  <div id="cbt">
+   <header class="cbt-top">
+    <div class="cbt-brand">
+     <div class="cbt-logo">NTA</div>
+     <div>
+      JEE Main 2027<small>Mock Test</small>
+     </div>
+    </div>
+    <div class="clock" id="clock">03:00:00</div>
+   </header>
+   <div class="cbt-body">
+    <div class="cbt-tabs">
+     <button class="on">Physics</button>
+     <button>Chemistry</button>
+     <button>Mathematics</button>
+    </div>
+    <main class="question">
+     <div class="qtop">
+      <span id="qnum">Question 1</span><span id="qtype">Single Correct</span>
+     </div>
+     <div class="qtext" id="qtext"></div>
+     <div class="opts" id="opts"></div>
+    </main>
+    <div class="cbt-actions">
+     <button id="clear">Clear</button>
+     <button id="review">Mark for Review</button>
+     <button class="next" id="next">Save &amp; Next</button>
+    </div>
    </div>
   </div>
-  <script>
-const $=id=>document.getElementById(id);
+  <script type="module">
+import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
+pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
 
-function decodeJwt(token){
+const $=id=>document.getElementById(id);
+let qFile=null,aFile=null,questions=[],idx=0,remaining=10800,timer=null;
+let ai="gemini";
+
+
+let googleReady=false;
+
+function decodeGoogleJWT(token){
  try{
-  const b=token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
-  const s=decodeURIComponent(atob(b).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));
-  return JSON.parse(s);
+  const part=token.split(".")[1];
+  const b64=part.replace(/-/g,"+").replace(/_/g,"/");
+  const json=decodeURIComponent(atob(b64).split("").map(c=>"%"+("00"+c.charCodeAt(0).toString(16)).slice(-2)).join(""));
+  return JSON.parse(json);
  }catch{return null}
 }
 
-function googleInit(){
- const id=$('clientId').value.trim();
- if(!id.endsWith('.apps.googleusercontent.com')){
-  $('googleStatus').innerHTML='<span class="bad">Valid Web OAuth Client ID paste karo.</span>';return;
+function initGoogle(){
+ const clientId=$("googleClientId").value.trim();
+ if(!clientId.endsWith(".apps.googleusercontent.com")){
+  $("googleStatus").innerHTML='<span class="bad">Valid Google Web Client ID paste karo.</span>';
+  return;
  }
  if(!window.google?.accounts?.id){
-  $('googleStatus').innerHTML='<span class="warn">Google Sign-In library abhi load ho rahi hai. 2 seconds baad LOAD dabao.</span>';return;
+  $("googleStatus").innerHTML='<span class="warn">Google Identity Services loading hai. 2–3 seconds baad try karo.</span>';
+  return;
  }
- google.accounts.id.initialize({
-  client_id:id,
-  callback:(response)=>{
-   const data=decodeJwt(response.credential);
-   if(!data){$('googleStatus').innerHTML='<span class="bad">Google credential read nahi hua.</span>';return}
-   $('connected').style.display='block';
-   $('connected').textContent='✓ Google connected: '+(data.name||'Google user')+(data.email?' • '+data.email:'');
-   $('googleStatus').innerHTML='<span class="ok">Authentication successful.</span>';
-  },
-  auto_select:false
- });
- $('googleButton').innerHTML='';
- google.accounts.id.renderButton($('googleButton'),{
-  theme:'outline',size:'large',text:'signin_with',shape:'rectangular',
-  width:Math.min(360,window.innerWidth-50)
- });
- $('googleStatus').innerHTML='<span class="ok">✓ Google Sign-In ready. Tap the button above.</span>';
-}
-$('loadGoogle').onclick=googleInit;
-
-const qs=[
- {s:'Physics',q:'A body moves at 10 m/s for 5 s. Its displacement is:',o:['2 m','15 m','50 m','100 m'],a:'C'},
- {s:'Chemistry',q:'The molar mass of H₂O is:',o:['16 g mol⁻¹','18 g mol⁻¹','20 g mol⁻¹','22 g mol⁻¹'],a:'B'},
- {s:'Mathematics',q:'If f(x)=x², then f(3) equals:',o:['3','6','9','12'],a:'C'}
-];
-const ans={};
-function draw(){
- $('questions').innerHTML=qs.map((q,i)=>`<div class="q"><b>Q${i+1} • ${q.s}</b><div style="margin-top:6px">${q.q}</div>${q.o.map((x,j)=>`<div class="opt" data-i="${i}" data-v="${'ABCD'[j]}">${'ABCD'[j]}. ${x}</div>`).join('')}</div>`).join('');
- document.querySelectorAll('.opt').forEach(x=>x.onclick=()=>{
-  const i=+x.dataset.i;ans[i]=x.dataset.v;
-  document.querySelectorAll('.opt[data-i="'+i+'"]').forEach(y=>y.classList.remove('sel'));x.classList.add('sel');
- });
-}
-async function testGemini(){
- const key=$('apiKey').value.trim();
- if(!key)throw Error('Gemini API key enter karo.');
- const model='gemini-3.6-flash';
- const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+encodeURIComponent(key),{
-  method:'POST',headers:{'Content-Type':'application/json'},
-  body:JSON.stringify({contents:[{parts:[{text:'Reply only with OK.'}]}]})
- });
- const d=await r.json();
- if(!r.ok)throw Error(d.error?.message||('Gemini HTTP '+r.status));
- return d.candidates?.[0]?.content?.parts?.map(x=>x.text||'').join('')||'';
-}
-$('testGemini').onclick=async()=>{
- $('testGemini').disabled=true;$('geminiStatus').innerHTML='<span class="warn">Connecting to Gemini…</span>';
  try{
-  const r=await testGemini();
-  $('geminiStatus').innerHTML='<span class="ok">✓ Gemini connected successfully • '+r+'</span>';
-  $('cbt').style.display='block';draw();
- }catch(e){$('geminiStatus').innerHTML='<span class="bad">✕ '+e.message+'</span>'}
- finally{$('testGemini').disabled=false}
+  google.accounts.id.initialize({
+   client_id:clientId,
+   callback:handleGoogleCredential,
+   auto_select:false,
+   color_scheme:"dark"
+  });
+  $("googleButton").innerHTML="";
+  google.accounts.id.renderButton($("googleButton"),{
+   theme:"outline",
+   size:"large",
+   width:Math.min(360, $("googleButton").clientWidth || 360),
+   text:"signin_with",
+   shape:"rectangular"
+  });
+  googleReady=true;
+  localStorage.setItem("jee_google_client_id",clientId);
+  $("googleStatus").innerHTML='<span class="ok">✓ Google Sign-In loaded. Tap the Google button above.</span>';
+ }catch(e){
+  $("googleStatus").innerHTML='<span class="bad">Google setup error: '+e.message+'</span>';
+ }
+}
+
+function handleGoogleCredential(response){
+ const data=decodeGoogleJWT(response.credential);
+ if(!data){
+  $("googleStatus").innerHTML='<span class="bad">Google credential read nahi ho paya.</span>';
+  return;
+ }
+ const name=data.name||"Google user";
+ const email=data.email||"";
+ $("googleUser").style.display="block";
+ $("googleUser").textContent="✓ Connected: "+name+(email?" • "+email:"");
+ $("googleStatus").innerHTML='<span class="ok">Google account connected successfully.</span>';
+ localStorage.setItem("jee_google_user",JSON.stringify({name,email,picture:data.picture||""}));
+}
+
+const savedGoogleClient=localStorage.getItem("jee_google_client_id");
+if(savedGoogleClient) $("googleClientId").value=savedGoogleClient;
+
+$("setupGoogle").onclick=initGoogle;
+
+window.addEventListener("load",()=>{
+ if(savedGoogleClient && window.google?.accounts?.id) initGoogle();
+});
+
+const MODELS={
+ gemini:[
+  ["gemini-3.6-flash","Gemini 3.6 Flash"],
+  ["gemini-3.5-flash","Gemini 3.5 Flash"],
+  ["gemini-3.5-flash-lite","Gemini 3.5 Flash-Lite"]
+ ],
+ openai:[
+  ["gpt-5.1","GPT-5.1"],
+  ["gpt-5","GPT-5"],
+  ["gpt-5-mini","GPT-5 mini"]
+ ]
 };
-$('submit').onclick=()=>{
- let correct=0,attempted=Object.keys(ans).length;
- qs.forEach((q,i)=>{if(ans[i]===q.a)correct++});
- $('score').innerHTML='<span class="ok"><b>Test complete</b><br>Questions: '+qs.length+' • Attempted: '+attempted+' • Correct: '+correct+' • Wrong: '+(attempted-correct)+' • Unattempted: '+(qs.length-attempted)+'</span>';
+function fillModels(){
+ $("model").innerHTML=MODELS[ai].map(x=>`<option value="${x[0]}">${x[1]}</option>`).join("");
+ $("apiKey").placeholder="Paste "+(ai==="gemini"?"Gemini":"OpenAI")+" API key";
+ $("aiChoice").textContent=ai==="gemini"?"Gemini":"OpenAI";
+}
+fillModels();
+$("aiChoice").onclick=()=>{ai=ai==="gemini"?"openai":"gemini";fillModels();$("aiStatus").textContent=""};
+
+
+
+$("qFile").onchange=e=>{qFile=e.target.files[0]||null;$("qName").textContent=qFile?"✓ "+qFile.name:"";check()};
+$("aFile").onchange=e=>{aFile=e.target.files[0]||null;$("aName").textContent=aFile?"✓ "+aFile.name:"";check()};
+function check(){$("generate").disabled=!(qFile&&aFile&&$("apiKey").value.trim())}
+$("apiKey").oninput=check;
+
+function status(t){$("log").textContent=t}
+function progress(n,t){$("bar").style.width=n+"%";if(t)status(t)}
+async function pdfDoc(file){return pdfjsLib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise}
+async function readPDF(file){
+ const pdf=await pdfDoc(file);let out="";
+ for(let i=1;i<=pdf.numPages;i++){
+  const p=await pdf.getPage(i),tc=await p.getTextContent();
+  out+=`\n===== PAGE ${i} =====\n`+tc.items.map(x=>x.str).join(" ");
+  progress(Math.min(35,5+30*i/pdf.numPages),`Reading PDF ${i}/${pdf.numPages}…`);
+ }
+ return out;
+}
+async function gemini(prompt){
+ const key=$("apiKey").value.trim(),model=$("model").value;
+ const r=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(model)+":generateContent?key="+encodeURIComponent(key),{
+  method:"POST",headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})
+ });
+ const d=await r.json();if(!r.ok)throw Error(d.error?.message||"Gemini request failed");
+ return d.candidates?.[0]?.content?.parts?.map(x=>x.text||"").join("")||"";
+}
+async function openai(prompt){
+ const key=$("apiKey").value.trim(),model=$("model").value;
+ const r=await fetch("https://api.openai.com/v1/responses",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+key},body:JSON.stringify({model:model,input:prompt})});
+ const d=await r.json();if(!r.ok)throw Error(d.error?.message||"OpenAI request failed");
+ return d.output_text||"";
+}
+async function callAI(prompt){return ai==="gemini"?gemini(prompt):openai(prompt)}
+
+$("testAI").onclick=async()=>{
+ try{
+  $("testAI").disabled=true;$("aiStatus").innerHTML='<span class="muted">Connecting…</span>';
+  await callAI("Reply with only OK.");
+  $("aiStatus").innerHTML='<span class="ok">✓ '+(ai==="gemini"?"Gemini":"OpenAI")+' connected</span>';
+  check();
+ }catch(e){$("aiStatus").innerHTML='<span class="bad">'+e.message+"</span>"}finally{$("testAI").disabled=false}
 };
-</script>
- </body>
-</html>
+
+function clean(s){return s.replace(/^```json\s*/i,"").replace(/```\s*$/,"").trim()}
+function renderList(){
+ const term=$("search").value.toLowerCase();
+ const list=questions.filter(q=>(q.question||"").toLowerCase().includes(term)).slice(0,20);
+ $("list").innerHTML=list.map(q=>`<div class="q"><b>Q${q.id} • ${q.subject} • ${q.type}</b><div>${String(q.question||"").slice(0,250)}</div><small>${(q.options||[]).map((o,i)=>"ABCDE"[i]+". "+o).join("  ")}</small></div>`).join("");
+}
+$("search").oninput=renderList;
+
+$("generate").onclick=async()=>{
+ try{
+  $("generate").disabled=true;progress(3,"Starting…");
+  const qt=await readPDF(qFile),at=await readPDF(aFile);
+  const prompt=`You are an exact JEE Main CBT extractor. Use ONLY the supplied Questions PDF and official Answer Key PDF. Do not create, paraphrase, solve, or guess. Preserve question and option text. Map the official answer to the matching question. Return ONLY JSON:
+{"questions":[{"id":1,"subject":"Physics","type":"single","question":"EXACT TEXT","options":["A","B","C","D"],"correctAnswer":"A"}]}
+Use subject Physics/Chemistry/Mathematics. Types: single,multiple,numerical,integer,matrix,assertion. Numerical/integer may have empty options. If answer cannot be confidently mapped, correctAnswer:null.
+QUESTIONS PDF:
+${qt}
+ANSWER KEY PDF:
+${at}`;
+  progress(45,"AI extracting questions + mapping official answers…");
+  const out=await callAI(prompt);progress(85,"Validating result…");
+  const data=JSON.parse(clean(out));questions=Array.isArray(data.questions)?data.questions:[];
+  $("total").textContent=questions.length;
+  $("phy").textContent=questions.filter(q=>q.subject==="Physics").length;
+  $("chem").textContent=questions.filter(q=>q.subject==="Chemistry").length;
+  $("resultCard").style.display="block";renderList();progress(100,questions.length+" questions ready.");
+  if(questions.length){setTimeout(()=>launch(),400)}
+ }catch(e){progress(0,"Error: "+e.message);alert(e.message)}
+ finally{check()}
+};
+
+function typeName(t){return ({single:"Single Correct",multiple:"Multiple Correct",numerical:"Numerical Value",integer:"Integer Type",matrix:"Matrix Match",assertion:"Assertion / Reason"})[t]||"Question"}
+const answers=new Map();
+function draw(){
+ const q=questions[idx];if(!q)return;
+ $("qnum").textContent="Question "+(idx+1);$("qtype").textContent=typeName(q.type);$("qtext").textContent=q.question||"";
+ const val=answers.get(idx)||null,opts=q.options||[];
+ if(q.type==="numerical"||q.type==="integer"){
+  $("opts").innerHTML=`<input id="num" style="width:180px;padding:10px;border:1px solid #777" inputmode="decimal" value="${val||""}" placeholder="Enter answer">`;
+  $("num").oninput=e=>answers.set(idx,e.target.value);
+ }else{
+  const multi=q.type==="multiple";
+  $("opts").innerHTML=opts.map((o,i)=>{let l="ABCDE"[i]||String(i+1);let checked=multi?(Array.isArray(val)&&val.includes(l)):val===l;return `<label class="opt"><input type="${multi?"checkbox":"radio"}" name="o" value="${l}" ${checked?"checked":""}><span><b>${l}.</b> ${escape(o)}</span></label>`}).join("");
+  document.querySelectorAll('input[name="o"]').forEach(x=>x.onchange=()=>{
+   if(multi)answers.set(idx,[...document.q
