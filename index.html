@@ -6,7 +6,11 @@
     <title>JEE Main CBT Exam</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }, svg: { fontCache: 'global' }, startup: { typeset: false } };
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+            svg: { fontCache: 'global' },
+            startup: { typeset: false }
+        };
     </script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
     <style>
@@ -21,52 +25,274 @@
 <body class="bg-[#f5f6f8] text-gray-800 overflow-hidden select-none">
 
     <div id="app" class="w-full h-screen flex flex-col relative">
-        <div id="screen-start" class="absolute inset-0 bg-gray-100 flex flex-col items-center justify-center p-4 z-50">
-            <button onclick="startTest()" class="bg-blue-600 text-white font-black py-4 px-8 rounded-lg shadow-lg text-lg uppercase">Start Assessment</button>
-        </div>
-        <div id="screen-test" class="absolute inset-0 flex flex-col hidden z-40">
-            <header class="bg-white shadow-sm px-3 py-3 flex justify-between items-center border-b">
-                <div class="font-extrabold text-xl text-blue-900">JEE MOCK</div>
-            </header>
-            <div id="subject-tabs" class="flex overflow-x-auto bg-white border-b shrink-0 hide-scrollbar"></div>
-            <div id="question-container" class="flex-1 overflow-y-auto p-4 md:p-8">
-                <div id="q-text" class="text-base md:text-lg text-gray-800 mb-6 font-medium"></div>
-                <div id="q-options" class="space-y-3"></div>
+        
+        <!-- START SCREEN -->
+        <div id="screen-start" class="absolute inset-0 bg-gray-100 flex flex-col items-center justify-center p-4 z-50 overflow-y-auto">
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-2xl w-full max-w-2xl border-t-4 border-blue-600">
+                <div class="flex flex-col items-center mb-8 text-center">
+                    <div class="text-3xl font-extrabold text-blue-900 tracking-tight">JEE MAIN 2026</div>
+                    <div class="text-sm font-bold text-green-600 mt-2 bg-green-50 px-4 py-1 rounded-full uppercase border border-green-200">
+                        CBT ENGINE
+                    </div>
+                </div>
+                
+                <h2 class="text-lg font-bold mb-3 border-b pb-2 text-gray-700">Instructions</h2>
+                <div class="space-y-3 text-sm text-gray-600 mb-8 max-h-48 overflow-y-auto pr-2 font-medium">
+                    <p>1. Total duration of the examination is <strong>180 minutes</strong>.</p>
+                    <p>2. Marking Scheme: MCQs (+4, -1), NATs (+4, 0).</p>
+                    <p>3. Do not refresh the page during the test, or your progress will be lost.</p>
+                    <p>4. You can freely navigate between Physics, Chemistry, and Mathematics.</p>
+                </div>
+                <button onclick="startTest()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 px-8 rounded-lg shadow-lg text-lg uppercase tracking-wide">
+                    Start Assessment
+                </button>
             </div>
-            <div class="p-4 bg-white border-t flex gap-2">
-                <button onclick="handleSave()" class="flex-1 py-3 bg-blue-600 text-white font-bold rounded-lg">Save & Next</button>
+        </div>
+
+        <!-- TEST SCREEN -->
+        <div id="screen-test" class="absolute inset-0 flex flex-col hidden z-40">
+            <!-- Header -->
+            <header class="bg-white shadow-sm px-3 md:px-6 py-2 md:py-3 flex justify-between items-center border-b shrink-0 z-20">
+                <div class="font-extrabold text-xl text-blue-900 tracking-tight">JEE MOCK</div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex flex-col items-end">
+                        <span class="text-[10px] md:text-xs text-gray-500 font-bold uppercase">Time Left</span>
+                        <span id="timer-display" class="text-lg md:text-xl font-mono font-bold leading-none text-gray-800">03:00:00</span>
+                    </div>
+                    <button onclick="togglePalette()" class="md:hidden p-2 bg-blue-50 text-blue-700 rounded border border-blue-200">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Subject Tabs -->
+            <div id="subject-tabs" class="flex overflow-x-auto bg-white border-b shadow-sm shrink-0 hide-scrollbar z-10"></div>
+
+            <!-- Main Workspace -->
+            <div class="flex flex-1 overflow-hidden relative">
+                <!-- Question Area -->
+                <div class="flex-1 flex flex-col bg-white overflow-hidden pb-16 md:pb-0">
+                    <div class="px-4 py-2 border-b bg-gray-50 flex justify-between items-center shrink-0">
+                        <div id="q-header-number" class="font-bold text-gray-700 text-sm md:text-base">Question 1</div>
+                        <div id="q-header-type" class="text-[10px] md:text-xs font-bold px-2 py-1 bg-gray-200 rounded text-gray-600 uppercase">MCQ</div>
+                    </div>
+                    
+                    <div class="flex-1 overflow-y-auto p-4 md:p-8" id="question-container">
+                        <div id="q-text" class="text-base md:text-lg text-gray-800 mb-6 leading-relaxed font-medium whitespace-pre-wrap"></div>
+                        <div id="q-options" class="space-y-3 md:space-y-4 max-w-3xl"></div>
+                    </div>
+                </div>
+
+                <!-- Mobile Footer -->
+                <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t p-2 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-30 flex justify-between gap-2">
+                    <button onclick="handleMark()" class="flex-1 py-3 bg-purple-50 text-purple-700 border border-purple-200 rounded-lg font-bold text-[11px] uppercase leading-tight">Mark &<br/>Next</button>
+                    <button onclick="handleClear()" class="flex-1 py-3 bg-gray-50 text-gray-700 border border-gray-200 rounded-lg font-bold text-[11px] uppercase">Clear</button>
+                    <button onclick="handleSave()" class="flex-1 py-3 bg-blue-600 text-white rounded-lg font-bold text-[11px] uppercase shadow-md">Save &<br/>Next</button>
+                </div>
+
+                <!-- Palette Drawer -->
+                <div id="palette-drawer" class="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl z-40 drawer-closed transition-transform duration-300 flex flex-col md:relative md:transform-none md:shadow-none md:border-l md:z-10">
+                    <div class="p-4 border-b bg-gray-50 flex justify-between items-center shrink-0">
+                        <div class="font-extrabold text-gray-700 text-sm tracking-wide">PALETTE</div>
+                        <button onclick="togglePalette()" class="md:hidden text-gray-500 bg-white p-1 rounded border shadow-sm"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                    </div>
+                    <div class="p-3 border-b bg-white grid grid-cols-2 gap-y-2 gap-x-1 text-[10px] font-bold text-gray-600 uppercase shrink-0">
+                        <div class="flex items-center"><div id="cnt-ans" class="w-6 h-6 bg-green-500 rounded-full mr-2 flex items-center justify-center text-white">0</div> Answered</div>
+                        <div class="flex items-center"><div id="cnt-notans" class="w-6 h-6 bg-red-500 rounded-full mr-2 flex items-center justify-center text-white">0</div> Not Ans</div>
+                        <div class="flex items-center"><div id="cnt-notvis" class="w-6 h-6 bg-gray-200 rounded-full mr-2 flex items-center justify-center text-gray-600">0</div> Not Visited</div>
+                        <div class="flex items-center"><div id="cnt-mark" class="w-6 h-6 bg-purple-600 rounded-full mr-2 flex items-center justify-center text-white">0</div> Review</div>
+                    </div>
+                    <div class="flex-1 overflow-y-auto p-4 bg-gray-50">
+                        <div id="palette-grid" class="grid grid-cols-5 md:grid-cols-4 gap-2"></div>
+                    </div>
+                    <div class="p-4 border-t bg-white shrink-0 pb-20 md:pb-4">
+                        <button onclick="showSubmitConfirm()" class="w-full py-3.5 bg-green-500 text-white font-extrabold rounded-lg shadow-lg uppercase">Submit Test</button>
+                    </div>
+                </div>
+
+                <!-- Overlay -->
+                <div id="drawer-overlay" onclick="togglePalette()" class="md:hidden fixed inset-0 bg-black bg-opacity-50 z-30 hidden"></div>
+            </div>
+        </div>
+
+        <!-- RESULT SCREEN -->
+        <div id="screen-result" class="absolute inset-0 bg-gray-50 flex flex-col hidden z-50 overflow-y-auto">
+            <div class="bg-white border-b px-4 py-4 md:px-8 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4 sticky top-0 z-20">
+                <h1 class="text-2xl font-bold text-gray-800">Test Analysis</h1>
+                <button onclick="location.reload()" class="w-full md:w-auto bg-gray-800 text-white px-6 py-2.5 rounded font-bold">Restart</button>
+            </div>
+            
+            <div class="max-w-5xl mx-auto w-full p-4 md:p-8 space-y-6">
+                <!-- Score Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white rounded-xl shadow-sm p-5 text-center border"><div class="text-xs font-bold text-gray-500 uppercase">Score</div><div id="res-score" class="text-4xl font-black text-blue-600 mt-2">0</div></div>
+                    <div class="bg-white rounded-xl shadow-sm p-5 text-center border"><div class="text-xs font-bold text-gray-500 uppercase">Accuracy</div><div id="res-acc" class="text-4xl font-black text-green-500 mt-2">0%</div></div>
+                    <div class="bg-white rounded-xl shadow-sm p-5 text-center border"><div class="text-xs font-bold text-gray-500 uppercase">Attempted</div><div id="res-att" class="text-4xl font-black text-purple-600 mt-2">0</div></div>
+                    <div class="bg-white rounded-xl shadow-sm p-5 text-center border"><div class="text-xs font-bold text-gray-500 uppercase">Time Used</div><div id="res-time" class="text-2xl md:text-3xl font-black text-orange-500 mt-3">0m 0s</div></div>
+                </div>
+
+                <!-- Detailed Table -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden border">
+                    <div class="bg-gray-50 px-6 py-4 border-b"><h2 class="text-lg font-bold text-gray-800">Subject Analysis</h2></div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead><tr class="bg-white text-gray-500 text-xs uppercase"><th class="p-4 border-b">Subject</th><th class="p-4 border-b">Score</th><th class="p-4 border-b">Right / Wrong</th><th class="p-4 border-b">Time</th></tr></thead>
+                            <tbody id="res-subject-body" class="text-sm font-bold text-gray-700"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL -->
+        <div id="submit-modal" class="fixed inset-0 bg-black bg-opacity-60 z-[60] flex items-center justify-center p-4 hidden">
+            <div class="bg-white rounded-2xl p-6 w-full max-w-sm">
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Submit Assessment?</h3>
+                <p class="text-sm text-gray-500 mb-6">Are you sure you want to submit?</p>
+                <div class="flex space-x-3">
+                    <button onclick="document.getElementById('submit-modal').classList.add('hidden')" class="flex-1 py-3 bg-gray-100 text-gray-800 font-bold rounded-xl">Cancel</button>
+                    <button onclick="finalizeSubmit()" class="flex-1 py-3 bg-blue-600 text-white font-bold rounded-xl shadow-lg">Yes, Submit</button>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
         const API_URL = 'https://vinit-jain-2.onrender.com';
-        
+
         const QUESTION_DATA = [
-            { id: 1, subject: 'Physics', type: 'MCQ', text: 'Physics Question 1...', options: ['A', 'B', 'C', 'D'], answer: '4' },
-            { id: 2, subject: 'Chemistry', type: 'MCQ', text: 'Chemistry Question 1...', options: ['A', 'B', 'C', 'D'], answer: '2' },
-            { id: 3, subject: 'Mathematics', type: 'NAT', text: 'Math Question 1...', answer: '384' }
+            { id: 1, subject: 'Physics', type: 'MCQ', text: 'Given that $y=A~sin[(\\frac{2\\pi}{\\lambda}(ct-x))]$\n\nwhere y and x are measured in metres. Which of the following statements is true?', options: ['The unit of $(ct-x)$ is same as that of $\\frac{2\\pi}{\\lambda}$', 'The unit of c is same as that of $\\frac{2\\pi}{\\lambda}$', 'The unit of A is same as that of x but not of A', 'The unit of A is same as that of y'], answer: '4' },
+            { id: 2, subject: 'Chemistry', type: 'MCQ', text: 'Percent by mass of solute (molar mass $=25~g/mol$) in its aqueous solution is 30. The mole fraction and molality of the solute in solution are', options: ['Mole fraction $=0.18$; Molality $=17.9$', 'Mole fraction $=0.23$; Molality $=17.1$', 'Mole fraction $=0.30$; Molality $=20.0$', 'Mole fraction $=0.15$; Molality $=15.0$'], answer: '2' },
+            { id: 3, subject: 'Mathematics', type: 'NAT', text: 'Let the sets $A=\\{2,4,6,8,...\\}$ and $B=\\{3,6,9,12,...\\}$ such that $n(A)=200$ and $n(B)=250$. If $n(A\\cup B)=k$ then k is equal to', answer: '384' }
         ];
 
-        let currSubject = 'Physics', currIndex = 0;
-        
+        let subjects = [...new Set(QUESTION_DATA.map(q => q.subject))];
+        let currSubject = subjects[0];
+        let currIndex = 0; 
+        let responses = {}; 
+        let tempAns = '';
+        let timerInterval;
+        let timeLeft = 10800;
+
+        QUESTION_DATA.forEach(q => { responses[q.id] = { status: 'not_visited', ans: '', time: 0 }; });
+
         function startTest() {
             document.getElementById('screen-start').classList.add('hidden');
             document.getElementById('screen-test').classList.remove('hidden');
+            
+            document.getElementById('subject-tabs').innerHTML = subjects.map(s => 
+                `<button id="tab-${s}" onclick="changeSubject('${s}')" class="flex-1 min-w-[120px] py-3 font-bold text-sm border-b-2 ${s === currSubject ? 'border-blue-600 text-blue-700 bg-blue-50/50' : 'border-transparent text-gray-500'}">${s}</button>`
+            ).join('');
+
+            timerInterval = setInterval(tick, 1000);
             renderQuestion();
+        }
+
+        function tick() {
+            timeLeft--;
+            if(timeLeft <= 0) { clearInterval(timerInterval); finalizeSubmit(); return; }
+            const h = Math.floor(timeLeft / 3600).toString().padStart(2, '0');
+            const m = Math.floor((timeLeft % 3600) / 60).toString().padStart(2, '0');
+            const s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = `${h}:${m}:${s}`;
+            const q = getCurrQ();
+            if(q) responses[q.id].time += 1;
         }
 
         function getCurrQ() { return QUESTION_DATA.filter(q => q.subject === currSubject)[currIndex]; }
 
-        function renderQuestion() {
-            const q = getCurrQ();
-            document.getElementById('q-text').innerText = q.text;
-            // ... rest of logic
+        function changeSubject(sub) {
+            saveTemp(); currSubject = sub; currIndex = 0;
+            subjects.forEach(s => {
+                const btn = document.getElementById(`tab-${s}`);
+                if(s === currSubject) btn.className = "flex-1 min-w-[120px] py-3 font-bold text-sm border-b-2 border-blue-600 text-blue-700 bg-blue-50/50";
+                else btn.className = "flex-1 min-w-[120px] py-3 font-bold text-sm border-b-2 border-transparent text-gray-500";
+            });
+            renderQuestion();
         }
 
-        function handleSave() {
-            if(currIndex < 2) { currIndex++; renderQuestion(); }
+        function jumpToQ(index) { saveTemp(); currIndex = index; renderQuestion(); }
+
+        function saveTemp() {
+            const q = getCurrQ();
+            if(!q) return;
+            if(tempAns !== '') {
+                responses[q.id].status = (responses[q.id].status === 'marked' || responses[q.id].status === 'answered_marked') ? 'answered_marked' : 'answered';
+                responses[q.id].ans = tempAns;
+            } else {
+                if(responses[q.id].status === 'not_visited') responses[q.id].status = 'not_answered';
+            }
         }
-    </script>
-</body>
-</html>
+
+        function renderQuestion() {
+            const q = getCurrQ();
+            if(responses[q.id].status === 'not_visited') responses[q.id].status = 'not_answered';
+            tempAns = responses[q.id].ans || '';
+
+            document.getElementById('q-header-number').innerText = `Question ${q.id}`;
+            document.getElementById('q-header-type').innerText = q.type;
+            document.getElementById('q-text').innerText = q.text;
+
+            let optsHtml = '';
+            if(q.type === 'MCQ') {
+                optsHtml = q.options.map((opt, i) => {
+                    const val = (i+1).toString();
+                    const isChecked = tempAns === val;
+                    return `
+                    <label class="flex items-start p-3 md:p-4 border-2 rounded-xl cursor-pointer ${isChecked ? 'border-blue-600 bg-blue-50' : 'border-gray-300'}">
+                        <div class="flex items-center h-6 pt-0.5">
+                            <input type="radio" name="opt" value="${val}" ${isChecked?'checked':''} onchange="tempAns=this.value; renderQuestion()" class="w-4 h-4 text-blue-600">
+                        </div>
+                        <div class="ml-3 md:ml-4 text-gray-800 font-medium text-sm md:text-base"><span class="font-bold mr-2">(${i+1})</span> ${opt}</div>
+                    </label>`;
+                }).join('');
+            } else {
+                optsHtml = `
+                <div class="mt-4 p-4 bg-gray-50 border rounded-xl">
+                    <label class="block text-sm font-bold text-gray-700 mb-3">Numerical Value:</label>
+                    <input type="text" value="${tempAns}" oninput="tempAns=this.value" placeholder="E.g., 25" class="w-full max-w-xs px-4 py-3 border-2 rounded-lg text-xl font-mono focus:border-blue-500 outline-none">
+                </div>`;
+            }
+            document.getElementById('q-options').innerHTML = optsHtml;
+
+            if(window.MathJax && window.MathJax.typesetPromise) {
+                MathJax.typesetClear([document.getElementById('question-container')]);
+                MathJax.typesetPromise([document.getElementById('question-container')]).catch(err => console.log(err));
+            }
+            renderPalette();
+        }
+
+        function renderPalette() {
+            const qList = QUESTION_DATA.filter(q => q.subject === currSubject);
+            let counts = { ans:0, notans:0, notvis:0, mark:0 };
+            
+            Object.values(responses).forEach(r => {
+                if(r.status==='answered' || r.status==='answered_marked') counts.ans++;
+                else if(r.status==='not_answered') counts.notans++;
+                else if(r.status==='not_visited') counts.notvis++;
+                else if(r.status==='marked') counts.mark++;
+            });
+
+            document.getElementById('cnt-ans').innerText = counts.ans;
+            document.getElementById('cnt-notans').innerText = counts.notans;
+            document.getElementById('cnt-notvis').innerText = counts.notvis;
+            document.getElementById('cnt-mark').innerText = counts.mark;
+
+            document.getElementById('palette-grid').innerHTML = qList.map((q, i) => {
+                const stat = responses[q.id].status;
+                let bg = 'bg-gray-200 text-gray-700';
+                if(stat==='answered') bg='bg-green-500 text-white';
+                if(stat==='not_answered') bg='bg-red-500 text-white';
+                if(stat==='marked') bg='bg-purple-600 text-white';
+                if(stat==='answered_marked') bg='bg-purple-600 text-white border-2 border-green-400';
+                
+                const isCurr = i === currIndex ? 'ring-2 ring-blue-600 scale-110 z-10' : '';
+                return `<button onclick="jumpToQ(${i}); if(window.innerWidth<768) togglePalette()" class="relative w-full pt-[100%] rounded-full font-bold text-sm ${bg} ${isCurr}"><span class="absolute inset-0 flex items-center justify-center">${q.id}</span></button>`;
+            }).join('');
+        }
+
+        function nextQ() {
+            const qList = QUESTION_DATA.filter(q => q.subject === currSubject);
+            if(currIndex < qList.length - 1) currIndex++;
+            else {
+                const sIdx = subjects.i
