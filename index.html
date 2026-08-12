@@ -1,10 +1,11 @@
 <!doctype html>
 <html lang="en">
- <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>JEE Main 2027 • CBT</title>
-  <style>
+<head>
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>JEE Main 2027 • CBT</title>
+<style>
 :root{
   --bg:#070b12;--card:#0d1420;--card2:#111a28;--line:#202d40;
   --text:#f5f7fb;--muted:#8e9aae;--blue:#3b82f6;--green:#22c55e;
@@ -86,125 +87,105 @@ select option{background:#101824}
 }
 @media(max-width:370px){.files{grid-template-columns:1fr}.ai-row{grid-template-columns:105px 1fr}.hero h1{font-size:24px}}
 </style>
- </head>
- <body>
-  <div class="app" id="app">
-   <header class="header">
-    <div class="brand">
-     <div class="logo">JN</div>
-     <div>
-      <b>JEE Main 2027</b><span>Mock Test • CBT Studio</span>
-     </div>
-    </div>
-    <div class="timer" id="topTimer">03:00:00</div>
-   </header>
-   <section class="hero">
-    <h1>PDF → <em>JEE Main CBT</em></h1>
-    <p>One simple setup. Upload both PDFs, connect one AI, map the official answers, then start the mock test.</p>
-   </section>
-   <section class="card">
-    <h2>Google Authentication</h2>
-    <p class="hint">Apna Google Web Client ID ek baar paste karo. Phir real Google Sign-In button se connect karo.</p>
-    <input id="googleClientId" type="text" placeholder="Google Web Client ID • ...apps.googleusercontent.com">
-    <button class="mainbtn" id="setupGoogle" style="margin-top:8px">LOAD GOOGLE SIGN-IN</button>
-    <div id="googleButton" style="margin-top:10px;min-height:42px"></div>
-    <div class="user" id="googleUser"></div>
-    <div class="status" id="googleStatus"></div>
-    <div class="hint" style="margin-top:8px">For real login, add this site URL under Google Cloud → OAuth Client → Authorized JavaScript origins.</div>
-   </section>
-   <section class="card">
-    <h2>Upload Question Paper</h2>
-    <p class="hint">Select both original PDFs. No separate upload screens.</p>
-    <div class="files">
-     <label class="upload"> <input id="qFile" type="file" accept="application/pdf"> <span class="icon">📄</span><b>Questions PDF</b><small>Tap to select</small> <span class="file-name" id="qName"></span> </label> <label class="upload"> <input id="aFile" type="file" accept="application/pdf"> <span class="icon">🔑</span><b>Answer Key PDF</b><small>Tap to select</small> <span class="file-name" id="aName"></span> </label>
-    </div>
-   </section>
-   <section class="card">
-    <h2>AI Connection</h2>
-    <p class="hint">Bas ek AI choose karo. Dono bharna compulsory nahi hai.</p>
-    <div class="ai-row">
-     <button id="aiChoice">Gemini</button>
-     <input id="apiKey" type="password" placeholder="Paste Gemini API key">
-    </div>
-    <select id="model" style="margin-top:8px"></select>
-    <button class="mainbtn" id="testAI">TEST AI CONNECTION</button>
-    <div class="status" id="aiStatus"></div>
-   </section>
-   <section class="card">
-    <h2>Test Settings</h2>
-    <div class="settings">
-     <div>
-      <label>Paper</label><select id="paper"><option>JEE Main 2027 Paper 1</option></select>
-     </div>
-     <div>
-      <label>Duration</label><input id="duration" type="number" value="180" min="1">
-     </div>
-    </div>
-    <div class="features">
-     <div class="feature">
-      <b>Exact text</b><span>No invented questions</span>
-     </div>
-     <div class="feature">
-      <b>Answer mapping</b><span>Official key only</span>
-     </div>
-     <div class="feature">
-      <b>White CBT</b><span>Clean JEE layout</span>
-     </div>
-    </div>
-    <button class="mainbtn" id="generate" disabled>GENERATE JEE MAIN 2027 MOCK</button>
-    <div class="progress">
-     <i id="bar"></i>
-    </div>
-    <div class="log" id="log">Select both PDFs and connect AI.</div>
-   </section>
-   <section class="card result" id="resultCard">
-    <h2>Analysis</h2>
-    <div class="stats">
-     <div class="stat">
-      <b id="total">0</b><span>Questions</span>
-     </div>
-     <div class="stat">
-      <b id="phy">0</b><span>Physics</span>
-     </div>
-     <div class="stat">
-      <b id="chem">0</b><span>Chemistry</span>
-     </div>
-    </div>
-    <input class="search" id="search" placeholder="Search question...">
-    <div id="list"></div>
-   </section>
-  </div>
-  <div id="cbt">
-   <header class="cbt-top">
-    <div class="cbt-brand">
-     <div class="cbt-logo">NTA</div>
-     <div>
-      JEE Main 2027<small>Mock Test</small>
-     </div>
-    </div>
-    <div class="clock" id="clock">03:00:00</div>
-   </header>
-   <div class="cbt-body">
-    <div class="cbt-tabs">
-     <button class="on">Physics</button>
-     <button>Chemistry</button>
-     <button>Mathematics</button>
-    </div>
-    <main class="question">
-     <div class="qtop">
-      <span id="qnum">Question 1</span><span id="qtype">Single Correct</span>
-     </div>
-     <div class="qtext" id="qtext"></div>
-     <div class="opts" id="opts"></div>
-    </main>
-    <div class="cbt-actions">
-     <button id="clear">Clear</button>
-     <button id="review">Mark for Review</button>
-     <button class="next" id="next">Save &amp; Next</button>
-    </div>
-   </div>
-  </div>
-  <script type="module">
+</head>
+<body>
+
+<div class="app" id="app">
+<header class="header">
+ <div class="brand"><div class="logo">JN</div><div><b>JEE Main 2027</b><span>Mock Test • CBT Studio</span></div></div>
+ <div class="timer" id="topTimer">03:00:00</div>
+</header>
+
+<section class="hero">
+ <h1>PDF → <em>JEE Main CBT</em></h1>
+ <p>One simple setup. Upload both PDFs, connect one AI, map the official answers, then start the mock test.</p>
+</section>
+
+<section class="card">
+ <h2>Google Authentication</h2>
+ <p class="hint">Apna Google Web Client ID ek baar paste karo. Phir real Google Sign-In button se connect karo.</p>
+ <input id="googleClientId" type="text" placeholder="Google Web Client ID • ...apps.googleusercontent.com">
+ <button class="mainbtn" id="setupGoogle" style="margin-top:8px">LOAD GOOGLE SIGN-IN</button>
+ <div id="googleButton" style="margin-top:10px;min-height:42px"></div>
+ <div class="user" id="googleUser"></div>
+ <div class="status" id="googleStatus"></div>
+ <div class="hint" style="margin-top:8px">For real login, add this site URL under Google Cloud → OAuth Client → Authorized JavaScript origins.</div>
+</section>
+
+<section class="card">
+ <h2>Upload Question Paper</h2>
+ <p class="hint">Select both original PDFs. No separate upload screens.</p>
+ <div class="files">
+  <label class="upload">
+   <input id="qFile" type="file" accept="application/pdf">
+   <span class="icon">📄</span><b>Questions PDF</b><small>Tap to select</small>
+   <span class="file-name" id="qName"></span>
+  </label>
+  <label class="upload">
+   <input id="aFile" type="file" accept="application/pdf">
+   <span class="icon">🔑</span><b>Answer Key PDF</b><small>Tap to select</small>
+   <span class="file-name" id="aName"></span>
+  </label>
+ </div>
+</section>
+
+<section class="card">
+ <h2>AI Connection</h2>
+ <p class="hint">Bas ek AI choose karo. Dono bharna compulsory nahi hai.</p>
+ <div class="ai-row">
+  <button id="aiChoice">Gemini</button>
+  <input id="apiKey" type="password" placeholder="Paste Gemini API key">
+ </div>
+ <select id="model" style="margin-top:8px"></select>
+ <button class="mainbtn" id="testAI">TEST AI CONNECTION</button>
+ <div class="status" id="aiStatus"></div>
+</section>
+
+<section class="card">
+ <h2>Test Settings</h2>
+ <div class="settings">
+  <div><label>Paper</label><select id="paper"><option>JEE Main 2027 Paper 1</option></select></div>
+  <div><label>Duration</label><input id="duration" type="number" value="180" min="1"></div>
+ </div>
+ <div class="features">
+  <div class="feature"><b>Exact text</b><span>No invented questions</span></div>
+  <div class="feature"><b>Answer mapping</b><span>Official key only</span></div>
+  <div class="feature"><b>White CBT</b><span>Clean JEE layout</span></div>
+ </div>
+ <button class="mainbtn" id="generate" disabled>GENERATE JEE MAIN 2027 MOCK</button>
+ <div class="progress"><i id="bar"></i></div>
+ <div class="log" id="log">Select both PDFs and connect AI.</div>
+</section>
+
+<section class="card result" id="resultCard">
+ <h2>Analysis</h2>
+ <div class="stats">
+  <div class="stat"><b id="total">0</b><span>Questions</span></div>
+  <div class="stat"><b id="phy">0</b><span>Physics</span></div>
+  <div class="stat"><b id="chem">0</b><span>Chemistry</span></div>
+ </div>
+ <input class="search" id="search" placeholder="Search question...">
+ <div id="list"></div>
+</section>
+</div>
+
+<div id="cbt">
+ <header class="cbt-top">
+  <div class="cbt-brand"><div class="cbt-logo">NTA</div><div>JEE Main 2027<small>Mock Test</small></div></div>
+  <div class="clock" id="clock">03:00:00</div>
+ </header>
+ <div class="cbt-body">
+  <div class="cbt-tabs"><button class="on">Physics</button><button>Chemistry</button><button>Mathematics</button></div>
+  <main class="question">
+   <div class="qtop"><span id="qnum">Question 1</span><span id="qtype">Single Correct</span></div>
+   <div class="qtext" id="qtext"></div>
+   <div class="opts" id="opts"></div>
+  </main>
+  <div class="cbt-actions"><button id="clear">Clear</button><button id="review">Mark for Review</button><button class="next" id="next">Save & Next</button></div>
+ </div>
+</div>
+
+<script type="module">
 import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
 pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
 
@@ -402,4 +383,8 @@ function draw(){
  if(q.type==="numerical"||q.type==="integer"){
   $("opts").innerHTML=`<input id="num" style="width:180px;padding:10px;border:1px solid #777" inputmode="decimal" value="${val||""}" placeholder="Enter answer">`;
   $("num").oninput=e=>answers.set(idx,e.target.value);
- }
+ }else{
+  const multi=q.type==="multiple";
+  $("opts").innerHTML=opts.map((o,i)=>{let l="ABCDE"[i]||String(i+1);let checked=multi?(Array.isArray(val)&&val.includes(l)):val===l;return `<label class="opt"><input type="${multi?"checkbox":"radio"}" name="o" value="${l}" ${checked?"checked":""}><span><b>${l}.</b> ${escape(o)}</span></label>`}).join("");
+  document.querySelectorAll('input[name="o"]').forEach(x=>x.onchange=()=>{
+   if(mult
