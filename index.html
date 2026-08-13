@@ -3,299 +3,1156 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>JEE Main 2027 Mock Test</title>
+<meta name="theme-color" content="#07111f">
+<title>JEE Main 2027 • PDF → CBT</title>
 <style>
-:root{
- --bg:#07101d;--card:#0d1726;--card2:#111d2e;--line:#26364e;--text:#f5f8ff;
- --muted:#94a3b8;--blue:#3b82f6;--blue2:#6366f1;--green:#22c55e;--red:#ef4444;
- --white:#fff;--shadow:0 18px 50px rgba(0,0,0,.28)
-}
+:root{--bg:#07111f;--panel:#0d1929;--panel2:#111f32;--line:#263a54;--text:#f5f8ff;--muted:#91a3bc;--blue:#3d7cff;--violet:#725cff;--green:#24d681;--red:#ff6477;--amber:#ffc857}
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+html,body{margin:0;background:radial-gradient(circle at 20% 0,#16345e 0,#07111f 34%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif}
 body{min-height:100vh}
 button,input,select{font:inherit}
 button{cursor:pointer}
 .hidden{display:none!important}
-.app{width:min(760px,100%);margin:auto;padding:10px 10px 28px}
-.header{position:sticky;top:8px;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 13px;background:rgba(9,17,29,.94);border:1px solid var(--line);border-radius:18px;backdrop-filter:blur(18px);box-shadow:var(--shadow)}
-.brand{display:flex;align-items:center;gap:10px;min-width:0}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--blue2));display:grid;place-items:center;font-weight:900;flex:none}
-.brand b{font-size:15px}.brand span{display:block;color:var(--muted);font-size:10px;margin-top:2px}
-.timer{background:#172337;border:1px solid #30415b;border-radius:11px;padding:8px 10px;font-weight:900;font-size:13px;white-space:nowrap}
-.hero{padding:28px 4px 16px}.hero h1{font-size:clamp(28px,7vw,44px);line-height:1;margin:0;letter-spacing:-1.5px}.hero h1 em{font-style:normal;color:#67a0ff}.hero p{color:var(--muted);font-size:13px;line-height:1.55;margin:9px 0 0}
-.card{background:linear-gradient(180deg,#0e1929,#0b1422);border:1px solid var(--line);border-radius:18px;padding:15px;margin-top:11px;box-shadow:0 10px 35px rgba(0,0,0,.16)}
-.card h2{font-size:17px;margin:0}.hint{color:var(--muted);font-size:11px;line-height:1.5;margin:5px 0 12px}
-.files{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.upload{border:1.5px dashed #3b506d;background:#091321;border-radius:13px;min-height:124px;padding:14px 9px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;transition:.2s}
-.upload:active{transform:scale(.985)}.upload input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
-.upload .icon{font-size:25px;margin-bottom:7px}.upload b{font-size:12px}.upload small{color:var(--muted);font-size:10px;margin-top:4px}.file-name{color:#58e19a;font-size:10px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:7px}
-.ai-grid{display:grid;grid-template-columns:120px 1fr;gap:8px}.ai-grid select,.ai-grid input{min-width:0}
-input,select{width:100%;background:#08111d;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px;outline:0}
-input:focus,select:focus{border-color:#5689ff;box-shadow:0 0 0 3px #3b82f622}
-.mainbtn{width:100%;border:0;border-radius:11px;padding:13px;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;font-weight:900;margin-top:11px;transition:.2s}
-.mainbtn:disabled{opacity:.45;cursor:not-allowed}.mainbtn:active{transform:scale(.99)}
-.status{min-height:16px;font-size:10px;margin-top:7px}.ok{color:var(--green)}.bad{color:var(--red)}.muted{color:var(--muted)}.warn{color:#fbbf24}
-.progress{height:8px;background:#17243a;border-radius:20px;overflow:hidden;margin-top:11px}.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#3b82f6,#22c55e);transition:width .25s}
+.app{width:min(900px,100%);margin:auto;padding:10px 12px 35px}
+.top{position:sticky;top:8px;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;background:#091422ed;border:1px solid var(--line);border-radius:18px;backdrop-filter:blur(16px);box-shadow:0 15px 45px #0005}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--violet));display:grid;place-items:center;font-weight:950}
+.brand b{font-size:15px}
+.brand span{display:block;font-size:10px;color:var(--muted);margin-top:2px}
+.topStatus{font-size:10px;color:var(--muted);text-align:right}
+
+.hero{padding:35px 5px 18px}
+.hero h1{font-size:clamp(32px,7vw,56px);line-height:.98;letter-spacing:-2px;margin:0}
+.hero h1 span{color:#71a0ff}
+.hero p{max-width:700px;color:var(--muted);font-size:13px;line-height:1.6;margin:11px 0 0}
+
+.card{background:linear-gradient(180deg,#0e1a2b,#0a1422);border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:12px;box-shadow:0 12px 40px #0003}
+.card h2{font-size:17px;margin:0 0 4px}
+.sub{font-size:11px;color:var(--muted);line-height:1.55;margin:0 0 13px}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.upload{position:relative;min-height:120px;border:1.5px dashed #3d5677;background:#091321;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px;transition:.2s}
+.upload:active{transform:scale(.985)}
+.upload input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.upload strong{font-size:12px}
+.upload small{font-size:10px;color:var(--muted);margin-top:5px}
+.fname{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--green);font-size:10px;margin-top:7px}
+
+.row{display:grid;grid-template-columns:150px 1fr;gap:9px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
+.field label{display:block;color:var(--muted);font-size:10px;margin:0 0 5px}
+
+input,select{width:100%;background:#08111d;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px;outline:none}
+input:focus,select:focus{border-color:#5c88ff;box-shadow:0 0 0 3px #3d7cff22}
+
+.btn{width:100%;border:0;border-radius:11px;padding:12px;color:#fff;background:#18283f;font-weight:900}
+.btn.primary{background:linear-gradient(135deg,var(--blue),var(--violet))}
+.btn.green{background:linear-gradient(135deg,#14b873,#21a36f)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.mt{margin-top:10px}
+
+.status{min-height:16px;font-size:10px;margin-top:7px}
+.ok{color:var(--green)}
+.bad{color:var(--red)}
+.warn{color:var(--amber)}
+.muted{color:var(--muted)}
+
+.progress{height:8px;background:#17243a;border-radius:99px;overflow:hidden;margin-top:10px}
+.progress i{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--blue),var(--green));transition:width .2s}
 .log{font-size:10px;color:var(--muted);margin-top:6px;min-height:14px}
-.features{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}.feature{background:#091321;border:1px solid var(--line);border-radius:10px;padding:9px}.feature b{font-size:10px}.feature span{display:block;color:var(--muted);font-size:9px;margin-top:3px}
-.result{display:none}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.stat{background:#091321;border:1px solid var(--line);border-radius:10px;padding:10px}.stat b{font-size:18px}.stat span{display:block;color:var(--muted);font-size:9px;margin-top:2px}
-.search{margin-top:9px}.qpreview{padding:11px;border:1px solid var(--line);background:#091321;border-radius:10px;margin-top:7px;font-size:11px;line-height:1.45}.qpreview b{color:#72a5ff}.qpreview small{display:block;color:var(--muted);margin-top:4px}
-.step{animation:stepIn .42s ease both}@keyframes stepIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-#cbt{display:none;position:fixed;inset:0;z-index:1000;background:#f7f7f7;color:#222}
-.cbt-top{height:58px;background:#fff;border-bottom:1px solid #b9b9b9;display:flex;align-items:center;justify-content:space-between;padding:0 10px}
-.cbt-brand{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:900}.cbt-brand small{display:block;color:#777;font-size:9px;font-weight:500}.cbt-logo{width:34px;height:34px;border-radius:4px;background:#1769d3;color:#fff;display:grid;place-items:center;font-weight:900}
-.clock{font-weight:900;font-size:15px}.cbt-body{height:calc(100vh - 58px);display:flex;flex-direction:column}
-.cbt-subjects{display:flex;height:42px;background:#e8e8e8;border-bottom:1px solid #aaa}.cbt-subjects button{flex:1;border:0;border-right:1px solid #bbb;background:#ddd;font-size:11px;font-weight:900}.cbt-subjects button.active{background:#fff;color:#145db8;border-top:3px solid #145db8}
-.cbt-main{flex:1;display:flex;min-height:0}.question-area{flex:1;overflow:auto;background:#fff;padding:16px}.qbar{display:flex;justify-content:space-between;border-bottom:1px solid #ddd;padding-bottom:10px;font-size:12px;font-weight:900}.qtext{font-size:15px;line-height:1.65;margin-top:15px;white-space:pre-wrap}.opts{margin-top:15px}.opt{display:flex;gap:9px;margin:13px 0;font-size:14px;line-height:1.5}.opt input{width:18px;height:18px;accent-color:#1769d3}
-.cbt-side{width:210px;background:#f0f0f0;border-left:1px solid #bbb;padding:9px;overflow:auto}.side-title{font-weight:900;font-size:11px;margin-bottom:7px}.palette{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}.palette button{height:30px;border:1px solid #aaa;background:#fff;border-radius:4px;font-size:10px}.palette button.answered{background:#42a85f;color:#fff;border-color:#318447}.palette button.current{outline:2px solid #1769d3}.palette button.review{background:#b36bff;color:#fff;border-color:#8d49d8}
-.cbt-actions{background:#f0f0f0;border-top:1px solid #aaa;padding:7px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}.cbt-actions button{padding:10px 5px;background:#fff;border:1px solid #888;border-radius:4px;font-size:10px;font-weight:900}.cbt-actions .next{background:#1769d3;color:#fff;border-color:#1769d3}
-#transition{position:fixed;inset:0;z-index:2000;background:radial-gradient(circle at 50% 30%,#183b78,#050b14 62%);display:none;align-items:center;justify-content:center;color:#fff;text-align:center}
-.transition-box{width:min(360px,86vw);animation:pop .5s ease}.transition-logo{width:72px;height:72px;margin:auto;border-radius:22px;background:linear-gradient(135deg,#3b82f6,#6366f1);display:grid;place-items:center;font-size:25px;font-weight:900;box-shadow:0 0 55px #3b82f655}.transition-box h2{margin:18px 0 6px}.transition-box p{color:#9fb1ca;font-size:12px}.spin{width:30px;height:30px;border:3px solid #ffffff33;border-top-color:#fff;border-radius:50%;margin:20px auto 0;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}@keyframes pop{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
-.modal{position:fixed;inset:0;background:#0009;z-index:3000;display:none;align-items:center;justify-content:center;padding:18px}.modal-card{width:min(520px,100%);max-height:80vh;overflow:auto;background:#101a29;border:1px solid #30415a;border-radius:18px;padding:18px}.modal-card h3{margin-top:0}.modal-card button{width:100%;padding:11px;border:0;border-radius:10px;background:#2563eb;color:#fff;font-weight:900}
-@media(max-width:620px){.cbt-side{display:none}}
-@media(max-width:430px){.app{padding:7px}.files{grid-template-columns:1fr 1fr}.ai-grid{grid-template-columns:105px 1fr}.stats{grid-template-columns:repeat(2,1fr)}.hero{padding-top:24px}.hero h1{font-size:28px}}
-@media(max-width:340px){.files{grid-template-columns:1fr}.ai-grid{grid-template-columns:1fr}}
+
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.chip{padding:6px 8px;border-radius:99px;background:#122238;border:1px solid var(--line);font-size:9px;color:#b8c8dd}
+
+.result{display:none}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stat{background:#091321;border:1px solid var(--line);border-radius:11px;padding:10px}
+.stat b{font-size:20px}
+.stat small{display:block;color:var(--muted);font-size:9px;margin-top:2px}
+.search{margin-top:9px}
+
+.qcard{border:1px solid var(--line);background:#091321;border-radius:11px;padding:10px;margin-top:7px;font-size:11px;line-height:1.5}
+.qcard b{color:#75a2ff}
+.qcard small{display:block;color:var(--muted);margin-top:4px}
+
+#transition{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle at 50% 20%,#173b70,#040a12 65%)}
+.trans{width:min(360px,88vw);animation:pop .4s ease}
+.transLogo{width:72px;height:72px;margin:auto;border-radius:22px;background:linear-gradient(135deg,var(--blue),var(--violet));display:grid;place-items:center;font-weight:950;font-size:25px;box-shadow:0 0 55px #3d7cff55}
+.trans h2{margin:17px 0 5px}
+.trans p{font-size:11px;color:#a5b6cd}
+.spinner{width:30px;height:30px;border:3px solid #fff3;border-top-color:#fff;border-radius:50%;margin:18px auto 0;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+
+#cbt{display:none;position:fixed;inset:0;z-index:900;background:#f7f7f7;color:#222}
+
+.cbtHead{height:58px;background:#fff;border-bottom:1px solid #aaa;display:flex;align-items:center;justify-content:space-between;padding:0 9px}
+.nta{display:flex;align-items:center;gap:8px;font-weight:900;font-size:12px}
+.ntaIcon{width:34px;height:34px;border-radius:4px;background:#1769d3;color:#fff;display:grid;place-items:center}
+.nta small{display:block;color:#777;font-size:9px;font-weight:500}
+.clock{font-weight:950;font-size:14px}
+
+.tabs{height:42px;display:flex;background:#dedede;border-bottom:1px solid #aaa}
+.tabs button{flex:1;border:0;border-right:1px solid #bbb;background:#ddd;font-size:11px;font-weight:900}
+.tabs button.active{background:#fff;color:#155db3;border-top:3px solid #155db3}
+
+.cbtBody{height:calc(100vh - 100px);display:flex;flex-direction:column}
+.cbtMain{display:flex;flex:1;min-height:0}
+
+.qarea{flex:1;background:#fff;overflow:auto;padding:15px}
+.qhead{display:flex;justify-content:space-between;border-bottom:1px solid #ddd;padding-bottom:9px;font-size:11px;font-weight:900}
+.qtext{white-space:pre-wrap;font-size:15px;line-height:1.65;margin-top:14px}
+.opts{margin-top:15px}
+
+.opt{display:flex;gap:9px;align-items:flex-start;margin:13px 0;font-size:14px;line-height:1.5}
+.opt input{width:18px;height:18px;accent-color:#1769d3;flex:none;margin-top:2px}
+
+.side{width:220px;background:#eee;border-left:1px solid #aaa;padding:9px;overflow:auto}
+.sideTitle{font-size:11px;font-weight:900;margin-bottom:7px}
+.palette{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.palette button{height:30px;border:1px solid #aaa;background:#fff;border-radius:4px;font-size:10px}
+.palette .ans{background:#43a85f;color:#fff}
+.palette .rev{background:#a75ee8;color:#fff}
+.palette .cur{outline:2px solid #1769d3}
+
+.cbtFoot{background:#eee;border-top:1px solid #aaa;padding:7px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.cbtFoot button{padding:10px 5px;border:1px solid #888;background:#fff;border-radius:4px;font-size:10px;font-weight:900}
+.cbtFoot .next{background:#1769d3;color:#fff;border-color:#1769d3}
+
+.modal{position:fixed;inset:0;z-index:1200;background:#0009;display:none;align-items:center;justify-content:center;padding:18px}
+.modalBox{width:min(500px,100%);background:#101b2a;color:#fff;border:1px solid #31435e;border-radius:16px;padding:17px}
+.modalBox button{width:100%;padding:11px;border:0;border-radius:10px;background:#2563eb;color:#fff;font-weight:900}
+
+@media(max-width:650px){
+.side{display:none}
+}
+
+@media(max-width:520px){
+.app{padding:7px}
+.grid2{grid-template-columns:1fr 1fr}
+.row{grid-template-columns:1fr}
+.row3{grid-template-columns:1fr 1fr}
+.stats{grid-template-columns:1fr 1fr}
+.hero{padding-top:25px}
+.hero h1{font-size:36px}
+}
+
+@media(max-width:350px){
+.grid2,.row3{grid-template-columns:1fr}
+}
 </style>
 </head>
+
 <body>
 
 <div class="app" id="app">
-<header class="header">
- <div class="brand"><div class="logo">JN</div><div><b>JEE Main 2027</b><span>Mock Test • CBT Studio</span></div></div>
- <div class="timer" id="topTimer">03:00:00</div>
+
+<header class="top">
+<div class="brand">
+<div class="logo">JN</div>
+<div>
+<b>JEE Main 2027</b>
+<span>PDF → CBT Studio</span>
+</div>
+</div>
+<div class="topStatus" id="topStatus">Ready</div>
 </header>
 
-<section class="hero step">
- <h1>PDF → <em>JEE Main CBT</em></h1>
- <p>Upload the original question paper and official answer key. The app extracts source content, maps the official key, then opens a clean white CBT.</p>
+<section class="hero">
+<h1>PDF → <span>Real CBT</span></h1>
+<p>
+Original questions only. Official answer-key mapping.
+OCR/document vision for scanned PDFs.
+Smooth mobile JEE Main-style test interface.
+</p>
 </section>
 
-<section class="card step">
- <h2>1. Upload both PDFs</h2>
- <p class="hint">No Google authentication. No extra account step. Scanned/image PDFs are supported with automatic OCR fallback.</p>
- <div class="files">
-  <label class="upload"><input id="qFile" type="file" accept="application/pdf"><span class="icon">📄</span><b>Questions PDF</b><small>Tap to select</small><span class="file-name" id="qName"></span></label>
-  <label class="upload"><input id="aFile" type="file" accept="application/pdf"><span class="icon">🔑</span><b>Answer Key PDF</b><small>Tap to select</small><span class="file-name" id="aName"></span></label>
- </div>
-</section>
+<section class="card">
 
-<section class="card step">
- <h2>2. AI provider</h2>
- <p class="hint">Only one key is required. Gemini is recommended for PDF extraction. OpenAI is available as an alternative.</p>
- <div class="ai-grid">
-  <select id="provider"><option value="gemini" selected>Gemini</option><option value="openai">OpenAI</option></select>
-  <input id="apiKey" type="password" placeholder="Paste API key" autocomplete="off">
- </div>
- <label class="hint" style="display:block;margin-top:8px;margin-bottom:4px">Gemini model</label><select id="model" style="margin-top:0;display:block!important"></select>
- <button class="mainbtn" id="testAI">TEST AI CONNECTION</button>
- <div class="status" id="aiStatus"></div>
-</section>
+<h2>1. Select source PDFs</h2>
 
-<section class="card step">
- <h2>3. Test settings</h2>
- <div class="settings">
-  <div><label>Paper</label><select id="paper"><option>JEE Main 2027 Paper 1</option></select></div>
-  <div><label>Duration (minutes)</label><input id="duration" type="number" value="180" min="1" max="600"></div>
- </div>
- <div class="features">
-  <div class="feature"><b>Exact source</b><span>No invented questions</span></div>
-  <div class="feature"><b>Key mapping</b><span>Official key only</span></div>
-  <div class="feature"><b>White CBT</b><span>JEE-style layout</span></div>
- </div>
- <button class="mainbtn" id="generate">GENERATE JEE MAIN 2027 MOCK</button>
- <div class="progress"><i id="bar"></i></div>
- <div class="log" id="log">Ready. Select both PDFs.</div>
-</section>
+<p class="sub">
+Questions PDF and official answer key are kept separate so the AI can map answers correctly.
+Google login is not required.
+</p>
 
-<section class="card result step" id="resultCard">
- <h2>4. Extracted paper</h2>
- <div class="stats">
-  <div class="stat"><b id="total">0</b><span>Questions</span></div>
-  <div class="stat"><b id="phy">0</b><span>Physics</span></div>
-  <div class="stat"><b id="chem">0</b><span>Chemistry</span></div>
-  <div class="stat"><b id="math">0</b><span>Mathematics</span></div>
- </div>
- <input class="search" id="search" placeholder="Search question...">
- <div id="list"></div>
- <button class="mainbtn" id="startMock">START JEE MAIN CBT</button>
-</section>
+<div class="grid2">
+
+<label class="upload">
+<input id="qFile" type="file" accept="application/pdf">
+<strong>📄 Questions PDF</strong>
+<small>Tap to select</small>
+<span class="fname" id="qName"></span>
+</label>
+
+<label class="upload">
+<input id="aFile" type="file" accept="application/pdf">
+<strong>🔑 Official Answer Key</strong>
+<small>Tap to select</small>
+<span class="fname" id="aName"></span>
+</label>
+
 </div>
+
+</section>
+
+<section class="card">
+
+<h2>2. AI engine</h2>
+
+<p class="sub">
+Gemini is the recommended engine because it can read PDF documents directly.
+OpenAI is included as an alternative.
+</p>
+
+<div class="row">
+
+<div class="field">
+<label>Provider</label>
+<select id="provider">
+<option value="gemini">Gemini</option>
+<option value="openai">OpenAI</option>
+</select>
+</div>
+
+<div class="field">
+<label>API key</label>
+<input id="apiKey" type="password" placeholder="Paste API key" autocomplete="off">
+</div>
+
+</div>
+
+<div class="field mt">
+<label>Model</label>
+<select id="model"></select>
+</div>
+
+<div class="row mt">
+<button class="btn primary" id="testAI">TEST CONNECTION</button>
+<button class="btn" id="clearKey">CLEAR KEY</button>
+</div>
+
+<div class="status" id="aiStatus"></div>
+
+<div class="chips">
+<span class="chip">Gemini 3.6 Flash</span>
+<span class="chip">Gemini 3.1 Flash-Lite</span>
+<span class="chip">OCR</span>
+<span class="chip">Structured JSON</span>
+</div>
+
+</section>
+
+<section class="card">
+
+<h2>3. Build paper</h2>
+
+<p class="sub">
+The extractor is instructed not to invent, paraphrase, solve, or modify source questions.
+Missing fields stay missing.
+</p>
+
+<div class="row3">
+
+<div class="field">
+<label>Exam</label>
+<select>
+<option>JEE Main 2027</option>
+</select>
+</div>
+
+<div class="field">
+<label>Duration</label>
+<input id="duration" type="number" min="1" max="600" value="180">
+</div>
+
+<div class="field">
+<label>Language</label>
+<select id="language">
+<option>English</option>
+<option>Hindi</option>
+<option>English + Hindi</option>
+</select>
+</div>
+
+</div>
+
+<button class="btn primary mt" id="generate">
+GENERATE CBT FROM PDFs
+</button>
+
+<div class="progress">
+<i id="bar"></i>
+</div>
+
+<div class="log" id="log">
+Select both PDFs and test the AI connection.
+</div>
+
+</section>
+
+<section class="card result" id="result">
+
+<h2>4. Paper ready</h2>
+
+<div class="stats">
+
+<div class="stat">
+<b id="total">0</b>
+<small>Total</small>
+</div>
+
+<div class="stat">
+<b id="phy">0</b>
+<small>Physics</small>
+</div>
+
+<div class="stat">
+<b id="chem">0</b>
+<small>Chemistry</small>
+</div>
+
+<div class="stat">
+<b id="math">0</b>
+<small>Mathematics</small>
+</div>
+
+</div>
+
+<input id="search" class="search" placeholder="Search extracted question...">
+
+<div id="list"></div>
+
+<button class="btn green mt" id="start">
+START JEE MAIN CBT
+</button>
+
+</section>
+
+</div>
+
 
 <div id="transition">
- <div class="transition-box">
-  <div class="transition-logo">JN</div>
-  <h2 id="transitionTitle">Preparing your CBT</h2>
-  <p id="transitionText">Please wait…</p>
-  <div class="spin"></div>
- </div>
+
+<div class="trans">
+
+<div class="transLogo">JN</div>
+
+<h2 id="tt">Preparing CBT</h2>
+
+<p id="tx">Please wait…</p>
+
+<div class="spinner"></div>
+
 </div>
+
+</div>
+
 
 <div id="cbt">
-<header class="cbt-top">
- <div class="cbt-brand"><div class="cbt-logo">NTA</div><div>JEE Main 2027<small>Mock Test</small></div></div>
- <div class="clock" id="clock">03:00:00</div>
+
+<header class="cbtHead">
+
+<div class="nta">
+
+<div class="ntaIcon">NTA</div>
+
+<div>
+JEE Main 2027
+<small>Mock Test</small>
+</div>
+
+</div>
+
+<div class="clock" id="clock">
+03:00:00
+</div>
+
 </header>
-<div class="cbt-body">
- <div class="cbt-subjects">
-  <button data-subject="Physics" class="active">Physics</button>
-  <button data-subject="Chemistry">Chemistry</button>
-  <button data-subject="Mathematics">Mathematics</button>
- </div>
- <div class="cbt-main">
-  <main class="question-area">
-   <div class="qbar"><span id="qnum">Question 1</span><span id="qtype">Single Correct</span></div>
-   <div class="qtext" id="qtext"></div>
-   <div class="opts" id="opts"></div>
-  </main>
-  <aside class="cbt-side">
-   <div class="side-title">Question Palette</div>
-   <div class="palette" id="palette"></div>
-  </aside>
- </div>
- <div class="cbt-actions">
-  <button id="clear">Clear</button>
-  <button id="review">Mark for Review</button>
-  <button class="next" id="next">Save & Next</button>
- </div>
+
+
+<div class="cbtBody">
+
+<div class="tabs">
+
+<button data-sub="Physics" class="active">
+Physics
+</button>
+
+<button data-sub="Chemistry">
+Chemistry
+</button>
+
+<button data-sub="Mathematics">
+Mathematics
+</button>
+
 </div>
+
+
+<div class="cbtMain">
+
+<main class="qarea">
+
+<div class="qhead">
+
+<span id="qnum">
+Question 1
+</span>
+
+<span id="qtype">
+Single Correct
+</span>
+
 </div>
+
+<div class="qtext" id="qtext"></div>
+
+<div class="opts" id="opts"></div>
+
+</main>
+
+
+<aside class="side">
+
+<div class="sideTitle">
+Question Palette
+</div>
+
+<div class="palette" id="palette"></div>
+
+</aside>
+
+</div>
+
+
+<div class="cbtFoot">
+
+<button id="clear">
+Clear
+</button>
+
+<button id="review">
+Mark for Review
+</button>
+
+<button class="next" id="next">
+Save &amp; Next
+</button>
+
+</div>
+
+</div>
+
+</div>
+
 
 <div class="modal" id="submitModal">
- <div class="modal-card">
-  <h3>Submit mock test?</h3>
-  <p id="submitInfo" class="hint"></p>
-  <button id="submitYes">SUBMIT TEST</button>
- </div>
+
+<div class="modalBox">
+
+<h3>
+Submit mock test?
+</h3>
+
+<p id="submitInfo" class="sub"></p>
+
+<button id="submitYes">
+SUBMIT TEST
+</button>
+
 </div>
 
+</div>
+
+
 <script type="module">
-import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
-pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
+
+import * as pdfjsLib from
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
+
+pdfjsLib.GlobalWorkerOptions.workerSrc=
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
+
 
 const $=id=>document.getElementById(id);
-let qFile=null,aFile=null,questions=[],answers=new Map(),reviewed=new Set(),idx=0,remaining=10800,timer=null,aiReady=false;
 
-const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
-const typeName=t=>({single:"Single Correct",multiple:"Multiple Correct",numerical:"Numerical Value",integer:"Integer Type",matrix:"Matrix Match",assertion:"Assertion / Reason"})[t]||"Question";
+let qFile=null;
+let aFile=null;
+let questions=[];
+let answers=new Map();
+let reviewed=new Set();
+let idx=0;
+let remaining=10800;
+let timer=null;
+let aiOK=false;
 
-function setLog(p,t){$("bar").style.width=Math.max(0,Math.min(100,p))+"%";$("log").textContent=t}
-function delay(ms){return new Promise(r=>setTimeout(r,ms))}
-function showTransition(title,text){$("transitionTitle").textContent=title;$("transitionText").textContent=text;$("transition").style.display="flex"}
-function hideTransition(){ $("transition").style.display="none" }
 
-$("qFile").onchange=e=>{qFile=e.target.files[0]||null;$("qName").textContent=qFile?"✓ "+qFile.name:"";setLog(0,qFile?"Questions PDF selected.":"Select Questions PDF.");checkReady()}
-$("aFile").onchange=e=>{aFile=e.target.files[0]||null;$("aName").textContent=aFile?"✓ "+aFile.name:"";setLog(0,aFile?"Answer Key PDF selected.":"Select Answer Key PDF.");checkReady()}
-$("provider").onchange=()=>{aiReady=false;loadModels();$("aiStatus").textContent=""}
-$("apiKey").oninput=()=>{aiReady=false}
+const esc=s=>
+String(s??"").replace(/[&<>"']/g,m=>
+({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#39;"
+}[m])
+);
 
-async function loadModels(){
- const p=$("provider").value;
- $("model").innerHTML="";
- const defaults=p==="gemini"
-  ? [
-      ["gemini-3.6-flash","Gemini 3.6 Flash • Latest Fast"],
-      ["gemini-3.5-flash","Gemini 3.5 Flash • Stable Fast"],
-      ["gemini-3.1-flash-lite","Gemini 3.1 Flash-Lite • Low Latency"]
-    ]
-  : [
-      ["gpt-5-mini","GPT-5 mini"],
-      ["gpt-5","GPT-5"]
-    ];
- defaults.forEach(([v,t])=>{
-   const o=document.createElement("option");
-   o.value=v;
-   o.textContent=t;
-   $("model").appendChild(o);
- });
- $("model").value=defaults[0][0];
-}
-loadModels();
 
-async function gemini(prompt){
- const key=$("apiKey").value.trim(),model=$("model").value;
- if(!key)throw Error("Gemini API key enter karo.");
- const r=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(model)+":generateContent?key="+encodeURIComponent(key),{
-  method:"POST",headers:{"Content-Type":"application/json"},
-  body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0,responseMimeType:"application/json"}})
- });
- const d=await r.json();if(!r.ok)throw Error(d.error?.message||("Gemini HTTP "+r.status));
- return d.candidates?.[0]?.content?.parts?.map(x=>x.text||"").join("")||"";
-}
-async function openai(prompt){
- const key=$("apiKey").value.trim(),model=$("model").value;
- if(!key)throw Error("OpenAI API key enter karo.");
- const r=await fetch("https://api.openai.com/v1/responses",{
-  method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+key},
-  body:JSON.stringify({model,input:prompt})
- });
- const d=await r.json();if(!r.ok)throw Error(d.error?.message||("OpenAI HTTP "+r.status));
- return d.output_text||"";
-}
-async function callAI(prompt){return $("provider").value==="gemini"?gemini(prompt):openai(prompt)}
+const sleep=ms=>
+new Promise(r=>setTimeout(r,ms));
 
-$("testAI").onclick=async()=>{
- try{
-  $("testAI").disabled=true;$("aiStatus").innerHTML='<span class="muted">Testing connection…</span>';
-  const out=await callAI("Return JSON only: {\"ok\":true}");
-  if(!out)throw Error("AI returned an empty response.");
-  aiReady=true;$("aiStatus").innerHTML='<span class="ok">✓ AI connected successfully.</span>';checkReady()
- }catch(e){aiReady=false;$("aiStatus").innerHTML='<span class="bad">'+esc(e.message)+'</span>'}
- finally{$("testAI").disabled=false}
+
+const setLog=(p,t)=>{
+
+$("bar").style.width=
+Math.max(0,Math.min(100,p))+"%";
+
+$("log").textContent=t;
+
+$("topStatus").textContent=t;
+
 };
 
-async function loadPdf(file){
- return pdfjsLib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise
+
+const transition=(title,text,show=true)=>{
+
+if(show){
+
+$("tt").textContent=title;
+
+$("tx").textContent=text;
+
+$("transition").style.display="flex";
+
+}else{
+
+$("transition").style.display="none";
+
 }
-async function extractPdfText(file,label,base,span){
- const pdf=await loadPdf(file);let text="", weakPages=0;
- for(let i=1;i<=pdf.numPages;i++){
-  const page=await pdf.getPage(i),tc=await page.getTextContent();
-  const pageText=tc.items.map(x=>x.str).join(" ").trim();
-  text+="\n===== "+label+" PAGE "+i+" =====\n"+pageText;
-  if(pageText.replace(/\\s/g,"").length<35) weakPages++;
-  setLog(base+(i/pdf.numPages)*span,`Reading ${label} PDF • page ${i}/${pdf.numPages}`);
-  await delay(0);
- }
- // If the PDF is scanned/image-heavy, send the original PDF to Gemini for native
- // document understanding. This handles OCR, maths, diagrams and tables much
- // better than running a slow browser OCR engine on every phone.
- if(weakPages>0 && $("provider").value==="gemini"){
-   setLog(base+span*.92,`Scanned ${label} pages detected • running OCR/document vision…`);
-   showTransition("OCR fallback",`Gemini is reading scanned ${label} pages…`);
-   const ocr = await geminiPdf(file,label);
-   if(ocr && ocr.replace(/\\s/g,"").length>80) text += "\n===== "+label+" OCR =====\n"+ocr;
- }
- return text;
+
+};
+
+
+function loadModels(){
+
+const p=$("provider").value;
+
+$("model").innerHTML="";
+
+const list=
+p==="gemini"
+
+?
+
+[
+["gemini-3.6-flash",
+"Gemini 3.6 Flash • Latest Fast"],
+
+["gemini-3.1-flash-lite",
+"Gemini 3.1 Flash-Lite • Low Latency"]
+]
+
+:
+
+[
+["gpt-5-mini","GPT-5 mini"],
+
+["gpt-5","GPT-5"]
+];
+
+
+list.forEach(([v,t])=>{
+
+const o=document.createElement("option");
+
+o.value=v;
+
+o.textContent=t;
+
+$("model").appendChild(o);
+
+});
+
 }
-async function geminiPdf(file,label){
- const key=$("apiKey").value.trim(),model=$("model").value;
- const bytes=new Uint8Array(await file.arrayBuffer());
- let binary="";
- const chunk=0x8000;
- for(let i=0;i<bytes.length;i+=chunk) binary+=String.fromCharCode(...bytes.subarray(i,i+chunk));
- const b64=btoa(binary);
- const prompt=`Read this ${label} PDF carefully using native document vision/OCR. Extract ALL visible text exactly enough for downstream JEE question extraction. Preserve mathematical expressions, symbols, options, tables and page order. Do not solve anything. Return plain text only with page headings.`;
- const r=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(model)+":generateContent?key="+encodeURIComponent(key),{
-  method:"POST",headers:{"Content-Type":"application/json"},
-  body:JSON.stringify({contents:[{parts:[
-   {text:prompt},
-   {inlineData:{mimeType:"application/pdf",data:b64}}
-  ]}],generationConfig:{temperature:0}})
- });
- const d=await r.json();
- if(!r.ok)throw Error(d.error?.message||("Gemini OCR HTTP "+r.status));
- return d.candidates?.[0]?.content?.parts?.map(x=>x.text||"").join("")||"";
+
+
+loadModels();
+
+
+$("provider").onchange=()=>{
+
+aiOK=false;
+
+loadModels();
+
+$("aiStatus").textContent="";
+
+};
+
+
+$("apiKey").oninput=()=>{
+
+aiOK=false;
+
+};
+
+
+$("qFile").onchange=e=>{
+
+qFile=e.target.files[0]||null;
+
+$("qName").textContent=
+qFile?"✓ "+qFile.name:"";
+
+setLog(
+0,
+qFile?
+"Questions PDF selected.":
+"Select Questions PDF."
+);
+
+};
+
+
+$("aFile").onchange=e=>{
+
+aFile=e.target.files[0]||null;
+
+$("aName").textContent=
+aFile?"✓ "+aFile.name:"";
+
+setLog(
+0,
+aFile?
+"Answer key selected.":
+"Select answer key PDF."
+);
+
+};
+
+
+$("clearKey").onclick=()=>{
+
+$("apiKey").value="";
+
+aiOK=false;
+
+$("aiStatus").innerHTML=
+'<span class="muted">Key cleared.</span>';
+
+};
+
+
+async function geminiText(prompt){
+
+const key=$("apiKey").value.trim();
+
+const model=$("model").value;
+
+if(!key)
+throw Error("Gemini API key enter karo.");
+
+
+const r=await fetch(
+
+"https://generativelanguage.googleapis.com/v1beta/models/"
++
+encodeURIComponent(model)
++
+":generateContent?key="
++
+encodeURIComponent(key),
+
+{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+contents:[
+{
+parts:[
+{text:prompt}
+]
 }
-function cleanJSON(s){
- s=String(s||"").trim().replace(/^```(?:json)?/i,"").replace(/```$/,"").trim();
- const a=s.indexOf("{"),b=s.lastIndexOf("}");
- if(a>=0&&b>a)s=s.slice(a,b+1);
- return s;
+],
+
+generationConfig:{
+temperature:0,
+responseMimeType:"application/json"
 }
-function promptFor(qt,at){
- return `You are a strict JEE Main source-data extractor.
-Use ONLY the supplied source PDF text. Do NOT create, paraphrase, solve, repair, or invent any question.
-Preserve question wording and option wording as closely as the supplied text allows.
-Map correctAnswer ONLY from the official answer-key text.
-Return JSON only:
-{"questions":[{"id":1,"subject":"Physics","type":"single","question":"EXACT SOURCE TEXT","options":["A","B","C","D"],"correctAnswer":"A"}]}
-All
+
+})
+
+}
+
+);
+
+
+const d=await r.json();
+
+
+if(!r.ok)
+
+throw Error(
+d.error?.message||
+"Gemini request failed ("+r.status+")"
+);
+
+
+return d.candidates?.[0]?.content?.parts
+?.map(x=>x.text||"").join("")||"";
+
+}
+
+
+async function openaiText(prompt){
+
+const key=$("apiKey").value.trim();
+
+const model=$("model").value;
+
+if(!key)
+throw Error("OpenAI API key enter karo.");
+
+
+const r=await fetch(
+
+"https://api.openai.com/v1/responses",
+
+{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json",
+"Authorization":"Bearer "+key
+},
+
+body:JSON.stringify({
+
+model,
+
+input:prompt
+
+})
+
+}
+
+);
+
+
+const d=await r.json();
+
+
+if(!r.ok)
+
+throw Error(
+d.error?.message||
+"OpenAI request failed ("+r.status+")"
+);
+
+
+return d.output_text||"";
+
+}
+
+
+async function callText(prompt){
+
+return $("provider").value==="gemini"
+
+?geminiText(prompt)
+
+:openaiText(prompt);
+
+}
+
+
+$("testAI").onclick=async()=>{
+
+$("testAI").disabled=true;
+
+$("aiStatus").innerHTML=
+'<span class="muted">Testing…</span>';
+
+
+try{
+
+const x=await callText(
+'Return only this JSON object: {"ok":true}'
+);
+
+
+const cleaned=
+x.replace(/^```json|```$/gi,"").trim();
+
+
+JSON.parse(cleaned);
+
+aiOK=true;
+
+$("aiStatus").innerHTML=
+'<span class="ok">✓ AI connection working.</span>';
+
+}catch(e){
+
+aiOK=false;
+
+$("aiStatus").innerHTML=
+'<span class="bad">'+
+esc(e.message)+
+'</span>';
+
+}finally{
+
+$("testAI").disabled=false;
+
+}
+
+};
+
+
+async function uploadGeminiFile(file){
+
+const key=$("apiKey").value.trim();
+
+
+const start=await fetch(
+
+"https://generativelanguage.googleapis.com/upload/v1beta/files?key="
++
+encodeURIComponent(key),
+
+{
+
+method:"POST",
+
+headers:{
+
+"X-Goog-Upload-Protocol":"resumable",
+
+"X-Goog-Upload-Command":"start",
+
+"X-Goog-Upload-Header-Content-Length":
+String(file.size),
+
+"X-Goog-Upload-Header-Content-Type":
+"application/pdf",
+
+"Content-Type":
+"application/json"
+
+},
+
+body:JSON.stringify({
+
+file:{
+display_name:file.name
+}
+
+})
+
+}
+
+);
+
+
+if(!start.ok)
+
+throw Error(
+"Gemini file upload start failed ("+
+start.status+
+")"
+);
+
+
+const uploadUrl=
+start.headers.get("x-goog-upload-url");
+
+
+if(!uploadUrl)
+
+throw Error(
+"Gemini did not return an upload URL."
+);
+
+
+const fin=await fetch(
+
+uploadUrl,
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Length":
+String(file.size),
+
+"X-Goog-Upload-Offset":
+"0",
+
+"X-Goog-Upload-Command":
+"upload, finalize"
+
+},
+
+body:file
+
+}
+
+);
+
+
+if(!fin.ok)
+
+throw Error(
+"Gemini file upload failed ("+
+fin.status+
+")"
+);
+
+
+const d=await fin.json();
+
+return d.file;
+
+}
+
+
+async function waitGeminiFile(name){
+
+const key=$("apiKey").value.trim();
+
+
+for(let i=0;i<60;i++){
+
+const r=await fetch(
+
+"https://generativelanguage.googleapis.com/v1beta/"
++
+name+
+"?key="+
+encodeURIComponent(key)
+
+);
+
+
+if(!r.ok)
+
+throw Error(
+"Could not verify uploaded PDF ("+
+r.status+
+")"
+);
+
+
+const d=await r.json();
+
+
+if(!d.state||d.state==="ACTIVE")
+return d;
+
+
+if(d.state==="FAILED")
+throw Error(
+"Gemini failed to process a PDF."
+);
+
+
+await sleep(1000);
+
+}
+
+
+throw Error(
+"Gemini PDF processing timed out."
+);
+
+}
+
+
+async function extractLocal(file,label){
+
+try{
+
+const pdf=
+await pdfjsLib.getDocument({
+data:new Uint8Array(
+await file.arrayBuffer()
+)
+}).promise;
+
+
+let t="";
+let weak=0;
+
+
+for(let i=1;i<=pdf.numPages;i++){
+
+const p=await pdf.getPage(i);
+
+const tc=
+await p.getTextContent();
+
+const s=
+tc.items
+.map(x=>x.str)
+.join(" ")
+.trim();
+
+
+if(
+s.replace(/\s/g,"").length<35
+)
+weak++;
+
+
+t+=
+"\n===== "+
+label+
+" PAGE "+
+i+
+" =====\n"+
+s;
+
+
+setLog(
+5+
+(i/pdf.numPages)*15,
+
+"Reading "+
+label+
+" PDF • page "+
+i+
+"/"+
+pdf.numPages
+);
+
+
+await sleep(0);
+
+}
+
+
+return{
+text:t,
+weak,
+pages:pdf.numPages
+};
+
+
+}catch{
+
+return{
+text:"",
+weak:999,
+pages:0
+};
+
+}
+
+}
+
+
+const schema={
+
+type:"object",
+
+properties:{
+
+questions:{
+
+type:"array",
+
+items:{
+
+type:"object",
+
+properties:{
+
+id:{
+type:"integer"
+},
+
+subject:{
+type:"string",
+enum:[
+"Physics",
+"Chemistry",
+"Mathematics"
+]
+},
+
+type:{
+type:"string",
+enum:[
+"single",
+"multiple",
+"numerical",
+"integer",
+"matrix",
+"assertion"
+]
+},
+
+question:{
+type:"string"
+},
+
+options:{
+type:"array",
+items:{
+type:"string"
+}
+},
+
+correctAnswer:{
+type:"string"
+}
+
+},
+
+required:[
+"id",
+"subject",
+"type",
+"question",
+"options",
+"correctAnswer"
+]
+
+}
+
+}
+
+},
+
+required:[
+"questions"
+]
+
+};
+
+
+function extractionPrompt(language){
+
+return `You are a strict JEE Main question-paper digitizer.
+
+Use ONLY the two attached PDFs.
+
+PDF 1 is the original QUESTIONS paper.
+PDF 2 is the OFFICIAL ANSWER KEY.
+
+Do NOT invent, paraphrase, solve, simplify, correct, or rewrite questions.
+
+Preserve e
