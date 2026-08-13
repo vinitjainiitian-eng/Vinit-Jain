@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="en">
- <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>JEE Main 2027 Mock Test</title>
-  <style>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>JEE Main 2027 Mock Test</title>
+<style>
 :root{
  --bg:#07101d;--card:#0d1726;--card2:#111d2e;--line:#26364e;--text:#f5f8ff;
  --muted:#94a3b8;--blue:#3b82f6;--blue2:#6366f1;--green:#22c55e;--red:#ef4444;
@@ -55,139 +55,119 @@ input:focus,select:focus{border-color:#5689ff;box-shadow:0 0 0 3px #3b82f622}
 @media(max-width:430px){.app{padding:7px}.files{grid-template-columns:1fr 1fr}.ai-grid{grid-template-columns:105px 1fr}.stats{grid-template-columns:repeat(2,1fr)}.hero{padding-top:24px}.hero h1{font-size:28px}}
 @media(max-width:340px){.files{grid-template-columns:1fr}.ai-grid{grid-template-columns:1fr}}
 </style>
- </head>
- <body>
-  <div class="app" id="app">
-   <header class="header">
-    <div class="brand">
-     <div class="logo">JN</div>
-     <div>
-      <b>JEE Main 2027</b><span>Mock Test • CBT Studio</span>
-     </div>
-    </div>
-    <div class="timer" id="topTimer">03:00:00</div>
-   </header>
-   <section class="hero step">
-    <h1>PDF → <em>JEE Main CBT</em></h1>
-    <p>Upload the original question paper and official answer key. The app extracts source content, maps the official key, then opens a clean white CBT.</p>
-   </section>
-   <section class="card step">
-    <h2>1. Upload both PDFs</h2>
-    <p class="hint">No Google authentication. No extra account step. Scanned/image PDFs are supported with automatic OCR fallback.</p>
-    <div class="files">
-     <label class="upload"><input id="qFile" type="file" accept="application/pdf"><span class="icon">📄</span><b>Questions PDF</b><small>Tap to select</small><span class="file-name" id="qName"></span></label> <label class="upload"><input id="aFile" type="file" accept="application/pdf"><span class="icon">🔑</span><b>Answer Key PDF</b><small>Tap to select</small><span class="file-name" id="aName"></span></label>
-    </div>
-   </section>
-   <section class="card step">
-    <h2>2. AI provider</h2>
-    <p class="hint">Only one key is required. Gemini is recommended for PDF extraction. OpenAI is available as an alternative.</p>
-    <div class="ai-grid">
-     <select id="provider"><option value="gemini" selected>Gemini</option><option value="openai">OpenAI</option></select> <input id="apiKey" type="password" placeholder="Paste API key" autocomplete="off">
-    </div>
-    <label class="hint" style="display:block;margin-top:8px;margin-bottom:4px">Gemini model</label><select id="model" style="margin-top:0;display:block!important"></select>
-    <button class="mainbtn" id="testAI">TEST AI CONNECTION</button>
-    <div class="status" id="aiStatus"></div>
-   </section>
-   <section class="card step">
-    <h2>3. Test settings</h2>
-    <div class="settings">
-     <div>
-      <label>Paper</label><select id="paper"><option>JEE Main 2027 Paper 1</option></select>
-     </div>
-     <div>
-      <label>Duration (minutes)</label><input id="duration" type="number" value="180" min="1" max="600">
-     </div>
-    </div>
-    <div class="features">
-     <div class="feature">
-      <b>Exact source</b><span>No invented questions</span>
-     </div>
-     <div class="feature">
-      <b>Key mapping</b><span>Official key only</span>
-     </div>
-     <div class="feature">
-      <b>White CBT</b><span>JEE-style layout</span>
-     </div>
-    </div>
-    <button class="mainbtn" id="generate">GENERATE JEE MAIN 2027 MOCK</button>
-    <div class="progress">
-     <i id="bar"></i>
-    </div>
-    <div class="log" id="log">Ready. Select both PDFs.</div>
-   </section>
-   <section class="card result step" id="resultCard">
-    <h2>4. Extracted paper</h2>
-    <div class="stats">
-     <div class="stat">
-      <b id="total">0</b><span>Questions</span>
-     </div>
-     <div class="stat">
-      <b id="phy">0</b><span>Physics</span>
-     </div>
-     <div class="stat">
-      <b id="chem">0</b><span>Chemistry</span>
-     </div>
-     <div class="stat">
-      <b id="math">0</b><span>Mathematics</span>
-     </div>
-    </div>
-    <input class="search" id="search" placeholder="Search question...">
-    <div id="list"></div>
-    <button class="mainbtn" id="startMock">START JEE MAIN CBT</button>
-   </section>
-  </div>
-  <div id="transition">
-   <div class="transition-box">
-    <div class="transition-logo">JN</div>
-    <h2 id="transitionTitle">Preparing your CBT</h2>
-    <p id="transitionText">Please wait…</p>
-    <div class="spin"></div>
-   </div>
-  </div>
-  <div id="cbt">
-   <header class="cbt-top">
-    <div class="cbt-brand">
-     <div class="cbt-logo">NTA</div>
-     <div>
-      JEE Main 2027<small>Mock Test</small>
-     </div>
-    </div>
-    <div class="clock" id="clock">03:00:00</div>
-   </header>
-   <div class="cbt-body">
-    <div class="cbt-subjects">
-     <button data-subject="Physics" class="active">Physics</button>
-     <button data-subject="Chemistry">Chemistry</button>
-     <button data-subject="Mathematics">Mathematics</button>
-    </div>
-    <div class="cbt-main">
-     <main class="question-area">
-      <div class="qbar">
-       <span id="qnum">Question 1</span><span id="qtype">Single Correct</span>
-      </div>
-      <div class="qtext" id="qtext"></div>
-      <div class="opts" id="opts"></div>
-     </main>
-     <aside class="cbt-side">
-      <div class="side-title">Question Palette</div>
-      <div class="palette" id="palette"></div>
-     </aside>
-    </div>
-    <div class="cbt-actions">
-     <button id="clear">Clear</button>
-     <button id="review">Mark for Review</button>
-     <button class="next" id="next">Save &amp; Next</button>
-    </div>
-   </div>
-  </div>
-  <div class="modal" id="submitModal">
-   <div class="modal-card">
-    <h3>Submit mock test?</h3>
-    <p id="submitInfo" class="hint"></p>
-    <button id="submitYes">SUBMIT TEST</button>
-   </div>
-  </div>
-  <script type="module">
+</head>
+<body>
+
+<div class="app" id="app">
+<header class="header">
+ <div class="brand"><div class="logo">JN</div><div><b>JEE Main 2027</b><span>Mock Test • CBT Studio</span></div></div>
+ <div class="timer" id="topTimer">03:00:00</div>
+</header>
+
+<section class="hero step">
+ <h1>PDF → <em>JEE Main CBT</em></h1>
+ <p>Upload the original question paper and official answer key. The app extracts source content, maps the official key, then opens a clean white CBT.</p>
+</section>
+
+<section class="card step">
+ <h2>1. Upload both PDFs</h2>
+ <p class="hint">No Google authentication. No extra account step. Scanned/image PDFs are supported with automatic OCR fallback.</p>
+ <div class="files">
+  <label class="upload"><input id="qFile" type="file" accept="application/pdf"><span class="icon">📄</span><b>Questions PDF</b><small>Tap to select</small><span class="file-name" id="qName"></span></label>
+  <label class="upload"><input id="aFile" type="file" accept="application/pdf"><span class="icon">🔑</span><b>Answer Key PDF</b><small>Tap to select</small><span class="file-name" id="aName"></span></label>
+ </div>
+</section>
+
+<section class="card step">
+ <h2>2. AI provider</h2>
+ <p class="hint">Only one key is required. Gemini is recommended for PDF extraction. OpenAI is available as an alternative.</p>
+ <div class="ai-grid">
+  <select id="provider"><option value="gemini" selected>Gemini</option><option value="openai">OpenAI</option></select>
+  <input id="apiKey" type="password" placeholder="Paste API key" autocomplete="off">
+ </div>
+ <label class="hint" style="display:block;margin-top:8px;margin-bottom:4px">Gemini model</label><select id="model" style="margin-top:0;display:block!important"></select>
+ <button class="mainbtn" id="testAI">TEST AI CONNECTION</button>
+ <div class="status" id="aiStatus"></div>
+</section>
+
+<section class="card step">
+ <h2>3. Test settings</h2>
+ <div class="settings">
+  <div><label>Paper</label><select id="paper"><option>JEE Main 2027 Paper 1</option></select></div>
+  <div><label>Duration (minutes)</label><input id="duration" type="number" value="180" min="1" max="600"></div>
+ </div>
+ <div class="features">
+  <div class="feature"><b>Exact source</b><span>No invented questions</span></div>
+  <div class="feature"><b>Key mapping</b><span>Official key only</span></div>
+  <div class="feature"><b>White CBT</b><span>JEE-style layout</span></div>
+ </div>
+ <button class="mainbtn" id="generate">GENERATE JEE MAIN 2027 MOCK</button>
+ <div class="progress"><i id="bar"></i></div>
+ <div class="log" id="log">Ready. Select both PDFs.</div>
+</section>
+
+<section class="card result step" id="resultCard">
+ <h2>4. Extracted paper</h2>
+ <div class="stats">
+  <div class="stat"><b id="total">0</b><span>Questions</span></div>
+  <div class="stat"><b id="phy">0</b><span>Physics</span></div>
+  <div class="stat"><b id="chem">0</b><span>Chemistry</span></div>
+  <div class="stat"><b id="math">0</b><span>Mathematics</span></div>
+ </div>
+ <input class="search" id="search" placeholder="Search question...">
+ <div id="list"></div>
+ <button class="mainbtn" id="startMock">START JEE MAIN CBT</button>
+</section>
+</div>
+
+<div id="transition">
+ <div class="transition-box">
+  <div class="transition-logo">JN</div>
+  <h2 id="transitionTitle">Preparing your CBT</h2>
+  <p id="transitionText">Please wait…</p>
+  <div class="spin"></div>
+ </div>
+</div>
+
+<div id="cbt">
+<header class="cbt-top">
+ <div class="cbt-brand"><div class="cbt-logo">NTA</div><div>JEE Main 2027<small>Mock Test</small></div></div>
+ <div class="clock" id="clock">03:00:00</div>
+</header>
+<div class="cbt-body">
+ <div class="cbt-subjects">
+  <button data-subject="Physics" class="active">Physics</button>
+  <button data-subject="Chemistry">Chemistry</button>
+  <button data-subject="Mathematics">Mathematics</button>
+ </div>
+ <div class="cbt-main">
+  <main class="question-area">
+   <div class="qbar"><span id="qnum">Question 1</span><span id="qtype">Single Correct</span></div>
+   <div class="qtext" id="qtext"></div>
+   <div class="opts" id="opts"></div>
+  </main>
+  <aside class="cbt-side">
+   <div class="side-title">Question Palette</div>
+   <div class="palette" id="palette"></div>
+  </aside>
+ </div>
+ <div class="cbt-actions">
+  <button id="clear">Clear</button>
+  <button id="review">Mark for Review</button>
+  <button class="next" id="next">Save & Next</button>
+ </div>
+</div>
+</div>
+
+<div class="modal" id="submitModal">
+ <div class="modal-card">
+  <h3>Submit mock test?</h3>
+  <p id="submitInfo" class="hint"></p>
+  <button id="submitYes">SUBMIT TEST</button>
+ </div>
+</div>
+
+<script type="module">
 import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
 pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
 
@@ -311,4 +291,11 @@ function cleanJSON(s){
  if(a>=0&&b>a)s=s.slice(a,b+1);
  return s;
 }
-function prom
+function promptFor(qt,at){
+ return `You are a strict JEE Main source-data extractor.
+Use ONLY the supplied source PDF text. Do NOT create, paraphrase, solve, repair, or invent any question.
+Preserve question wording and option wording as closely as the supplied text allows.
+Map correctAnswer ONLY from the official answer-key text.
+Return JSON only:
+{"questions":[{"id":1,"subject":"Physics","type":"single","question":"EXACT SOURCE TEXT","options":["A","B","C","D"],"correctAnswer":"A"}]}
+All
