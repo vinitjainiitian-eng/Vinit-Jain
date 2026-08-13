@@ -82,9 +82,9 @@ input:focus,select:focus{border-color:#5689ff;box-shadow:0 0 0 3px #3b82f622}
     <h2>2. AI provider</h2>
     <p class="hint">Only one key is required. Gemini is recommended for PDF extraction. OpenAI is available as an alternative.</p>
     <div class="ai-grid">
-     <select id="provider"><option value="gemini">Gemini</option><option value="openai">OpenAI</option></select> <input id="apiKey" type="password" placeholder="Paste API key" autocomplete="off">
+     <select id="provider"><option value="gemini" selected>Gemini</option><option value="openai">OpenAI</option></select> <input id="apiKey" type="password" placeholder="Paste API key" autocomplete="off">
     </div>
-    <select id="model" style="margin-top:8px"></select>
+    <label class="hint" style="display:block;margin-top:8px;margin-bottom:4px">Gemini model</label><select id="model" style="margin-top:0;display:block!important"></select>
     <button class="mainbtn" id="testAI">TEST AI CONNECTION</button>
     <div class="status" id="aiStatus"></div>
    </section>
@@ -211,9 +211,22 @@ async function loadModels(){
  const p=$("provider").value;
  $("model").innerHTML="";
  const defaults=p==="gemini"
-  ? [["gemini-3.6-flash","Gemini 3.6 Flash • Latest Fast"],["gemini-3.5-flash-lite","Gemini 3.5 Flash-Lite • Fastest/Low Cost"]]
-  : [["gpt-5-mini","GPT-5 mini"],["gpt-5","GPT-5"]];
- defaults.forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;$("model").appendChild(o)});
+  ? [
+      ["gemini-3.6-flash","Gemini 3.6 Flash • Latest Fast"],
+      ["gemini-3.5-flash","Gemini 3.5 Flash • Stable Fast"],
+      ["gemini-3.1-flash-lite","Gemini 3.1 Flash-Lite • Low Latency"]
+    ]
+  : [
+      ["gpt-5-mini","GPT-5 mini"],
+      ["gpt-5","GPT-5"]
+    ];
+ defaults.forEach(([v,t])=>{
+   const o=document.createElement("option");
+   o.value=v;
+   o.textContent=t;
+   $("model").appendChild(o);
+ });
+ $("model").value=defaults[0][0];
 }
 loadModels();
 
@@ -298,8 +311,4 @@ function cleanJSON(s){
  if(a>=0&&b>a)s=s.slice(a,b+1);
  return s;
 }
-function promptFor(qt,at){
- return `You are a strict JEE Main source-data extractor.
-Use ONLY the supplied source PDF text. Do NOT create, paraphrase, solve, repair, or invent any question.
-Preserve question wording and option wording as closely as the supplied text allows.
-Map correct
+function prom
